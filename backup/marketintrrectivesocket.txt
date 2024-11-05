@@ -1,0 +1,139 @@
+
+class InteractiveSocketFeed extends ChangeNotifier {
+  late IO.Socket _socket;
+  late StreamController<List<OrderSocketValues>> _controller;
+  List<OrderSocketValues> _dataList = [];
+
+  // InteractiveSocketFeed() {
+  //   _controller = StreamController<List<OrderSocketValues>>.broadcast();
+  //   initializeService();
+  // }
+
+  Future<void> initializeService() async {
+    final service = FlutterBackgroundService();
+print('service: $service');
+    // Initialize Awesome Notifications
+    AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'basic_channel',
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: Color(0xFF9D50DD),
+          ledColor: Colors.white,
+          importance: NotificationImportance.High,
+        )
+      ],
+    );
+
+    await service.configure(
+      iosConfiguration: IosConfiguration(
+        autoStart: true,
+        onForeground: onStart,
+        onBackground: onIosBackground,
+      ),
+      androidConfiguration: AndroidConfiguration(
+        autoStart: true,
+        onStart: onStart,
+        isForegroundMode: true,
+        autoStartOnBoot: true,
+      ),
+    );
+
+    service.startService();
+  }
+
+  @pragma('vm:entry-point')
+  Future<bool> onIosBackground(ServiceInstance service) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    return true;
+  }
+
+  @pragma('vm:entry-point')
+  void onStart(ServiceInstance service) async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    String? token = await getToken();
+    String url = "http://14.97.72.10:3000/";
+    _socket = IO.io(
+      url,
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .setQuery({
+            'token': token,
+            'apiType': 'INTERACTIVE',
+            'publishFormat': 'JSON',
+            'broadcastMode': 'Full',
+            'userID': 'A0031'
+          })
+          .setPath('/interactive/socket.io')
+          .build(),
+    );
+
+    _socket.onConnect((_) {
+      print('Is connected INTERACTIVE: ${_socket.connected}');
+    });
+
+    _socket.on('order', (rawData) async {
+      print('Raw data received: $rawData');
+      try {
+        final jsonData = jsonDecode(rawData);
+        final orderSocketValues = OrderSocketValues.fromJson(jsonData);
+        updateOrderList(orderSocketValues);
+        showNotification(orderSocketValues);
+        await OrderProvider().refreshOrder();
+      } catch (e) {
+        print('Error parsing JSON: $e');
+      }
+    });
+
+    service.on("stopService").listen((event) {
+      service.stopSelf();
+      print("background process is now stopped");
+    });
+
+    _socket.on("event", (data) => print(data));
+    _socket.on('success INTERACTIVE', (data) => print('success $data'));
+  }
+
+  void updateOrderList(OrderSocketValues order) {
+    if (order.orderStatus == 'New') {
+      final pendingIndex = _dataList.indexWhere((o) =>
+          o.appOrderID == order.appOrderID && o.orderStatus == 'PendingNew');
+      if (pendingIndex != -1) {
+        return;
+      }
+    }
+
+    final index = _dataList.indexWhere((o) => o.appOrderID == order.appOrderID);
+    if (index != -1) {
+      _dataList[index] = order;
+    } else {
+      _dataList.add(order);
+    }
+
+    _controller.add(_dataList);
+    notifyListeners();
+  }
+
+  void showNotification(OrderSocketValues order) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        title: 'New Order Status: ${order.orderStatus}',
+        body: 'Order ID: ${order.appOrderID}',
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    _socket.dispose();
+    super.dispose();
+  }
+
+  Stream<List<OrderSocketValues>> get dataListStream => _controller.stream;
+}

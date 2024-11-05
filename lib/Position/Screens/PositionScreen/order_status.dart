@@ -1,0 +1,1 @@
+enum OrderStatus { pending, successful, rejected, cancelled }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TradingView Chart</title>
+    <script src="https://unpkg.com/lightweight-charts@3.0.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <style>
+        #chart {
+            position: relative;
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chart"></div>
+    <script>         // Initialize chart         const chart = LightweightCharts.createChart(document.getElementById('chart'), {             width: window.innerWidth,             height: window.innerHeight,             layout: {                 backgroundColor: '#ffffff',                 textColor: '#000000'             },             grid: {                 horzLines: {                     color: '#f0f0f0'                 },                 vertLines: {                     color: '#f0f0f0'                 }             },             crossHair: {                 mode: LightweightCharts.CrossHairMode.Normal             },             priceScale: {                 borderColor: '#000000'             },             timeScale: {                 borderColor: '#000000'             }         });
+        // Initialize series
+        const series = chart.addCandlestickSeries({
+            upColor: '#4fff00',
+            borderUpColor: '#4fff00',
+            wickUpColor: '#4fff00',
+            downColor: '#ff4976',
+            borderDownColor: '#ff4976',
+            wickDownColor: '#ff4976'
+        });
+
+
+        // Fetch and display OHLC data
+        fetchOHLCData().then(ohlcData => {
+            series.setData(ohlcData);
+        }).catch(error => {
+            console.error('Error fetching OHLC data:', error);
+        });
+        async function fetchOHLCData() {
+            const response = await fetch('https://mtrade.arhamshare.com/marketdata/instruments/ohlc?exchangeSegment=1&exchangeInstrumentID=13611&startTime=Jun 01 2022 091500&endTime=Sep 09 2024 153000&compressionValue=60', {
+                headers: {
+                    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJBMDAzMyIsIm1lbWJlcklEIjoiQVJIQU0iLCJzb3VyY2UiOiJFTlRFUlBSSVNFV0VCIiwiaWF0IjoxNzI1ODY2MDc4LCJleHAiOjE3MjU5NTI0Nzh9.OnapzejkyIIrRKND23wfnPH_tcLnnXw8yIBeVBEePjc',
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.text();
+            return parseOHLCData(data);
+        }
+
+
+        function parseOHLCData(data) {
+            return data.split(',').map(entry => {
+                const [timestamp, open, high, low, close, volume] = entry.split('|').map(val => parseFloat(val));
+                return {
+                    time: timestamp * 1000, // Convert to milliseconds
+                    open,
+                    high,
+                    low,
+                    close,
+                    volume
+                };
+            });
+        }
+
+
+    </script>
+
+</body>
+
+</html>
