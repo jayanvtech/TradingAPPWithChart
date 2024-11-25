@@ -419,7 +419,7 @@ class _BuySellScreenState extends State<BuySellScreen> {
                                         Text(
                                           displayname1,
                                           style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 13,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],

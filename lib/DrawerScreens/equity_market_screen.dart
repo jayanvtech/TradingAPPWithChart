@@ -367,7 +367,6 @@ class TopGainersProvider with ChangeNotifier {
   List<TopGainersNLosers> _filteredStocks = [];
   String _selectedSector = 'allSec'; // Default sector
   bool _isLoading = false;
-
   List<TopGainersNLosers> get stocks => _stocks;
   List<TopGainersNLosers> get filteredStocks => _filteredStocks;
   String get selectedSector => _selectedSector;

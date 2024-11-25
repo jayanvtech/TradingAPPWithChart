@@ -1,0 +1,80 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d 00008101-000C348E0A7A001E --devtools-server-address http://127.0.0.1:9100/ --target /Users/mac/Documents/Flutter Projects/Trading-App-charting/lib/main.dart
+
+## exception
+
+SocketException: SocketException: Send failed (OS Error: Can't assign requested address, errno = 49), address = 0.0.0.0, port = 5353
+
+```
+#0      _NativeSocket.send (dart:io-patch/socket_patch.dart:1269:34)
+#1      _RawDatagramSocket.send (dart:io-patch/socket_patch.dart:2584:15)
+#2      MDnsClient.lookup (package:multicast_dns/multicast_dns.dart:225:14)
+#3      MDnsVmServiceDiscovery._pollingVmService (package:flutter_tools/src/mdns_discovery.dart:258:12)
+<asynchronous suspension>
+#4      MDnsVmServiceDiscovery.firstMatchingVmService (package:flutter_tools/src/mdns_discovery.dart:188:56)
+<asynchronous suspension>
+#5      MDnsVmServiceDiscovery.getVMServiceUriForLaunch (package:flutter_tools/src/mdns_discovery.dart:433:50)
+<asynchronous suspension>
+#6      Future.any.onValue (dart:async/future.dart:618:5)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[!] Flutter (Channel stable, 3.22.1, on macOS 15.0.1 24A348 darwin-x64, locale en-IN)
+    • Flutter version 3.22.1 on channel stable at /Users/mac/Documents/flutter
+    ! Warning: `flutter` on your path resolves to /usr/local/Caskroom/flutter/3.22.1/flutter/bin/flutter, which is not inside your current Flutter SDK checkout at /Users/mac/Documents/flutter. Consider adding /Users/mac/Documents/flutter/bin to the front of your path.
+    ! Warning: `dart` on your path resolves to /usr/local/Caskroom/flutter/3.22.1/flutter/bin/dart, which is not inside your current Flutter SDK checkout at /Users/mac/Documents/flutter. Consider adding /Users/mac/Documents/flutter/bin to the front of your path.
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision a14f74ff3a (6 months ago), 2024-05-22 11:08:21 -0500
+    • Engine revision 55eae6864b
+    • Dart version 3.4.1
+    • DevTools version 2.34.3
+    • If those were intentional, you can disregard the above warnings; however it is recommended to use "git" directly to perform update checks and upgrades.
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
+    • Android SDK at /Users/mac/Library/Android/sdk
+    • Platform android-34, build-tools 34.0.0
+    • Java binary at: /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+    • Java version OpenJDK Runtime Environment (build 17.0.10+0-17.0.10b1087.21-11572160)
+    • All Android licenses accepted.
+
+[✓] Xcode - develop for iOS and macOS (Xcode 16.0)
+    • Xcode at /Applications/Xcode.app/Contents/Developer
+    • Build 16A242d
+    • CocoaPods version 1.15.2
+
+[✓] Chrome - develop for the web
+    • Chrome at /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+[✓] Android Studio (version 2023.3)
+    • Android Studio at /Applications/Android Studio.app/Contents
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 17.0.10+0-17.0.10b1087.21-11572160)
+
+[✓] VS Code (version 1.89.1)
+    • VS Code at /Users/mac/Downloads/Visual Studio Code.app/Contents
+    • Flutter extension version 3.100.0
+
+[✓] Connected device (3 available)
+    • Yash n’s iPhone (2) (mobile) • 00008101-000C348E0A7A001E • ios            • iOS 18.1.1 22B91
+    • macOS (desktop)              • macos                     • darwin-x64     • macOS 15.0.1 24A348 darwin-x64
+    • Chrome (web)                 • chrome                    • web-javascript • Google Chrome 131.0.6778.86
+
+[!] Network resources
+    ✗ A network error occurred while checking "https://pub.dev/": Failed host lookup: 'pub.dev'
+    ✗ A network error occurred while checking "https://storage.googleapis.com/": Failed host lookup: 'storage.googleapis.com'
+    ✗ A network error occurred while checking "https://maven.google.com/": Failed host lookup: 'maven.google.com'
+    ✗ A network error occurred while checking "https://cocoapods.org/": Failed host lookup: 'cocoapods.org'
+    ✗ A network error occurred while checking "https://github.com/": Failed host lookup: 'github.com'
+
+! Doctor found issues in 2 categories.
+```

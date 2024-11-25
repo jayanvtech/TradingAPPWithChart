@@ -124,7 +124,7 @@ class _SectoralThemesScreenState extends State<SectoralThemesScreen> {
                       var stock = filteredSectors[index];
                       final masterServices = DatabaseHelperMaster();
                       return FutureBuilder(
-                          future: 
+                          future:
                               masterServices.getInstrumentsBySymbol(stock.sym),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -168,7 +168,6 @@ class _SectoralThemesScreenState extends State<SectoralThemesScreen> {
                                       .toString(),
                                   exchangeInstrumentID);
                               print(AppVariables.exchangeData);
-                            
                             } else {
                               print('No data found for the given symbol.');
                             }

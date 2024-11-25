@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradingapp/Authentication/Login_bloc/login_event.dart';
 import 'package:tradingapp/Authentication/Login_bloc/login_state.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
+import 'package:tradingapp/Authentication/biomatric_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -75,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await prefs.setString('token', jsonResponse['result']['token']);
 
             // Navigate to MainScreen
-            Get.offAll(() => MainScreen());
+            Get.offAll(() => PinAuthenticationScreen());
 
             return {
               'status': true,

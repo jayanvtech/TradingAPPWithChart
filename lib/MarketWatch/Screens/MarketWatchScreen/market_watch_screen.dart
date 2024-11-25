@@ -12,6 +12,7 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tradingapp/Charts/chart.dart';
 import 'package:tradingapp/DashBoard/Screens/option_chain_screen/option_chain_screen.dart';
 import 'package:tradingapp/GetApiService/apiservices.dart';
 import 'package:tradingapp/DashBoard/Screens/DashBoardScreen/dashboard_screen.dart';
@@ -69,200 +70,274 @@ class _MarketWatchScreenState extends State<MarketWatchScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MarketFeedSocket>(builder: (context, feed, child) {
-      return feed.bankmarketData.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : Scaffold(
-              drawer: DrawerDashboard1(),
-              endDrawer: DrawerDashboard2(),
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                actions: [
-                  IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchScreen(
-                            onReturn: () => initializeDatabase(),
-                          ),
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.search),
+    // return Consumer<MarketFeedSocket>(builder: (context, feed, child) {
+    //   return feed.bankmarketData.isEmpty
+    //       ? Center(child: CircularProgressIndicator())
+    return Scaffold(
+      drawer: DrawerDashboard1(),
+      endDrawer: DrawerDashboard2(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    onReturn: () => initializeDatabase(),
                   ),
-                  Builder(
-                    builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      icon: Icon(Icons.read_more),
-                    ),
-                  ),
-                ],
-                title: Text('Watchlist'),
-                bottom: _tabController != null
-                    ? PreferredSize(
-                        preferredSize: Size.fromHeight(110),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 60.0),
-                                  child: GestureDetector(
-                                    onDoubleTap: () async {},
-                                    child: TabBar(
-                                      dividerHeight: 3,
-                                      labelPadding: EdgeInsets.all(2),
-                                      padding: EdgeInsets.all(5),
-                                      tabAlignment: TabAlignment.start,
-                                      dividerColor: Colors.white,
-                                      controller: _tabController,
-                                      isScrollable: true,
-                                      tabs: _watchlistItems.map((item) {
-                                        return GestureDetector(
-                                          onDoubleTap: () {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              builder: (context) {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    ListTile(
-                                                      leading:
-                                                          Icon(Icons.delete),
-                                                      title: Text('Delete'),
-                                                      onTap: () {
-                                                        _dbHelper
-                                                            .deleteWatchlist(_watchlistItems[
-                                                                    _tabController
-                                                                        .index]
-                                                                ['id'] as int)
-                                                            .then((value) =>
-                                                                initializeDatabase())
-                                                            .catchError(
-                                                                (error) =>
-                                                                    print(
-                                                                        error));
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    ListTile(
-                                                      leading:
-                                                          Icon(Icons.delete),
-                                                      title: Text('Delete'),
-                                                      onTap: () {
-                                                        // Handle delete
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 50,
-                                                    ),
-                                                  ],
-                                                );
+                ),
+              );
+            },
+            icon: Icon(Icons.search),
+          ),
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              icon: Icon(Icons.read_more),
+            ),
+          ),
+        ],
+        title: Text('Watchlist'),
+        bottom: _tabController != null
+            ? PreferredSize(
+                preferredSize: Size.fromHeight(110),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 60.0),
+                          child: GestureDetector(
+                            onDoubleTap: () async {},
+                            child: TabBar(
+                              dividerHeight: 3,
+                              labelPadding: EdgeInsets.all(2),
+                              padding: EdgeInsets.all(5),
+                              tabAlignment: TabAlignment.start,
+                              dividerColor: Colors.white,
+                              controller: _tabController,
+                              isScrollable: true,
+                              tabs: _watchlistItems.map((item) {
+                                return GestureDetector(
+                                  onDoubleTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            ListTile(
+                                              leading: Icon(Icons.delete),
+                                              title: Text('Delete'),
+                                              onTap: () {
+                                                _dbHelper
+                                                    .deleteWatchlist(
+                                                        _watchlistItems[
+                                                                _tabController
+                                                                    .index]
+                                                            ['id'] as int)
+                                                    .then((value) =>
+                                                        initializeDatabase())
+                                                    .catchError((error) =>
+                                                        print(error));
+                                                Navigator.pop(context);
                                               },
-                                            );
-                                          },
-                                          child: Container(
-                                            width: 90,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Color.fromARGB(
-                                                        78, 128, 145, 177),
-                                                    width: 0.5),
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            child: Tab(
-                                              height: 35,
-                                              child: Text(
-                                                item['name'],
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              // text: item['name'].toString(),
                                             ),
-                                          ),
+                                            ListTile(
+                                              leading: Icon(Icons.delete),
+                                              title: Text('Delete'),
+                                              onTap: () {
+                                                // Handle delete
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                            ),
+                                          ],
                                         );
-                                      }).toList(),
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 90,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color.fromARGB(
+                                                78, 128, 145, 177),
+                                            width: 0.5),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Tab(
+                                      height: 35,
+                                      child: Text(
+                                        item['name'],
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      // text: item['name'].toString(),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.88,
-                                  child: IconButton(
-                                    onPressed: () async {
-                                      String? itemName = await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AddWatchlistDialog();
-                                        },
-                                      );
-                                      initializeDatabase();
-
-                                      if (itemName != null) {
-                                        await DatabaseHelper.instance
-                                            .addWatchlist(itemName);
-                                        initializeDatabase();
-                                        setState(() {
-                                          // _tabController =
-                                        });
-                                      }
-                                    },
-                                    icon: Icon(Icons.add),
-                                  ),
-                                ),
-                              ],
+                                );
+                              }).toList(),
                             ),
-                            MarketDataWidget(feed.bankmarketData),
-                          ],
+                          ),
                         ),
-                      )
-                    : PreferredSize(
-                        preferredSize: Size.fromHeight(0),
-                        child: Container(),
-                      ),
-              ),
-              body: TabBarView(
-                controller: _tabController,
-                children: _watchlistItems
-                    .map(
-                      (item) => WatchlistTab(
-                        watchlistId: item['id'] as int,
-                      ),
-                    )
-                    .toList(),
-              ),
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () async {
-              //     await Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => SearchScreen(
-              //           onReturn: () => initializeDatabase(),
-              //         ),
-              //       ),
-              //     );
-              //     // String? itemName = await showDialog(
-              //     //   context: context,
-              //     //   builder: (BuildContext context) {
-              //     //     return AddWatchlistDialog();
-              //     //   },
-              //     // );
-              //     // initializeDatabase();
+                        Positioned(
+                          left: MediaQuery.of(context).size.width * 0.88,
+                          child: IconButton(
+                            onPressed: () async {
+                              String? itemName = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AddWatchlistDialog();
+                                },
+                              );
+                              initializeDatabase();
 
-              //     // if (itemName != null) {
-              //     //   await DatabaseHelper.instance.addWatchlist(itemName);
-              //     //   initializeDatabase();
-              //     // }
-              //   },
-              //   child: Icon(Icons.add),
-              // ),
-            );
-    });
+                              if (itemName != null) {
+                                await DatabaseHelper.instance
+                                    .addWatchlist(itemName);
+                                initializeDatabase();
+                                setState(() {
+                                  // _tabController =
+                                });
+                              }
+                            },
+                            icon: Icon(Icons.add),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Consumer<MarketFeedSocket>(builder: (context, feed, child) {
+                      return feed.bankmarketData.isEmpty
+                          ? Skeletonizer(
+                              enabled: true,
+                              child: Container(
+                                height: 80,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.all(5),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1,
+                                                color: Colors.black12),
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            color: Colors.white,
+                                          ),
+                                          // semanticContainer: true,
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(10)),
+                                          // borderOnForeground: true,
+                                          // shadowColor: Colors.white,
+
+                                          child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 0, 10, 0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'name',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      Text(
+                                                        'price'.toString(),
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "565",
+                                                          ),
+                                                          Text(
+                                                            'percentage'
+                                                                .toString(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                          : MarketDataWidget(feed.bankmarketData);
+                    }),
+                  ],
+                ),
+              )
+            : PreferredSize(
+                preferredSize: Size.fromHeight(0),
+                child: Container(),
+              ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: _watchlistItems
+            .map(
+              (item) => WatchlistTab(
+                watchlistId: item['id'] as int,
+              ),
+            )
+            .toList(),
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     await Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => SearchScreen(
+      //           onReturn: () => initializeDatabase(),
+      //         ),
+      //       ),
+      //     );
+      //     // String? itemName = await showDialog(
+      //     //   context: context,
+      //     //   builder: (BuildContext context) {
+      //     //     return AddWatchlistDialog();
+      //     //   },
+      //     // );
+      //     // initializeDatabase();
+
+      //     // if (itemName != null) {
+      //     //   await DatabaseHelper.instance.addWatchlist(itemName);
+      //     //   initializeDatabase();
+      //     // }
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
+    );
   }
 }
 
@@ -414,29 +489,35 @@ class _WatchlistTabState extends State<WatchlistTab>
       child: GestureDetector(
         onDoubleTap: () async {
           showModalBottomSheet(
+
             context: context,
             builder: (context) {
-              return ReorderableListView.builder(
-                itemCount: _instruments.length,
-                itemBuilder: (context, index) {
-                  final instrument = _instruments[index];
-                  return ListTile(
-                    key: ValueKey(instrument['id']),
-                    title: Text(instrument['display_name']),
-                    leading: Icon(Icons.drag_handle),
-                  );
-                },
-                onReorder: (oldIndex, newIndex) {
-                  setState(() {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final Map<String, dynamic> item =
-                        _instruments.removeAt(oldIndex);
-                    _instruments.insert(newIndex, item);
-                    _dbHelper.updateOrderIndex(item['id'], newIndex);
-                  });
-                },
+              
+              return Container(
+                child: ReorderableListView.builder(
+                  
+                  itemCount: _instruments.length,
+                  itemBuilder: (context, index) {
+                    final instrument = _instruments[index];
+                    return ListTile(
+                      key: ValueKey(instrument['id']),
+                      title: Text(instrument['display_name']),
+                      leading: Icon(Icons.drag_handle),
+                      subtitle: Text(instrument['exchangeSegment'].toString()),
+                    );
+                  },
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final Map<String, dynamic> item =
+                          _instruments.removeAt(oldIndex);
+                      _instruments.insert(newIndex, item);
+                      _dbHelper.updateOrderIndex(item['id'], newIndex);
+                    });
+                  },
+                ),
               );
             },
           );
@@ -938,7 +1019,11 @@ class _WatchlistTabState extends State<WatchlistTab>
                                                           Text("Option Chain")),
                                                 ),
                                                 VerticalDivider(),
-                                                Text("Charts"),
+                                                TextButton(
+                                                    onPressed: () {
+                                                     Get.to(() => ChartingFromTV(displayName));
+                                                    },
+                                                    child: Text("Charts")),
                                                 VerticalDivider(),
                                                 TextButton(
                                                     onPressed: () {
@@ -1112,19 +1197,20 @@ class _WatchlistTabState extends State<WatchlistTab>
                         },
                       );
                     },
-                    onDoubleTap: () {
+                    onLongPress: () {
                       showCupertinoModalPopup(
                         context: context,
                         builder: (BuildContext context) => Material(
                           type: MaterialType.card,
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: BoxDecoration(color: Colors.white,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20),
                               ),
                             ),
-                            height: MediaQuery.of(context).size.height * 0.4,
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            
                             child: ReorderableListView.builder(
                               itemCount: _instruments.length,
                               itemBuilder: (context, index) {

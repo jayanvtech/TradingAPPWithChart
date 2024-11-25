@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView - Advanced Charts</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/jayanvtech/Trading-App@main/charting_library.standalone.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jayanvtech/Trading-App@main/bundle.js"></script>
+    <script src="https://cdn.socket.io/socket.io-2.3.0.js"></script>
+
+    <script>
+        // Import the datafeed module
+        import('./datafeeds/datafeed.js').then(module => {
+            window.datafeed = module.default;
+
+            window.loadChart = function loadChart(symbol) {
+                console.log('Loading chart for symbol:', symbol);
+                new TradingView.widget({
+                    container: 'chartContainer',
+                    locale: 'en',
+                    library_path: 'charting_library/',
+                    datafeed: window.datafeed,
+                    symbol: symbol,
+                    debug: true,
+                    interval: '1',
+                    load_last_chart: true,
+                    timezone: 'Europe/London',
+                    exchange: "BSE",
+                    fullscreen: true,
+                    debug: true,
+                    theme: "light",
+                    disabled_features: [
+                        "header_symbol_search",
+                    ],
+                    enabled_features: [
+                        "move_logo_to_main_pane",
+                    ],
+                });
+            };
+
+            window.authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJBMDAzMV9mOWFiYjk0NjZmNTBhZTg0MTE5Mjg0IiwicHVibGljS2V5IjoiZjlhYmI5NDY2ZjUwYWU4NDExOTI4NCIsImlhdCI6MTczMTk5NjkxMiwiZXhwIjoxNzMyMDgzMzEyfQ.zRUSIhZGbwM9JvYqYRxK2zgADAN9zE6-1ovHbVR4_Rw';
+            window.SymbolName = 'hg';
+            window.Exchange = '';
+
+            // Define a function to set the auth token
+            window.setAuthToken = function setAuthToken(token) {
+                console.log('Setting auth token:', token);
+                window.authToken = token;
+
+                // Reinitialize socket with the new token if needed
+                if (window.datafeed && window.datafeed.initializeSocket) {
+                    window.datafeed.initializeSocket(token, 'A0031'); // Pass the userID if required
+                }
+            };
+
+            window.SetSymbolName = function SetSymbolName(SymbolName) {
+                console.log('Setting Symbol Name :', SymbolName);
+                window.SymbolName = SymbolName;
+            };
+
+            // Function to set the Exchange
+            window.setExchange = function (exchange) {
+                console.log('Setting exchange:', exchange);
+                window.Exchange = exchange;
+            };
+
+            // Load the chart with a default symbol (if needed)
+            window.loadChart('IRCTC');
+        });
+    </script>
+</head>
+
+<body>
+    <div id="chartContainer"></div>
+</body>
+
+</html>

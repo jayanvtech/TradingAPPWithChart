@@ -74,7 +74,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   Text(
                     "Forget Password",
                     style: GoogleFonts.inter(
-                        color: AppColors.appCommonColor,
+                        color: AppColors.primaryColor,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
@@ -86,7 +86,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     child: Text(
                       "Please fill these details to Forget Password",
                       style: GoogleFonts.inter(
-                        color: AppColors.textGreyColor,
+                        color: AppColors.primaryColorDark,
                         fontSize: 17,
                       ),
                     ),
@@ -101,7 +101,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   Text(
                     "Username",
                     style: GoogleFonts.inter(
-                      color: AppColors.textBlackColor,
+                      color: AppColors.primaryColorDark,
                       fontSize: 15,
                     ),
                   ),
@@ -124,7 +124,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   Text(
                     "Date of Birth",
                     style: GoogleFonts.inter(
-                      color: AppColors.textBlackColor,
+                      color: AppColors.primaryColorDark2,
                       fontSize: 15,
                     ),
                   ),
@@ -176,7 +176,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   Text(
                     "Pan Number",
                     style: GoogleFonts.inter(
-                      color: AppColors.textBlackColor,
+                      color: AppColors.primaryColorDark,
                       fontSize: 15,
                     ),
                   ),
@@ -215,13 +215,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.commonButtonColor,
+                    color: AppColors.primaryColor,
                   ),
                   child: Center(
                     child: Text(
                       "Verify",
                       style: GoogleFonts.inter(
-                          color: AppColors.textWhiteColor,
+                          color: AppColors.primaryColorLight2,
                           fontSize: 18),
                     ),
                   ),

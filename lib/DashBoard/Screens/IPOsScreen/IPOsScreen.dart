@@ -185,7 +185,7 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
               child: CircularProgressIndicator(
-            color: Color.fromRGBO(27, 82, 52, 1.0),
+           
           ));
         } else if (snapshot.hasError) {
           return Center(

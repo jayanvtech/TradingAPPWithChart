@@ -184,7 +184,7 @@ class _ValidPasswordScreenState extends State<ValidPasswordScreen> {
                   Text(
                     "Enter Your Pin",
                     style: GoogleFonts.inter(
-                        color: AppColors.appCommonColor,
+                        color: AppColors.primaryColor,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
@@ -196,7 +196,7 @@ class _ValidPasswordScreenState extends State<ValidPasswordScreen> {
                   Text(
                     "Please enter your valid pin",
                     style: GoogleFonts.inter(
-                      color: AppColors.textGreyColor,
+                      color: AppColors.primaryColorDark2,
                       fontSize: 17,
                     ),
                   ),
@@ -237,10 +237,10 @@ class _ValidPasswordScreenState extends State<ValidPasswordScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: index < enteredPin.length
-                            ? AppColors.commonButtonColor
+                            ? AppColors.primaryColor
                             : Colors.black),
                         color: index < enteredPin.length
-                            ? AppColors.commonButtonColor
+                            ? AppColors.primaryColor
                             : Colors.transparent,
                       ),
                     );

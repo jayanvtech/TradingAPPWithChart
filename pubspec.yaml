@@ -64,13 +64,14 @@ dependencies:
  syncfusion_flutter_charts: ^20.2.47
  modal_bottom_sheet: ^3.0.0
  url_launcher: ^6.3.1
-#  firebase_messaging: ^14.0.0
-#  firebase_core: ^2.18.0
-#  firebase_in_app_messaging: ^0.7.5+7
+ firebase_messaging: ^15.1.5
+ firebase_core: ^3.8.0
+ local_auth: ^2.3.0
  connectivity_plus: ^6.0.3
  awesome_dialog: ^3.2.1
  tab_container: ^3.5.3
- 
+ vector_graphics: ^1.1.15
+#  webview_flutter_plus: ^0.4.7
  fluttertoast: ^8.2.6
  
 
@@ -110,6 +111,15 @@ flutter:
    - assets/AppIcon/
    - assets/error_illustrations/
    - assets/Q.svg
+   - assets/
+   - assets/charting_library/index.html
+   - assets/charting_library/
+   - assets/charting_library/datafeeds/datafeed.js
+   - assets/charting_library/charting_library/charting_library.standalone.js
+   - assets/charting_library/datafeeds/udf/dist/bundle.js
+   - assets/charting_library/charting_library/bundles/runtime.1f6691a05496db116913.js
+   - assets/charting_library/charting_library/bundles/
+   - assets/charting_library/datafeeds/main.js
 
 
 

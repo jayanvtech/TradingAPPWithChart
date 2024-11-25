@@ -18,7 +18,7 @@ class _GlobalscreenState extends State<Globalscreen> {
       appBar: AppBar(backgroundColor: Colors.white,
       actions: [
         IconButton(onPressed: (){
-          Get.to(()=> GlobalTopNewsAllScreen());
+          // Get.to(()=> GlobalTopNewsAllScreen());
         }, icon: Icon(Icons.newspaper_outlined))
       ],
         leadingWidth: 35,
@@ -41,7 +41,7 @@ class _GlobalscreenState extends State<Globalscreen> {
       body: Column(
         children: [
           Expanded(child: GLobleIndicesWidgetScreen()),
-          // sectorIndices(),
+         // sectorIndices(),
         ],
       ),
     );

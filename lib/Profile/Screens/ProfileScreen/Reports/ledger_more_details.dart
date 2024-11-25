@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tradingapp/Profile/Models/UserProfileModel/ledger_report_model.dart';
+import 'package:tradingapp/Profile/Screens/ProfileScreen/Reports/voucher_bill_screen.dart';
 
 class LedgerMoreDetails extends StatefulWidget {
   final LedgerReportModel transaction;
@@ -56,14 +57,25 @@ class _LedgerMoreDetailsState extends State<LedgerMoreDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Bill Date"),
-                      Text(formattedDate(widget.transaction.billDate)),
+                      TextButton(onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VoucherBillScreen(voucherDate: widget.transaction.billDate),
+                          ),
+                        );
+                      },child: Text(
+                        formattedDate(widget.transaction.billDate)),)
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Voucher Date"),
-                      Text(formattedDate(widget.transaction.voucherDate)),
+                      Text(
+
+                    
+                        formattedDate(widget.transaction.voucherDate)),
                     ],
                   ),
                 ],

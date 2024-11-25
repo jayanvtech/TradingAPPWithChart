@@ -91,14 +91,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           "Login",
                           style: GoogleFonts.inter(
-                              color: AppColors.appCommonColor,
+                              color: AppColors.primaryColor,
                               fontSize: 30,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "Welcome back to the app",
                           style: GoogleFonts.inter(
-                            color: AppColors.textGreyColor,
+                            color: AppColors.primaryColor,
                             fontSize: 17,
                           ),
                         ),
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               "Username",
                               style: GoogleFonts.inter(
-                                color: AppColors.textBlackColor,
+                                color: AppColors.primaryColor,
                                 fontSize: 15,
                               ),
                             ),
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               "Password",
                               style: GoogleFonts.inter(
-                                color: AppColors.textBlackColor,
+                                color: AppColors.primaryColor,
                                 fontSize: 15,
                               ),
                             ),
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   "Forget Password? ",
                                   style: GoogleFonts.inter(
-                                      color: AppColors.greenTextColor,
+                                      color: Colors.blue,
                                       fontSize: 13),
                                 ))
                           ],
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Row(
                           children: [
                             Checkbox(
-                              activeColor: AppColors.commonButtonColor,
+                              activeColor: Colors.blue,
                               value: keepMeSigning,
                               onChanged: (value) {
                                 setState(() {
@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               "Keep me signed in",
                               style: GoogleFonts.inter(
-                                  color: AppColors.textGreyColor, fontSize: 14),
+                                  color: Colors.grey, fontSize: 14),
                             )
                           ],
                         ),
@@ -245,12 +245,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: _isLoading // Step 3: Check if loading
                                   ? CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          AppColors.textWhiteColor),
+                                          Colors.white),
                                     )
                                   : Text(
                                       "Login",
                                       style: GoogleFonts.inter(
-                                          color: AppColors.textWhiteColor,
+                                          color: Colors.white, 
                                           fontSize: 18),
                                     ),
                             ),

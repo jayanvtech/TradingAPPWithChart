@@ -157,9 +157,7 @@ class MyApp extends StatefulWidget {
 // final PushNotificationService _notificationService = PushNotificationService();
 
 class _MyAppState extends State<MyApp> {
-  static Color mainColor = const Color(0xFF9D50DD);
-  static const String routeHome = '/', routeNotification = '/notification-page';
-
+  
   bool? isLoginValue = false;
 
   @override
@@ -209,7 +207,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        textTheme: GoogleFonts.robotoFlexTextTheme(),
       ),
       title: 'My App',
       navigatorKey: MyApp.navigatorKey,

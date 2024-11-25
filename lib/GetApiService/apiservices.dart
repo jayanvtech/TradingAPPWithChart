@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
 import 'package:tradingapp/DashBoard/Models/bid_request_model.dart';
 import 'package:tradingapp/DashBoard/Models/ipo_model.dart';
@@ -17,6 +18,7 @@ import 'package:tradingapp/Notification/NotificationController/NotificationContr
 import 'package:tradingapp/Position/Screens/PositionScreen/position_screen.dart';
 import 'package:tradingapp/Profile/Models/UserProfileModel/ledger_report_model.dart';
 import 'package:tradingapp/Profile/Models/UserProfileModel/userProfile_model.dart';
+import 'package:tradingapp/Profile/Models/UserProfileModel/voucher_bill_model.dart';
 import 'package:tradingapp/Profile/Screens/ProfileScreen/Reports/ledger_report_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_config.dart';
@@ -1328,22 +1330,26 @@ class ApiService extends ChangeNotifier {
       throw Exception('Failed to load data');
     }
   }
-Future<List<SectorThemeModel>> fetchSectorStock() async {
-  final url =
-      'http://180.211.116.158:8080/mobile/api/v1/sector-industry-analysis/sector-stocks?sector=all';
 
-  final response = await http.get(Uri.parse(url));
+  Future<List<SectorThemeModel>> fetchSectorStock() async {
+    final url =
+        'http://180.211.116.158:8080/mobile/api/v1/sector-industry-analysis/sector-stocks?sector=all';
 
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> jsonData = json.decode(response.body);
-    print(jsonData);
-    List<dynamic> sectorStocksJson = jsonData['data']; // Adjust the key based on your actual JSON structure
-    List<SectorThemeModel> sectorStocks = sectorStocksJson.map((data) => SectorThemeModel.fromJson(data)).toList();
-    return sectorStocks;
-  } else {
-    throw Exception('Failed to load data');
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      print(jsonData);
+      List<dynamic> sectorStocksJson = jsonData[
+          'data']; // Adjust the key based on your actual JSON structure
+      List<SectorThemeModel> sectorStocks = sectorStocksJson
+          .map((data) => SectorThemeModel.fromJson(data))
+          .toList();
+      return sectorStocks;
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
-}
 
   Future<List<LedgerReportModel>> fetchLedgerReportDetails(
       String FromDate, String ToDate) async {
@@ -1382,7 +1388,6 @@ Future<List<SectorThemeModel>> fetchSectorStock() async {
     }
   }
 
-
   Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsRecipt(
       String FromDate, String ToDate) async {
     try {
@@ -1404,7 +1409,7 @@ Future<List<SectorThemeModel>> fetchSectorStock() async {
           "trans_type": "R"
         }),
       );
-
+      print("===============================${response.body}");
       if (response.statusCode == 200) {
         // Parse the list of transactions
         List<dynamic> jsonData = jsonDecode(response.body)['data'][0]['DATA'];
@@ -1419,6 +1424,7 @@ Future<List<SectorThemeModel>> fetchSectorStock() async {
       throw Exception('Failed to load ledger report details: $e');
     }
   }
+
   Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsPAYout(
       String FromDate, String ToDate) async {
     try {
@@ -1440,7 +1446,7 @@ Future<List<SectorThemeModel>> fetchSectorStock() async {
           "trans_type": "P"
         }),
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         // Parse the list of transactions
         List<dynamic> jsonData = jsonDecode(response.body)['data'][0]['DATA'];
@@ -1453,6 +1459,50 @@ Future<List<SectorThemeModel>> fetchSectorStock() async {
       }
     } catch (e) {
       throw Exception('Failed to load ledger report details: $e');
+    }
+  }
+
+  Future<List<VoucherBillModel>> fetchVoucherBillDetails(
+    String trade_date,
+  ) async {
+    try {
+      final token1 = await getToken1();
+      String baseUrl =
+          'http://180.211.116.158:8080/mobile/api/v1/techexcel/get-scrip-summary';
+      String formatDate(String dateStr) {
+        DateTime dateTime =
+            DateFormat("MMMM, dd yyyy HH:mm:ss Z").parse(dateStr);
+        String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
+
+        return formattedDate;
+      }
+
+      final response = await http.post(
+        Uri.parse(baseUrl),
+        headers: {
+          'Authorization': '$token1',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "company_code": "NSE_FNO",
+          "client_id": "A0044",
+          "trade_date": formatDate(trade_date),
+          "mkt_type": "FO"
+        }),
+      );
+      print(formatDate(trade_date));
+      print(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(response.body)['data'];
+        List<VoucherBillModel> transactions =
+            jsonData.map((data) => VoucherBillModel.fromJson(data)).toList();
+
+        return transactions;
+      } else {
+        throw Exception('Failed to Load BIlL Voucher  report details');
+      }
+    } catch (e) {
+      throw Exception('Failed to load BIlL Voucher  report details: $e');
     }
   }
 }

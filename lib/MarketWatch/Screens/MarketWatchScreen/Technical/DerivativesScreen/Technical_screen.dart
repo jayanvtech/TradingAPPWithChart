@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+
 
 import 'dart:convert';
 import 'dart:io';
@@ -32,6 +32,7 @@ class _TrendlyneWidgetScreenState extends State<TrendlyneWidgetScreen> {
         body: Stack(
       children: [
         WebView(
+       
           onProgress: (int progress) {
             setState(() {
               _isLoading = progress < 100;
@@ -74,9 +75,11 @@ class _TrendlyneWidgetScreenState extends State<TrendlyneWidgetScreen> {
   }
 }
 
+
 class TechnicalAnalysisWidgetScreen extends StatefulWidget {
   TechnicalAnalysisWidgetScreen(this.SymbolName);
   final String SymbolName;
+
   @override
   _TechnicalAnalysisWidgetScreenState createState() =>
       _TechnicalAnalysisWidgetScreenState();
@@ -85,40 +88,63 @@ class TechnicalAnalysisWidgetScreen extends StatefulWidget {
 class _TechnicalAnalysisWidgetScreenState
     extends State<TechnicalAnalysisWidgetScreen> {
   late WebViewController _controller;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
+    WebViewController _controller;
+    String htmlContent = '''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Trendlyne Widget</title>
+    </head>
+    <body>
+      <blockquote class="trendlyne-widgets" data-get-url="https://trendlyne.com/web-widget/technical-widget/Inter/${widget.SymbolName}?posCol=00A25B&primaryCol=006AFF&negCol=EB3B00&neuCol=F7941E" data-theme="light"></blockquote>
+      <script async src="https://cdn-static.trendlyne.com/static/js/webwidgets/tl-widgets.js" charset="utf-8"></script>
+    </body>
+    </html>
+    ''';
+    // _controller.loadHtmlString(htmlContent);
+    // Initialize WebView controller
+   
   }
 
-  bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        WebView(
-          onProgress: (int progress) {
-            setState(() {
-              _isLoading = progress < 100;
-            });
-          },
-          initialUrl: '',
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller = webViewController;
-            _loadHtmlFromAssets(widget.SymbolName);
-          },
-        ),
-        if (_isLoading)
-          Center(
-            child: CircularProgressIndicator(),
+      body: Stack(
+        children: [
+
+          WebView(
+            initialUrl: '',
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller = webViewController;
+              _loadHtmlFromAssets(widget.SymbolName);
+            },
+            onPageStarted: (String url) {
+              setState(() {
+                _isLoading = true;
+              });
+            },
+            onPageFinished: (String url) {
+              setState(() {
+                _isLoading = false;
+              });
+            },
           ),
-      ],
-    ));
+        
+          if (_isLoading)
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
+    );
   }
 
   void _loadHtmlFromAssets(String SymbolName) async {
@@ -137,10 +163,10 @@ class _TechnicalAnalysisWidgetScreenState
     </html>
     ''';
 
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    // Loading the HTML content using the controller.
+   _controller.loadHtmlString(htmlContent);
   }
+  
 }
 
 class CheckBeforeBuyWidgetScreen extends StatefulWidget {

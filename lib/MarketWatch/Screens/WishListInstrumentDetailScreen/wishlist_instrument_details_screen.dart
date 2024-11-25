@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tradingapp/Charts/chart.dart';
 import 'package:tradingapp/DashBoard/Screens/option_chain_screen/option_chain_screen.dart';
 import 'package:tradingapp/GetApiService/apiservices.dart';
 import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/Technical/DerivativesScreen/Technical_screen.dart';
@@ -74,7 +77,9 @@ class _ViewMoreInstrumentDetailScreenState
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.displayName),
+                    widget.exchangeSegment == '2'
+                        ? Text(widget.displayName,style: TextStyle(fontSize: 15),)
+                        : Text(widget.displayName),
                     Text(
                       ExchangeConverter().getExchangeSegmentName(
                           int.parse(widget.exchangeSegment)),
@@ -225,7 +230,7 @@ class _OverviewTabState extends State<OverviewTab> {
               future: ApiService()
                   .GetInstrumentByID(exchangeInstrumentId, exchangeSegment),
               builder: (context, snapshot) {
-              //  print("1111${snapshot.data?.bhavcopy?.close}");
+                //  print("1111${snapshot.data?.bhavcopy?.close}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -794,7 +799,13 @@ class _OverviewTabState extends State<OverviewTab> {
                                             },
                                             child: Text("Option Chain")),
                                         VerticalDivider(),
-                                        Text("Charts"),
+                                        TextButton(
+                                            onPressed: () {
+                                              
+                                              Get.to(() => ChartingFromTV(displayName));
+
+                                            },
+                                            child: Text("Charts")),
                                         VerticalDivider(),
                                         TextButton(
                                             onPressed: () {
@@ -807,7 +818,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                                               exchangeInstrumentId,
                                                           ExchangeInstrumentName:
                                                               displayName,
-                                                              displayname: displayName,
+                                                          displayname:
+                                                              displayName,
                                                         )),
                                               );
                                             },

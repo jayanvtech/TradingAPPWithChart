@@ -15,10 +15,11 @@ class Utils {
       int? maxLines}) {
     return Text(
       text ?? "",
-      style: GoogleFonts.poppins(
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-        color: color,
+      style: TextStyle(
+        color: color ?? Colors.black,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        fontSize: fontSize ?? 16.0,
+        
       ),
       textAlign: textAlign,
       overflow: textOverFlow,
