@@ -8,7 +8,7 @@ import 'dart:math' as math; // Import dart:math for the max function
 import 'package:tradingapp/DashBoard/Screens/FII/DII/Model/fiiHistoryDataModel.dart';
 import 'package:tradingapp/DashBoard/Screens/FII/DII/Model/fiidiimonthlydetails_model.dart';
 import 'package:tradingapp/DashBoard/Screens/FII/DII/Model/stocksAndIndexDataModel.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 
 class FiiDiiScreen extends StatefulWidget {
   const FiiDiiScreen({Key? key}) : super(key: key);

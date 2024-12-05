@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tradingapp/DrawerScreens/equity_market_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
-import 'package:tradingapp/MarketWatch/Screens/WishListInstrumentDetailScreen/wishlist_instrument_details_screen.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
+import 'package:tradingapp/MarketWatch/Screens/wishlist_instrument_details_screen.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
@@ -59,7 +60,9 @@ class TopGainersTop4Screen extends StatelessWidget {
                                       : Colors.white!,
                               elevation: 0.0,
                               shadowColor: Colors.transparent),
-                          onPressed: () {
+                          onPressed: () { HapticFeedback.mediumImpact(
+            
+           );
                             stockProvider.setFilter(entry.value);
                           },
                           child: Text(entry.key),
@@ -106,7 +109,9 @@ class TopGainersTop4Screen extends StatelessWidget {
                                       mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
+                                  onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -254,7 +259,9 @@ class TopGainersTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () {
+                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -302,7 +309,7 @@ class TopGainersTop4Screen extends StatelessWidget {
                                                 EdgeInsets.fromLTRB(0, 5, 0, 5),
                                             child: CircleAvatar(
                                               child: ClipOval(
-                                                child: SvgPicture.network(                                  
+                                                child: SvgPicture.network(
                                                   "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
                                                   fit: BoxFit.fill,
                                                   height: 50,
@@ -421,7 +428,9 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                       : Colors.white!,
                               elevation: 0.0,
                               shadowColor: Colors.transparent),
-                          onPressed: () {
+                          onPressed: () { HapticFeedback.heavyImpact(
+            
+           );
                             stockProvider.setFilter(entry.value);
                           },
                           child: Text(entry.key),
@@ -468,7 +477,9 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                       mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
+                                  onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -616,7 +627,9 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () {
+                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -665,10 +678,14 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
-                                                  placeholderBuilder: (BuildContext context) => Container(
-      padding: const EdgeInsets.all(30.0),
-      child: const CircularProgressIndicator()),
-
+                                                  placeholderBuilder: (BuildContext
+                                                          context) =>
+                                                      Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(30.0),
+                                                          child:
+                                                              const CircularProgressIndicator()),
                                                   "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
                                                   fit: BoxFit.fill,
                                                   height: 50,
@@ -784,7 +801,9 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                         : Colors.white!,
                                 elevation: 0.0,
                                 shadowColor: Colors.transparent),
-                            onPressed: () {
+                            onPressed: () {HapticFeedback.heavyImpact(
+            
+           );
                               stockProvider.setFilter(entry.value);
                             },
                             child: Text(entry.key),
@@ -831,7 +850,9 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                       mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
+                                  onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -927,7 +948,7 @@ class MostBoughtTop4Screen extends StatelessWidget {
                         return FutureBuilder(
                             future: masterServices
                                 .getInstrumentsBySymbol(stock.symbol),
-                            builder: (context, snapshot) {
+                            builder: (context, snapshot) { 
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Center(
@@ -961,15 +982,7 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                             exchangeSegment)
                                         .toString(),
                                     exchangeInstrumentID);
-                                void dispose() {
-                                  ApiService().UnsubscribeMarketInstrument(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID,
-                                  );
-                                }
+                             
 
                                 // print(
                                 //     'Exchange Instrument ID: $exchangeInstrumentID');
@@ -978,11 +991,15 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () {
-                                // print('Tapped on ${stock.symbol}'
-                                //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
-                                //     ' and name: ${snapshot.data!['name']}'
-                                //     ' and exchangeSegment: ${snapshot.data!['exchangeSegment']}');
+                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
+            
+           );
+                                print("=========================================================${snapshot
+                                          .data!['exchangeInstrumentID']}");
+                                print('Tapped on ${stock.symbol}'
+                                    ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
+                                    ' and name: ${snapshot.data!['name']}'
+                                    ' and exchangeSegment: ${snapshot.data!['exchangeSegment']}');
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -1022,26 +1039,25 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-  child: CircleAvatar(
-    child: ClipOval(
-      child: SvgPicture.network(placeholderBuilder: (BuildContext context) => Container(
-      padding: const EdgeInsets.all(30.0),
-      child: const CircularProgressIndicator()),
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            child: CircleAvatar(
+                                              child: ClipOval(
+                                                child: SvgPicture.network(
+                                                  
 
-        "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
-        fit: BoxFit.fill,
-        height: 50,
-        semanticsLabel: 'Network SVG',
-      
-        
-        // errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-        //   return Icon(Icons.error, size: 50);
-        // },
-      ),
-    ),
-  ),
-),
+                                                  "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
+                                                  fit: BoxFit.fill,
+                                                  height: 50,
+                                                  semanticsLabel: 'Network SVG',
+
+                                                  // errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                                  //   return Icon(Icons.error, size: 50);
+                                                  // },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                           // SizedBox(width: 10),
                                           Text(
                                             stock.symbol.toString(),
@@ -1149,7 +1165,9 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                         : Colors.white!,
                                 elevation: 0.0,
                                 shadowColor: Colors.transparent),
-                            onPressed: () {
+                            onPressed: () {HapticFeedback.heavyImpact(
+            
+           );
                               stockProvider.setFilter(entry.value);
                             },
                             child: Text(entry.key),
@@ -1197,7 +1215,9 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                       mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
+                                  onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -1344,7 +1364,9 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () {
+                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -1393,7 +1415,6 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
-                                                  
                                                   "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
                                                   fit: BoxFit.fill,
                                                   height: 50,

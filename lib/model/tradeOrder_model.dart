@@ -386,10 +386,9 @@ class Positions {
   }
 }
 
-
 class OrderHistory {
   final String exchangeSegment;
-  
+
   final String buySell;
   final String symbol;
   final String instrumentName;
@@ -403,7 +402,7 @@ class OrderHistory {
   final String disclosedQty;
   final String validity;
   final DateTime orderEntryTime;
-  
+
   final String orderType;
   final String triggerPrice;
   final String status;
@@ -425,7 +424,7 @@ class OrderHistory {
   final DateTime buyOrderEntryTime;
   final String sellLocationID;
   final String buyLocationID;
- 
+
   final DateTime tradeDate;
   final DateTime settlementDate;
 
@@ -444,11 +443,8 @@ class OrderHistory {
   final String clientId;
   final String exchangeInstrumentID;
 
-
   OrderHistory({
-
     required this.exchangeSegment,
- 
     required this.buySell,
     required this.symbol,
     required this.instrumentName,
@@ -462,7 +458,6 @@ class OrderHistory {
     required this.disclosedQty,
     required this.validity,
     required this.orderEntryTime,
-
     required this.orderType,
     required this.triggerPrice,
     required this.status,
@@ -477,25 +472,18 @@ class OrderHistory {
     required this.clientOrdId,
     required this.originalClientOrdId,
     required this.modifiedByUser,
-
     required this.orderSource,
     required this.seriesCode,
-  
     required this.sellOrderEntryTime,
     required this.buyOrderEntryTime,
     required this.sellLocationID,
     required this.buyLocationID,
-   
     required this.tradeDate,
     required this.settlementDate,
-
     required this.issueDate,
     required this.maturityDate,
-   
     required this.sipDate,
-   
     required this.fillTime,
-   
     this.tradeModDtTime,
     required this.tradePrice,
     required this.tradeTime,
@@ -504,14 +492,11 @@ class OrderHistory {
     required this.validityString,
     required this.clientId,
     required this.exchangeInstrumentID,
- 
   });
 
   factory OrderHistory.fromJson(Map<String, dynamic> json) {
     return OrderHistory(
-      
       exchangeSegment: json['ExchangeSegment'],
-
       buySell: json['BuySell'],
       symbol: json['Symbol'],
       instrumentName: json['InstrumentName'],
@@ -525,7 +510,6 @@ class OrderHistory {
       disclosedQty: json['DisclosedQty'].toString(),
       validity: json['Validity'],
       orderEntryTime: DateTime.parse(json['OrderEntryTime']),
-
       orderType: json['OrderType'],
       triggerPrice: json['TriggerPrice'].toString(),
       status: json['Status'],
@@ -540,26 +524,21 @@ class OrderHistory {
       clientOrdId: json['ClientOrdId'].toString(),
       originalClientOrdId: json['OriginalClientOrdId'].toString(),
       modifiedByUser: json['ModifiedByUser'],
-     
       orderSource: json['OrderSource'],
       seriesCode: json['SeriesCode'].toString(),
-     
       sellOrderEntryTime: DateTime.parse(json['SellOrderEntryTime']),
       buyOrderEntryTime: DateTime.parse(json['BuyOrderEntryTime']),
       sellLocationID: json['SellLocationID'].toString(),
       buyLocationID: json['BuyLocationID'].toString(),
-     
       tradeDate: DateTime.parse(json['TradeDate']),
       settlementDate: DateTime.parse(json['SettlementDate']),
-     
       issueDate: DateTime.parse(json['IssueDate']),
       maturityDate: DateTime.parse(json['MaturityDate']),
-     
       sipDate: DateTime.parse(json['SipDate']),
-     
       fillTime: DateTime.parse(json['FillTime']),
-     
-      tradeModDtTime: json['TradeModDtTime'] != null ? DateTime.parse(json['TradeModDtTime']) : null,
+      tradeModDtTime: json['TradeModDtTime'] != null
+          ? DateTime.parse(json['TradeModDtTime'])
+          : null,
       tradePrice: json['TradePrice'].toString(),
       tradeTime: DateTime.parse(json['TradeTime']),
       transType: json['TransType'],
@@ -567,15 +546,12 @@ class OrderHistory {
       validityString: json['ValidityString'],
       clientId: json['ClientID'].toString(),
       exchangeInstrumentID: json['ExchangeInstrumentID'].toString(),
-     
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-     
       'ExchangeSegment': exchangeSegment,
-     
       'BuySell': buySell,
       'Symbol': symbol,
       'InstrumentName': instrumentName,
@@ -589,7 +565,6 @@ class OrderHistory {
       'DisclosedQty': disclosedQty,
       'Validity': validity,
       'OrderEntryTime': orderEntryTime.toIso8601String(),
-     
       'OrderType': orderType,
       'TriggerPrice': triggerPrice,
       'Status': status,
@@ -604,24 +579,18 @@ class OrderHistory {
       'ClientOrdId': clientOrdId,
       'OriginalClientOrdId': originalClientOrdId,
       'ModifiedByUser': modifiedByUser,
-    
       'OrderSource': orderSource,
       'SeriesCode': seriesCode,
-      
       'SellOrderEntryTime': sellOrderEntryTime.toIso8601String(),
       'BuyOrderEntryTime': buyOrderEntryTime.toIso8601String(),
       'SellLocationID': sellLocationID,
       'BuyLocationID': buyLocationID,
-    'TradeDate': tradeDate.toIso8601String(),
+      'TradeDate': tradeDate.toIso8601String(),
       'SettlementDate': settlementDate.toIso8601String(),
-      
       'IssueDate': issueDate.toIso8601String(),
       'MaturityDate': maturityDate.toIso8601String(),
-     
       'SipDate': sipDate.toIso8601String(),
-     
       'FillTime': fillTime.toIso8601String(),
-      
       'TradeModDtTime': tradeModDtTime?.toIso8601String(),
       'TradePrice': tradePrice,
       'TradeTime': tradeTime.toIso8601String(),
@@ -630,14 +599,13 @@ class OrderHistory {
       'ValidityString': validityString,
       'ClientID': clientId,
       'ExchangeInstrumentID': exchangeInstrumentID,
-     
     };
   }
+
   static List<OrderHistory> fromJsonList(List<dynamic> list) {
     return list.map((item) => OrderHistory.fromJson(item)).toList();
   }
 }
-
 
 class Holdings {
   final String clientID;

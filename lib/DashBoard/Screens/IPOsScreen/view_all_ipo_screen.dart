@@ -4,9 +4,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tradingapp/DashBoard/Models/ipo_model.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/ipo_details_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Utils/utils.dart';
 
 class Viewalliposcreen extends StatefulWidget {

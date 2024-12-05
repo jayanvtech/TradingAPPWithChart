@@ -8,9 +8,10 @@ import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tradingapp/DrawerScreens/equity_market_screen.dart';
-import 'package:tradingapp/MarketWatch/Screens/InstrumentDetailScreen/corporate_info_provider.dart';
-import 'package:tradingapp/Profile/Screens/ProfileScreen/Reports/ledger_report_screen.dart';
-import 'package:tradingapp/Utils/firebase_messeging.dart';
+import 'package:tradingapp/MarketWatch/Provider/corporate_info_provider.dart';
+import 'package:tradingapp/Profile/Reports/screens/ledger_report_screen.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
+
 import 'package:tradingapp/master/MasterServices.dart';
 import 'package:tradingapp/master/nscm_database.dart';
 import 'firebase_options.dart';
@@ -100,7 +101,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-       
         ChangeNotifierProvider(
           create: (context) => InteractiveSocketFeed()..initSocket(),
           child: MyApp(),
@@ -157,7 +157,6 @@ class MyApp extends StatefulWidget {
 // final PushNotificationService _notificationService = PushNotificationService();
 
 class _MyAppState extends State<MyApp> {
-  
   bool? isLoginValue = false;
 
   @override
@@ -206,8 +205,8 @@ class _MyAppState extends State<MyApp> {
     //_notificationService.initialize();
     return GetMaterialApp(
       theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        textTheme: GoogleFonts.robotoFlexTextTheme(),
+        colorSchemeSeed: AppColors.primaryColor,
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       title: 'My App',
       navigatorKey: MyApp.navigatorKey,

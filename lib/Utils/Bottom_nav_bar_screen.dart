@@ -1,19 +1,23 @@
 // ignore_for_file: duplicate_import, unused_element
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:tradingapp/DashBoard/Screens/DashBoardScreen/dashboard_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
-import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/market_watch_screen.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
+import 'package:tradingapp/MarketWatch/Screens/market_watch_screen.dart';
 import 'package:tradingapp/Portfolio/Screens/PortfolioScreen/holding_screen.dart';
 import 'package:tradingapp/Portfolio/Screens/PortfolioScreen/portfolio_screen.dart';
 import 'package:tradingapp/Position/Screens/PositionScreen/position_screen.dart';
-import 'package:tradingapp/Profile/Screens/ProfileScreen/profilepage_screen.dart';
-import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/market_watch_screen.dart';
+import 'package:tradingapp/Profile/UserProfile/screen/profilepage_screen.dart';
+import 'package:tradingapp/MarketWatch/Screens/market_watch_screen.dart';
 import 'package:tradingapp/Portfolio/Screens/PortfolioScreen/portfolio_screen.dart';
 import 'package:tradingapp/Position/Screens/PositionScreen/position_screen.dart';
-import 'package:tradingapp/Profile/Screens/ProfileScreen/profilepage_screen.dart';
+import 'package:tradingapp/Profile/UserProfile/screen/profilepage_screen.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -70,37 +74,67 @@ class _MainScreenState extends State<MainScreen> {
   List<PersistentTabConfig> _tabs() {
     return [
       PersistentTabConfig(
+        onSelectedTabPressWhenNoScreensPushed: () {
+          HapticFeedback.mediumImpact();
+        },
         screen: DashboardScreen(),
         item: ItemConfig(
-          icon: const Icon(Icons.pie_chart),
+          activeForegroundColor: AppColors.primaryColor,
+          icon: Icon(HugeIcons.strokeRoundedDashboardCircle),
+          inactiveForegroundColor: AppColors.primaryColorDark2,
           title: "Dashboard",
+          textStyle: TextStyle(fontSize: 11),
         ),
       ),
       PersistentTabConfig(
+        onSelectedTabPressWhenNoScreensPushed: () {
+          HapticFeedback.mediumImpact();
+        },
         screen: HoldingScreen(), // Assuming MarketScreen for "Market" tab
         item: ItemConfig(
-          icon: const Icon(Icons.attach_money), // Consider a more suitable icon
-          title: "Portfolio",
+          activeForegroundColor: AppColors.primaryColor,
+          icon: Icon(HugeIcons
+              .strokeRoundedShoppingBag01), // Consider a more suitable icon
+          title: "Portfolio", textStyle: TextStyle(fontSize: 11),
+          inactiveForegroundColor: AppColors.primaryColorDark2,
         ),
       ),
       PersistentTabConfig(
+        onSelectedTabPressWhenNoScreensPushed: () {
+          HapticFeedback.mediumImpact();
+        },
         screen: MarketWatchScreen(),
         item: ItemConfig(
-          icon: const Icon(Icons.watch),
+          activeForegroundColor: AppColors.primaryColor,
+          icon: const Icon(HugeIcons.strokeRoundedBookmark02),
           title: "Watchlist",
+          textStyle: TextStyle(fontSize: 11),
+          inactiveForegroundColor: AppColors.primaryColorDark2,
         ),
       ),
       PersistentTabConfig(
+        onSelectedTabPressWhenNoScreensPushed: () {
+          HapticFeedback.mediumImpact();
+        },
         screen: PositionScreen(),
         item: ItemConfig(
-          icon: const Icon(Icons.podcasts),
+          activeForegroundColor: AppColors.primaryColor,
+          icon: const Icon(HugeIcons.strokeRoundedPresentationBarChart01),
           title: "Position",
+          textStyle: TextStyle(fontSize: 11),
+          inactiveForegroundColor: AppColors.primaryColorDark2,
         ),
       ),
       PersistentTabConfig(
+        onSelectedTabPressWhenNoScreensPushed: () {
+          HapticFeedback.mediumImpact();
+        },
         screen: ProfileScreen(),
         item: ItemConfig(
-          icon: const Icon(Icons.person),
+          activeForegroundColor: AppColors.primaryColor,
+          textStyle: TextStyle(fontSize: 11),
+          icon: const Icon(HugeIcons.strokeRoundedUser),
+          inactiveForegroundColor: AppColors.primaryColorDark2,
           title: "Profile",
         ),
       ),
@@ -108,7 +142,27 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget build(BuildContext context) => PersistentTabView(
+        selectedTabContext: (p0) {
+          // HapticFeedback.heavyImpact();
+        },
+        animatedTabBuilder:
+            (context, index, animationValue, newIndex, oldIndex, child) {
+          final double yOffset = newIndex > index
+              ? -animationValue
+              : (newIndex < index
+                  ? animationValue
+                  : (index < oldIndex
+                      ? animationValue - 1
+                      : 1 - animationValue));
+          return FractionalTranslation(
+            translation: Offset(yOffset, 0),
+            child: child,
+          );
+        },
         tabs: _tabs(),
+        onTabChanged: (index) {
+          HapticFeedback.mediumImpact();
+        },
         navBarBuilder: (navBarConfig) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           child: Container(
@@ -119,7 +173,13 @@ class _MainScreenState extends State<MainScreen> {
                     width: 0.5), // Top divider line
               ),
             ),
-            child: Style6BottomNavBar(
+            child: Style1BottomNavBar(
+              navBarDecoration: NavBarDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
               navBarConfig: navBarConfig,
             ),
           ),

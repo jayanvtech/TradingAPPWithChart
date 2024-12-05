@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:tradingapp/DashBoard/Models/bid_request_model.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/bid_request_model.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
 
 // Make sure this import is correct

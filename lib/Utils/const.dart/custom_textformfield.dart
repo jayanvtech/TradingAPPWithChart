@@ -1,9 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+
 import 'package:flutter_svg/svg.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 
 class CustomTextFormField extends StatelessWidget {
   TextEditingController? controller;
@@ -27,41 +31,95 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: const TextStyle(color: Colors.black),
-      strutStyle: const StrutStyle(height: 1.0),
-      controller: controller,
-      focusNode: FocusNode(),
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        hintText: hintText,
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
+    return Container(height: 47,
+      child: TextFormField(textAlignVertical: TextAlignVertical.center,
+
+        style:  TextStyle(color:  AppColors.primaryColorDark2,fontSize: 15,),
+        strutStyle:  StrutStyle(),
+        controller: controller,
+        focusNode: FocusNode(),
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          hintText: hintText,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5.0),
+            ),
+            borderSide: BorderSide(color: AppColors.primaryColorDark2),
           ),
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
+          border:  OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(5.0),
+            ),
+            borderSide: BorderSide(color:  AppColors.primaryColorDark2),
           ),
-          borderSide: BorderSide(color: Colors.black),
+          labelText: labelText,
+          suffixIcon: IconButton(onPressed: onClick, icon: Icon(icon, color: AppColors.primaryColorDark2)),
         ),
-        labelText: labelText,
-        suffixIcon: IconButton(onPressed: onClick, icon: Icon(icon)),
+        obscureText: obscureText,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your $errorMessage';
+          }
+          return null;
+        },
       ),
-      obscureText: obscureText,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your $errorMessage';
-        }
-        return null;
-      },
     );
   }
 }
 
 
+class CustomButton extends StatelessWidget {
+  final bool isLoading;
+  final String text;
+  final VoidCallback onPressed;
+
+  const CustomButton({
+    Key? key,
+    required this.isLoading,
+    required this.text,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: isLoading ? null : onPressed,
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          gradient: LinearGradient(
+            stops: [0.002, 0.7, 0.9],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.primaryGrediantColor1,
+              AppColors.primaryGrediantColor2,
+              AppColors.primaryGrediantColor2,
+            ],
+          ),
+        ),
+        child: Center(
+          child: isLoading
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primaryColor),
+                )
+              : Text(
+                  text,
+                  style: TextStyle(
+                    color: AppColors.primaryColorLight3,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
 
 class SvgPictureClass extends StatelessWidget {
   final String stockSymbol;
@@ -105,4 +163,88 @@ class SvgPictureClass extends StatelessWidget {
       return false;
     }
   }
+}
+
+
+
+class AnimatedDoughnutChart extends StatefulWidget {
+  const AnimatedDoughnutChart({Key? key}) : super(key: key);
+
+  @override
+  State<AnimatedDoughnutChart> createState() => _AnimatedDoughnutChartState();
+}
+
+class _AnimatedDoughnutChartState extends State<AnimatedDoughnutChart> {
+  late List<_ChartData> data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = [
+      _ChartData('Equity', 23, const Color(0xFF7086FD)),
+      _ChartData('MF', 25, const Color(0xFF6FD195)),
+      _ChartData('Bond', 35, const Color(0xFF07DBFA)),
+      _ChartData('Liquid', 10, const Color(0xFFFFAE4C)),
+      _ChartData('SGB', 10, const Color(0xFF1F94FF)),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: SfCircularChart(
+          backgroundColor: Colors.transparent,
+          legend: Legend(
+            textStyle: const TextStyle(color: Colors.black),
+            iconHeight: 7,
+            iconWidth: 7,
+            isVisible: true,
+            overflowMode: LegendItemOverflowMode.wrap,
+            position: LegendPosition.right,
+          ),
+          series: <CircularSeries>[
+            // Doughnut Chart Series
+            DoughnutSeries<_ChartData, String>(
+              legendIconType: LegendIconType.circle,
+              dataSource: data,
+              dataLabelMapper: (_ChartData data, _) => data.category,
+              xValueMapper: (_ChartData data, _) => data.category,
+              yValueMapper: (_ChartData data, _) => data.value,
+              pointColorMapper: (_ChartData data, _) => data.color,
+              dataLabelSettings: const DataLabelSettings(
+                alignment: ChartAlignment.far,
+                labelIntersectAction: LabelIntersectAction.shift,
+            //  /   connectorLineSettings: ConnectorLineSettings(length: '0%'),
+                isVisible: true,labelPosition: ChartDataLabelPosition.outside,
+                labelAlignment: ChartDataLabelAlignment.outer,
+                textStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+              ),
+              enableTooltip: true,
+              animationDuration: 1500, // Animation for doughnut
+              explode: true, // Explodes the first segment
+              explodeIndex: 0, // Default exploded section
+              innerRadius: '45%', // This makes it a doughnut chart
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ChartData {
+  final String category;
+  final double value;
+  final Color color;
+
+  _ChartData(this.category, this.value, this.color);
+}
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: AnimatedDoughnutChart(),
+  ));
 }

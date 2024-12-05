@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/Technical/DerivativesScreen/Technical_screen.dart';
+import 'package:tradingapp/MarketWatch/Screens/Technical_screen.dart';
 
 class Globalscreen extends StatefulWidget {
   const Globalscreen({super.key});
@@ -15,12 +15,15 @@ class _GlobalscreenState extends State<Globalscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(backgroundColor: Colors.white,
-      actions: [
-        IconButton(onPressed: (){
-          // Get.to(()=> GlobalTopNewsAllScreen());
-        }, icon: Icon(Icons.newspaper_outlined))
-      ],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+              onPressed: () {
+                // Get.to(()=> GlobalTopNewsAllScreen());
+              },
+              icon: Icon(Icons.newspaper_outlined))
+        ],
         leadingWidth: 35,
         scrolledUnderElevation: 0.0,
         leading: IconButton(
@@ -41,13 +44,13 @@ class _GlobalscreenState extends State<Globalscreen> {
       body: Column(
         children: [
           Expanded(child: GLobleIndicesWidgetScreen()),
-         // sectorIndices(),
+          // sectorIndices(),
         ],
       ),
     );
   }
 
-  Widget sectorIndices(){
+  Widget sectorIndices() {
     return Expanded(
       child: Container(
         child: ListView.builder(
@@ -62,9 +65,8 @@ class _GlobalscreenState extends State<Globalscreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
                       height: 60,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -94,7 +96,8 @@ class _GlobalscreenState extends State<Globalscreen> {
                                 Text(
                                   "49999.00",
                                   style: GoogleFonts.inter(
-                                      color: Colors.green.shade800, fontSize: 13),
+                                      color: Colors.green.shade800,
+                                      fontSize: 13),
                                 ),
                                 Text(
                                   "+1557.14 (+4.79%)",

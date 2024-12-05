@@ -356,7 +356,6 @@ class InteractiveSocketFeed extends ChangeNotifier {
   List<OrderSocketValues> _dataList = [];
 
   InteractiveSocketFeed() {
-    
     _controller = StreamController<List<OrderSocketValues>>.broadcast();
     initSocket();
   }
@@ -389,45 +388,45 @@ class InteractiveSocketFeed extends ChangeNotifier {
         final jsonData = jsonDecode(rawData);
         final orderSocketValues = OrderSocketValues.fromJson(jsonData);
         updateOrderList(orderSocketValues);
-        await OrderProvider().refreshOrder(); // Trigger API call to refresh data
+        await OrderProvider()
+            .refreshOrder(); // Trigger API call to refresh data
       } catch (e) {
         print('Error parsing JSON: $e');
       }
     });
-  
 
     _socket.on("event", (data) => print(data));
     _socket.on('success INTERACTIVE', (data) => print('success $data'));
   }
 
   void updateOrderList(OrderSocketValues order) {
-  // Replace 'PendingNew' with 'Pending'
-  // if (order.orderStatus == 'PendingNew') {
-  //   order.orderStatus = 'Pending';
-  // }
+    // Replace 'PendingNew' with 'Pending'
+    // if (order.orderStatus == 'PendingNew') {
+    //   order.orderStatus = 'Pending';
+    // }
 
-  // Ignore 'New' status if 'Pending' is already present for the same order
-  if (order.orderStatus == 'New') {
-    final pendingIndex = _dataList.indexWhere((o) =>
-        o.appOrderID == order.appOrderID && o.orderStatus == 'PendingNew');
-    if (pendingIndex != -1) {
-      return; // Skip adding the 'New' order
+    // Ignore 'New' status if 'Pending' is already present for the same order
+    if (order.orderStatus == 'New') {
+      final pendingIndex = _dataList.indexWhere((o) =>
+          o.appOrderID == order.appOrderID && o.orderStatus == 'PendingNew');
+      if (pendingIndex != -1) {
+        return; // Skip adding the 'New' order
+      }
     }
-  }
 
-  // Check for existing order with the same AppOrderID
-  final index = _dataList.indexWhere((o) => o.appOrderID == order.appOrderID);
-  if (index != -1) {
-    // Update the existing order
-    _dataList[index] = order;
-  } else {
-    // Add new order to the list
-    _dataList.add(order);
-  }
+    // Check for existing order with the same AppOrderID
+    final index = _dataList.indexWhere((o) => o.appOrderID == order.appOrderID);
+    if (index != -1) {
+      // Update the existing order
+      _dataList[index] = order;
+    } else {
+      // Add new order to the list
+      _dataList.add(order);
+    }
 
-  _controller.add(_dataList);
-  notifyListeners();
-}
+    _controller.add(_dataList);
+    notifyListeners();
+  }
 
   List<OrderSocketValues> get dataList => _dataList;
 
@@ -440,4 +439,3 @@ class InteractiveSocketFeed extends ChangeNotifier {
 
   Stream<List<OrderSocketValues>> get dataListStream => _controller.stream;
 }
-

@@ -9,8 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tradingapp/DashBoard/Models/account_profile.dart';
-import 'package:tradingapp/DashBoard/Models/bid_request_model.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/bid_request_model.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Utils/utils.dart';
 
 class Applyiposcreen extends StatefulWidget {

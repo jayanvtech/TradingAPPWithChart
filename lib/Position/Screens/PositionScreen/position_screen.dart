@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradingapp/DashBoard/Screens/BuyOrSellScreen/modify_order.dart';
 import 'package:tradingapp/DashBoard/Screens/DashBoardScreen/dashboard_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Portfolio/Model/holding_model.dart';
 import 'package:tradingapp/Position/Screens/PositionScreen/order_status.dart';
 import 'package:tradingapp/Position/Screens/PositionScreen/viewmore_order_history.dart';

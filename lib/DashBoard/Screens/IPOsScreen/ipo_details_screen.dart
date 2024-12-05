@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tradingapp/DashBoard/Models/ipo_model.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/apply_ipo_screen.dart';
 import 'package:tradingapp/Utils/utils.dart';
 

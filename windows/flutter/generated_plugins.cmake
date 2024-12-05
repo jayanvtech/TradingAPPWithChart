@@ -10,6 +10,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   local_auth_windows
   permission_handler_windows
   rive_common
+  smart_auth
   url_launcher_windows
 )
 

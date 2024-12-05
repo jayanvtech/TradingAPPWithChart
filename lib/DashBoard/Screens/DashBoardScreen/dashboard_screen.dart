@@ -4,13 +4,17 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tradingapp/DashBoard/Models/ipo_model.dart';
+import 'package:tradingapp/Authentication/Screens/login_screen.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
 import 'package:tradingapp/DashBoard/Screens/Screeners/topgainers_screen.dart';
 import 'package:tradingapp/DrawerScreens/stock_avg_calculator.dart';
 import 'package:tradingapp/DrawerScreens/topgainers_model.dart';
@@ -23,13 +27,14 @@ import 'package:tradingapp/DashBoard/Screens/IPOsScreen/ipo_details_screen.dart'
 import 'package:tradingapp/DashBoard/Screens/NotificationScreen/NotificationScreen.dart';
 import 'package:tradingapp/DashBoard/Screens/SectorScreen/SectorScreen.dart';
 import 'package:tradingapp/DrawerScreens/equity_market_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
-import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/Technical/DerivativesScreen/Technical_screen.dart';
-import 'package:tradingapp/MarketWatch/Screens/MarketWatchScreen/market_watch_screen.dart';
-import 'package:tradingapp/MarketWatch/Screens/SearchScreen/search_screen.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
+import 'package:tradingapp/MarketWatch/Screens/Technical_screen.dart';
+import 'package:tradingapp/MarketWatch/Screens/market_watch_screen.dart';
+import 'package:tradingapp/MarketWatch/SearchOperations/screen/search_screen.dart';
 import 'package:tradingapp/Portfolio/Screens/PortfolioScreen/holding_screen.dart';
-import 'package:tradingapp/Profile/Screens/ProfileScreen/profilepage_screen.dart';
+import 'package:tradingapp/Profile/UserProfile/screen/profilepage_screen.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({
@@ -137,7 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     bottomRight: Radius.circular(20)),
               ),
               child: TabBar(
-                indicatorColor: Colors.blue,
+                indicatorColor: AppColors.primaryColor,
                 controller: _tabController,
                 isScrollable: true,
                 splashFactory: InkRipple.splashFactory,
@@ -209,8 +214,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                             CrossAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            CupertinoIcons.person_fill,
-                                            color: Colors.blue,
+                                            HugeIcons.strokeRoundedLockSync02,
+                                            color: AppColors.primaryColor
                                           ),
                                           TextButton(
                                               onPressed: () {
@@ -222,7 +227,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                     fontFamily:
                                                         GoogleFonts.poppins()
                                                             .toString(),
-                                                    color: Colors.blue),
+                                                    color: AppColors.primaryColor),
                                               ))
                                         ],
                                       ),
@@ -238,8 +243,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                             CrossAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            CupertinoIcons.globe,
-                                            color: Colors.blue,
+                                          HugeIcons.strokeRoundedGlobalEditing,
+                                            color: AppColors.primaryColor,
                                           ),
                                           TextButton(
                                               onPressed: () {
@@ -247,7 +252,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                               },
                                               child: Text("Global",
                                                   style: TextStyle(
-                                                      color: Colors.blue)))
+                                                      color: AppColors.primaryColor)))
                                         ],
                                       ),
                                       VerticalDivider(
@@ -263,8 +268,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                             CrossAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            CupertinoIcons.chart_pie_fill,
-                                            color: Colors.blue,
+                                            HugeIcons.strokeRoundedProjector,
+                                            color: AppColors.primaryColor,
                                           ),
                                           TextButton(
                                               onPressed: () {
@@ -272,7 +277,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                               },
                                               child: Text("Sectors",
                                                   style: TextStyle(
-                                                      color: Colors.blue)))
+                                                      color: AppColors.primaryColor)))
                                         ],
                                       )
                                     ],
@@ -303,7 +308,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                 Container(
                                   height: 380,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color:AppColors.primaryBackgroundColor,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: DefaultTabController(
@@ -338,7 +343,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                 Container(
                                   height: 380,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color:AppColors.primaryBackgroundColor,
+
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: DefaultTabController(
@@ -391,7 +397,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                             Get.to(() => IpoDashboardScreen());
                                           },
                                           child: Card(
-                                              color: Colors.white,
+                                              color: AppColors.primaryBackgroundColor,
                                               child: Container(
                                                 width: 80,
                                                 height: 80,
@@ -422,19 +428,17 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                     BoxDecoration(
                                                                   shape: BoxShape
                                                                       .circle,
-                                                                  color: Colors
-                                                                      .blue
+                                                                  color: AppColors.primaryColor
                                                                       .withOpacity(
                                                                           0.1),
                                                                 ),
                                                               ),
                                                               Icon(
-                                                                Icons
-                                                                    .speaker_notes_outlined,
+                                                               HugeIcons.strokeRoundedThreadsRectangle,
                                                                 semanticLabel:
                                                                     'Trxt',
                                                                 color:
-                                                                    Colors.blue,
+                                                                   AppColors.primaryColor,
                                                               )
                                                             ],
                                                           ),
@@ -476,8 +480,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                   BoxDecoration(
                                                                 shape: BoxShape
                                                                     .circle,
-                                                                color: Colors
-                                                                    .blue
+                                                                color: AppColors.primaryColor
                                                                     .withOpacity(
                                                                         0.1),
                                                               ),
@@ -486,12 +489,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 onPressed:
                                                                     () {},
                                                                 icon: Icon(
-                                                                  Icons
-                                                                      .push_pin_rounded,
+                                                              HugeIcons.strokeRoundedLaurelWreathFirst02,
                                                                   semanticLabel:
                                                                       'Trxt',
-                                                                  color: Colors
-                                                                      .blue,
+                                                                  color: AppColors.primaryColor,
                                                                 )),
                                                           ],
                                                         ),
@@ -532,8 +533,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                   BoxDecoration(
                                                                 shape: BoxShape
                                                                     .circle,
-                                                                color: Colors
-                                                                    .blue
+                                                                color: AppColors.primaryColor
                                                                     .withOpacity(
                                                                         0.1),
                                                               ),
@@ -542,12 +542,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 onPressed:
                                                                     () {},
                                                                 icon: Icon(
-                                                                  Icons
-                                                                      .trending_up_outlined,
+                                                                 HugeIcons.strokeRoundedTradeUp,
                                                                   semanticLabel:
                                                                       'Trxt',
-                                                                  color: Colors
-                                                                      .blue,
+                                                                  color: AppColors.primaryColor,
                                                                 )),
                                                           ],
                                                         ),
@@ -607,13 +605,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                               0.4,
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
-                                                        color: Colors.blue
+                                                        color: AppColors.primaryColor
                                                             .withOpacity(0.1),
                                                       ),
                                                     ),
                                                     Icon(
                                                       Icons.wallet_giftcard,
-                                                      color: Colors.blue,
+                                                      color: AppColors.primaryColor,
                                                     ),
                                                   ],
                                                 ),
@@ -654,14 +652,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                               0.4,
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
-                                                        color: Colors.blue
+                                                        color: AppColors.primaryColor
                                                             .withOpacity(0.1),
                                                       ),
                                                     ),
                                                     Icon(
                                                       Icons
                                                           .health_and_safety_rounded,
-                                                      color: Colors.blue,
+                                                      color: AppColors.primaryColor,
                                                     ),
                                                   ],
                                                 ),
@@ -716,13 +714,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                             0.4,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      color: Colors.blue
+                                                      color: AppColors.primaryColor
                                                           .withOpacity(0.1),
                                                     ),
                                                   ),
                                                   Icon(
                                                     Icons.wallet_giftcard,
-                                                    color: Colors.blue,
+                                                    color: AppColors.primaryColor,
                                                   ),
                                                 ],
                                               ),
@@ -757,14 +755,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                             0.4,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      color: Colors.blue
+                                                      color: AppColors.primaryColor
                                                           .withOpacity(0.1),
                                                     ),
                                                   ),
                                                   Icon(
                                                     Icons
                                                         .health_and_safety_rounded,
-                                                    color: Colors.blue,
+                                                    color: AppColors.primaryColor,
                                                   ),
                                                 ],
                                               ),
@@ -1550,6 +1548,10 @@ class DrawerDashboard1 extends StatelessWidget {
 }
 
 class DrawerDashboard2 extends StatelessWidget {
+    Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -1845,6 +1847,19 @@ class DrawerDashboard2 extends StatelessWidget {
                   Divider(
                     color: Colors.grey[200],
                     height: 1,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text('Logout'),
+                    onTap: ()async {
+                      HapticFeedback.mediumImpact(
+            
+           );
+              await logout();
+              Get.offAll(() => LoginScreen());
+                      Navigator.of(context).pop();
+                      // Implement logout logic here
+                    },
                   ),
                   SizedBox(
                     height: 150,

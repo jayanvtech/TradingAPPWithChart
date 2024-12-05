@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tradingapp/DashBoard/Screens/DashBoardScreen/dashboard_screen.dart';
 import 'package:tradingapp/DashBoard/Screens/HighestReturnScreens/Model/sector_theme_model.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
 import 'package:tradingapp/Utils/const.dart/app_config.dart';
 import 'package:tradingapp/Utils/const.dart/app_variables.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
 import 'package:tradingapp/master/MasterServices.dart';
 
-import '../../../MarketWatch/Screens/WishListInstrumentDetailScreen/wishlist_instrument_details_screen.dart';
+import '../../../MarketWatch/Screens/wishlist_instrument_details_screen.dart';
 
 class SectoralThemesScreen extends StatefulWidget {
   @override

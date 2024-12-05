@@ -4,12 +4,13 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tradingapp/DashBoard/Models/ipo_model.dart';
+import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/ipo_details_screen.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/view_all_ipo_screen.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Utils/utils.dart';
 
 class IpoDashboardScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this,);
     loadData();
   }
 
@@ -59,6 +60,9 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
           "IPOs",
         ),
         bottom: TabBar(
+          onTap: (index) {
+            HapticFeedback.mediumImpact();
+          },
           isScrollable: true,
           tabAlignment: TabAlignment.center,
           automaticIndicatorColorAdjustment: true,
@@ -72,6 +76,7 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: TabBarView(
+        clipBehavior: Clip.hardEdge,
         controller: _tabController,
         children: [
           SingleChildScrollView(
@@ -90,6 +95,9 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
                       ),
                       GestureDetector(
                         onTap: () {
+                           HapticFeedback.mediumImpact(
+            
+           );
                           Get.to(const Viewalliposcreen(),
                               arguments: ({
                                 "name": "Open IPO",
@@ -127,7 +135,9 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
                         "Upcoming IPO",
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                           Get.to(const Viewalliposcreen(),
                               arguments: ({
                                 "name": "Upcoming IPO",
@@ -183,10 +193,7 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
       future: openIPO,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator(
-           
-          ));
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(
               child: Utils.text(
@@ -204,7 +211,10 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
               final ipo = data[index];
 
               return InkWell(
-                onTap: () {
+                onTap: () { HapticFeedback.mediumImpact(
+            
+           );
+                  HapticFeedback.mediumImpact();
                   Get.to(const IPODetailsScreen(),
                       arguments: ({
                         'name': "open IPO",
@@ -409,7 +419,9 @@ class _IpoDashboardScreenState extends State<IpoDashboardScreen>
                   itemBuilder: (context, index) {
                     final ipo = data[index];
                     return InkWell(
-                      onTap: () {
+                      onTap: () { HapticFeedback.mediumImpact(
+            
+           );
                         Get.to(const IPODetailsScreen(),
                             arguments: ({'name': "upcoming IPO", 'data': ipo}));
                       },

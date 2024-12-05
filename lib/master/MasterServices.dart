@@ -67,16 +67,17 @@ class DatabaseHelperMaster {
     final db = await database;
     return await db.query('instruments');
   }
-  Future<List<Map<String, dynamic>>> getInstrumentsByISIN(String isin) async {
-  final db = await database;
-  return await db.rawQuery(
-    'SELECT * FROM instruments WHERE TRIM(LOWER(isin)) = ?',
-    [isin.toLowerCase().trim()],
-  );
-  
-}
 
-Future<List<Map<String, dynamic>>> getInstrumentsByInstrumentID(String ExchangeNSEInstrumentId) async {
+  Future<List<Map<String, dynamic>>> getInstrumentsByISIN(String isin) async {
+    final db = await database;
+    return await db.rawQuery(
+      'SELECT * FROM instruments WHERE TRIM(LOWER(isin)) = ?',
+      [isin.toLowerCase().trim()],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getInstrumentsByInstrumentID(
+      String ExchangeNSEInstrumentId) async {
     final db = await database;
     return await db.query(
       'instruments',
@@ -84,30 +85,198 @@ Future<List<Map<String, dynamic>>> getInstrumentsByInstrumentID(String ExchangeN
       whereArgs: [ExchangeNSEInstrumentId],
     );
   }
+
   Future<Map<String, dynamic>?> getInstrumentsBySymbol(String symbol) async {
-  final db = await database;
-  final seriesList = [
-   "EQ", "N5", "SG","BE", "N1", "SM", "GS", "N0", "NL", "NV", "MF", "NA", "NP", "NT", "AR", "SPOT", "N2", "TB", "N6", "N9", "NQ", "ZJ", "ST", "IV", "NR", "ZI", "BZ", "NO", "NC", "RR", "ZT", "NH", "ZM", "NE", "NK", "N3", "NF", "NS", "NU", "NZ", "AU", "ND", "ZF", "T0", "NN", "N7", "Z6", "GB", "N4", "ZR", "X1", "BA", "YT", "NG", "NW", "YW", "E1", "AZ", "N8", "BC", "AB", "NI", "ZV", "NB", "Z1", "IT", "Y8", "Y2", "AD", "ZX", "ZY", "W1", "ZW", "YK", "Y4", "NM", "D1", "ZD", "Z9", "YO", "ZN", "AX", "BV", "YX", "NY", "YS", "ZG", "YR", "ZE", "YJ", "AA", "NX", "Z5", "AV", "Y6", "Z3", "YQ", "ZK", "NJ", "Z8", "YN", "ZH", "BS", "ZZ", "Y7", "AS", "AW", "Z7", "YH", "Z0", "AT", "ZS", "ZO", "YL", "BX", "BF", "BI", "BR", "YD", "YI", "Y9", "ZC", "AN", "Y3", "BW", "YC", "YA", "YB", "Y1", "ZP", "BU", "ZL", "YZ", "P1", "M1", "AM", "AG", "ZA", "AC", "AK", "ZQ", "YV", "AJ", "YU", "AP", "ZB", "AI", "AL", "YM", "Z2", "YP", "AO", "Z4", "AH", "AY", "Y5", "Y0", "BH", "AQ", "YY", "BD", "ZU", "YG"
-  ];
+    final db = await database;
+    final seriesList = [
+      "EQ",
+      "N5",
+      "SG",
+      "BE",
+      "N1",
+      "SM",
+      "GS",
+      "N0",
+      "NL",
+      "NV",
+      "MF",
+      "NA",
+      "NP",
+      "NT",
+      "AR",
+      "SPOT",
+      "N2",
+      "TB",
+      "N6",
+      "N9",
+      "NQ",
+      "ZJ",
+      "ST",
+      "IV",
+      "NR",
+      "ZI",
+      "BZ",
+      "NO",
+      "NC",
+      "RR",
+      "ZT",
+      "NH",
+      "ZM",
+      "NE",
+      "NK",
+      "N3",
+      "NF",
+      "NS",
+      "NU",
+      "NZ",
+      "AU",
+      "ND",
+      "ZF",
+      "T0",
+      "NN",
+      "N7",
+      "Z6",
+      "GB",
+      "N4",
+      "ZR",
+      "X1",
+      "BA",
+      "YT",
+      "NG",
+      "NW",
+      "YW",
+      "E1",
+      "AZ",
+      "N8",
+      "BC",
+      "AB",
+      "NI",
+      "ZV",
+      "NB",
+      "Z1",
+      "IT",
+      "Y8",
+      "Y2",
+      "AD",
+      "ZX",
+      "ZY",
+      "W1",
+      "ZW",
+      "YK",
+      "Y4",
+      "NM",
+      "D1",
+      "ZD",
+      "Z9",
+      "YO",
+      "ZN",
+      "AX",
+      "BV",
+      "YX",
+      "NY",
+      "YS",
+      "ZG",
+      "YR",
+      "ZE",
+      "YJ",
+      "AA",
+      "NX",
+      "Z5",
+      "AV",
+      "Y6",
+      "Z3",
+      "YQ",
+      "ZK",
+      "NJ",
+      "Z8",
+      "YN",
+      "ZH",
+      "BS",
+      "ZZ",
+      "Y7",
+      "AS",
+      "AW",
+      "Z7",
+      "YH",
+      "Z0",
+      "AT",
+      "ZS",
+      "ZO",
+      "YL",
+      "BX",
+      "BF",
+      "BI",
+      "BR",
+      "YD",
+      "YI",
+      "Y9",
+      "ZC",
+      "AN",
+      "Y3",
+      "BW",
+      "YC",
+      "YA",
+      "YB",
+      "Y1",
+      "ZP",
+      "BU",
+      "ZL",
+      "YZ",
+      "P1",
+      "M1",
+      "AM",
+      "AG",
+      "ZA",
+      "AC",
+      "AK",
+      "ZQ",
+      "YV",
+      "AJ",
+      "YU",
+      "AP",
+      "ZB",
+      "AI",
+      "AL",
+      "YM",
+      "Z2",
+      "YP",
+      "AO",
+      "Z4",
+      "AH",
+      "AY",
+      "Y5",
+      "Y0",
+      "BH",
+      "AQ",
+      "YY",
+      "BD",
+      "ZU",
+      "YG"
+    ];
 
-  final result = await db.query(
-    'instruments',
-    columns: ['exchangeInstrumentID', 'exchangeSegment', 'name'],
-    where: 'name = ? AND exchangeSegment = ? AND series IN (${List.filled(seriesList.length, '?').join(', ')})',
-    whereArgs: [symbol, 'NSECM', ...seriesList],
-    orderBy: "CASE series " +
-             seriesList.asMap().entries.map((entry) => "WHEN '${entry.value}' THEN ${entry.key + 1}").join(' ') +
-             " ELSE ${seriesList.length + 1} END",
-    limit: 1,
-  );
+    final result = await db.query(
+      'instruments',
+      columns: ['exchangeInstrumentID', 'exchangeSegment', 'name'],
+      where:
+          'name = ? AND exchangeSegment = ? AND series IN (${List.filled(seriesList.length, '?').join(', ')})',
+      whereArgs: [symbol, 'NSECM', ...seriesList],
+      orderBy: "CASE series " +
+          seriesList
+              .asMap()
+              .entries
+              .map((entry) => "WHEN '${entry.value}' THEN ${entry.key + 1}")
+              .join(' ') +
+          " ELSE ${seriesList.length + 1} END",
+      limit: 1,
+    );
 
-  if (result.isNotEmpty) {
-    print(result.first);
-    return result.first;
-  } else {
-    return null;
+    if (result.isNotEmpty) {
+      print(result.first);
+      return result.first;
+    } else {
+      return null;
+    }
   }
-}
 }
 
 class ApiServiceMaster {

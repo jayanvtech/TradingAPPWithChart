@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:tradingapp/GetApiService/apiservices.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Position/Models/TradeOrderModel/tradeOrder_model.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';

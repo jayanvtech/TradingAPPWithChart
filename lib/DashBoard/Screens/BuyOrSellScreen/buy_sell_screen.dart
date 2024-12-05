@@ -7,8 +7,8 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:provider/provider.dart';
 import 'package:tradingapp/DashBoard/Screens/DashBoardScreen/dashboard_screen.dart';
 
-import 'package:tradingapp/GetApiService/apiservices.dart';
-import 'package:tradingapp/Profile/Screens/ProfileScreen/profilepage_screen.dart';
+import 'package:tradingapp/ApiServices/apiservices.dart';
+import 'package:tradingapp/Profile/UserProfile/screen/profilepage_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
@@ -235,6 +235,9 @@ class _BuySellScreenState extends State<BuySellScreen> {
           ),
         ),
         backgroundColor: Colors.white,
+        persistentFooterButtons: [
+          
+        ],
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -349,6 +352,7 @@ class _BuySellScreenState extends State<BuySellScreen> {
                                         children: [
                                           Text(
                                             "BSE",
+
                                             style: TextStyle(
                                                 color: selectedMarket == 'BSE'
                                                     ? Colors.white
@@ -761,7 +765,6 @@ class _BuySellScreenState extends State<BuySellScreen> {
                                                                   .width *
                                                               0.25,
                                                       child: TextFormField(
-                                            
                                                         onChanged: (value) {
                                                           setState(() {});
                                                         },

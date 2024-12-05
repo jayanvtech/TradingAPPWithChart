@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tradingapp/Bottom_nav_bar_screen.dart';
+
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import '../../main.dart';
 
