@@ -64,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               radius: 5.0,
               tileMode: TileMode.clamp,
             )),
-            child:
-                BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+            child: BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
               print(state);
               if (state is LoginSuccess) {
                 // Get.snackbar('Success', state.message.toString());
@@ -89,10 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Text(
                           "Login",
-                          style: GoogleFonts.inter(
-                              color: AppColors.primaryColorDark,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
+                          style: GoogleFonts.inter(color: AppColors.primaryColorDark, fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "Welcome back to the app",
@@ -132,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           errorMessage: 'username',
                           obscureText: false,
                         ),
-                         SizedBox(
+                        SizedBox(
                           height: 20.h,
                         ),
                         Row(
@@ -161,9 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           labelText: '',
                           errorMessage: 'Password',
-                          icon: isPasswordShow
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                          icon: isPasswordShow ? Icons.visibility_off : Icons.visibility,
                           onClick: () {
                             setState(() {
                               isPasswordShow = !isPasswordShow;
@@ -180,8 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 20,
                               width: 23,
                               child: Checkbox(
-                                side: BorderSide(
-                                    color: AppColors.primaryColorDark2),
+                                side: BorderSide(color: AppColors.primaryColorDark2),
                                 checkColor: AppColors.primaryColor,
                                 value: keepMeSigning,
                                 onChanged: (value) {
@@ -253,15 +246,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Center(
                               child: _isLoading // Step 3: Check if loading
                                   ? CircularProgressIndicator(
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(
-                                              AppColors.primaryColor),
+                                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
                                     )
-                                  : Text("Log in",
-                                      style: TextStyle(
-                                          color: AppColors.primaryColorLight3,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
+                                  : Text("Log in", style: TextStyle(color: AppColors.primaryColorLight3, fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ),
@@ -335,10 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () async {
                                 const url = 'ekyc.arhamshare.com';
                                 await launchUrl(Uri.https(url),
-                                    mode: LaunchMode.inAppBrowserView,
-                                    browserConfiguration:
-                                        BrowserConfiguration(
-                                            showTitle: true));
+                                    mode: LaunchMode.inAppBrowserView, browserConfiguration: BrowserConfiguration(showTitle: true));
                               },
                               child: Text(
                                 style: TextStyle(
@@ -364,15 +348,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<Map<String, dynamic>> loginUser(String userID, String password) async {
     try {
-      var url =
-          Uri.parse('http://14.97.72.10:3000/enterprise/auth/validateuser');
+      var url = Uri.parse('http://14.97.72.10:3000/enterprise/auth/validateuser');
       var response = await http.post(
         url,
-        body: jsonEncode({
-          "userID": userID.toString(),
-          "password": password.toString(),
-          "source": "EnterpriseWEB"
-        }),
+        body: jsonEncode({"userID": userID.toString(), "password": password.toString(), "source": "EnterpriseWEB"}),
         headers: <String, String>{
           'Content-Type': 'application/json',
           // 'Accept': 'application/json',

@@ -49,8 +49,8 @@ abstract interface class AppColors {
   static Color VerticalLineColor3 = Color(0xFF67D947);
   static Color VerticalLineColor4 = Color(0xFFF14948);
 
-  static Color GreenColor = Color(0xFF6DD194);
-  static Color RedColor = Color.fromARGB(255, 252, 93, 101);
+  // static Color GreenColor = Color(0xFF6DD194);
+  // static Color RedColor = Color.fromARGB(255, 252, 93, 101);
   static Color greyColor300 = Colors.grey.shade300;
   static Color greyColor200 = Colors.grey.shade200;
   static Color greyColor800 = Colors.grey.shade800;
@@ -72,11 +72,11 @@ abstract interface class AppColors {
   static Color RedGredient2 = Color(0xFFEFE3E3);
 
   //Buy  Green Color
-    static Color BuyGreenGredient1 = Color(0xFF0E9D4E);
+  static Color BuyGreenGredient1 = Color(0xFF0E9D4E);
   static Color BuyGreenGredient2 = Color(0xFF0C6534);
 
-   //Sell  red Color
-    static Color SellRedGredient1 = Color(0xFFED3636);
+  //Sell  red Color
+  static Color SellRedGredient1 = Color(0xFFED3636);
   static Color SellRedGredient2 = Color(0xFFAA1818);
 
   //PaintBackgroundColor
@@ -85,7 +85,6 @@ abstract interface class AppColors {
   //BuysellProductLineColor
   static Color BuysellProductLineColor = Color(0xFFB06C0C);
   static Color BuysellProductLineColor2 = Color(0xFFFAB350);
-    //BuysellProductLineColor
+  //BuysellProductLineColor
   static Color BuysellProductLineColorBackground = Color.fromARGB(255, 250, 239, 225);
-
 }

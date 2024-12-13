@@ -273,11 +273,10 @@ class DatabaseHelperMaster {
 }
 
 class ApiServiceMaster {
- var baseUrl= AppConfig.baseUrl;
+  var baseUrl = AppConfig.baseUrl;
   Future<void> fetchInstruments() async {
     final response = await http.post(
-      Uri.parse(
-          '$baseUrl/apimarketdata/instruments/master'),
+      Uri.parse('$baseUrl/apimarketdata/instruments/master'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({
         "exchangeSegmentList": ["NSECM", "BSECM"]

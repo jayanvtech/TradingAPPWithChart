@@ -236,7 +236,17 @@ class OverviewTab extends StatefulWidget {
 }
 
 class _OverviewTabState extends State<OverviewTab> {
-  List<String> PerformanceTitles = ["Today's High", "Today's Low", "52W High", "52W Low", "Opening Price", "Prev. Price", "Volume", "Lower circuit", "Upper circuit"];
+  List<String> PerformanceTitles = [
+    "Today's High",
+    "Today's Low",
+    "52W High",
+    "52W Low",
+    "Opening Price",
+    "Prev. Price",
+    "Volume",
+    "Lower circuit",
+    "Upper circuit"
+  ];
 
   List<String> PerformanceSubTitles = [
     "Today's high represents the peak trading price of the stock for the day.",
@@ -430,7 +440,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                                                 fontWeight: FontWeight.bold,
                                                                 color: AppColors.primaryColorDark,
                                                               )),
-                                                          Text('Buy Price', style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold)),
+                                                          Text('Buy Price',
+                                                              style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold)),
                                                         ],
                                                       ),
                                                     ),
@@ -574,8 +585,10 @@ class _OverviewTabState extends State<OverviewTab> {
                                                       marketData.totalBuyQuantity,
                                                       style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold),
                                                     ),
-                                                    Text("Total Quantity", style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold)),
-                                                    Text(marketData.totalSellQuantity, style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold))
+                                                    Text("Total Quantity",
+                                                        style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold)),
+                                                    Text(marketData.totalSellQuantity,
+                                                        style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.bold))
                                                   ],
                                                 ),
                                               )
@@ -641,7 +654,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                                                   Container(
                                                                     height: 40,
                                                                     width: 40,
-                                                                    decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.primaryColor.withOpacity(1)),
+                                                                    decoration: BoxDecoration(
+                                                                        shape: BoxShape.circle, color: AppColors.primaryColor.withOpacity(1)),
                                                                     child: Center(
                                                                       child: Icon(
                                                                         Icons.event_note_outlined,
@@ -658,7 +672,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                                               children: [
                                                                 Text(
                                                                   "Performance",
-                                                                  style: TextStyle(color: AppColors.primaryColorDark, fontSize: 14, fontWeight: FontWeight.w600),
+                                                                  style: TextStyle(
+                                                                      color: AppColors.primaryColorDark, fontSize: 14, fontWeight: FontWeight.w600),
                                                                 )
                                                               ],
                                                             ),
@@ -693,7 +708,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                                                       child: ListTile(
                                                                         title: Text(
                                                                           PerformanceTitles[index],
-                                                                          style: TextStyle(color: AppColors.primaryColorDark, fontWeight: FontWeight.w600),
+                                                                          style: TextStyle(
+                                                                              color: AppColors.primaryColorDark, fontWeight: FontWeight.w600),
                                                                         ),
                                                                         subtitle: Text(
                                                                           PerformanceSubTitles[index],
@@ -906,20 +922,22 @@ class _OverviewTabState extends State<OverviewTab> {
                                             child: CustomBuySellnButton(
                                               isBuy: true,
                                               text: "BUY",
-                                              onPressed: () {Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => BuySellScreen(
-                                                    exchangeInstrumentId: exchangeInstrumentId,
-                                                    exchangeSegment: exchangeSegment,
-                                                    lastTradedPrice: marketData.price,
-                                                    close: close,
-                                                    displayName: displayName,
-                                                    isBuy: true,
-                                                    lotSize: snapshot.data!.lotSize,
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => BuySellScreen(
+                                                      exchangeInstrumentId: exchangeInstrumentId,
+                                                      exchangeSegment: exchangeSegment,
+                                                      lastTradedPrice: marketData.price,
+                                                      close: close,
+                                                      displayName: displayName,
+                                                      isBuy: true,
+                                                      lotSize: snapshot.data!.lotSize,
+                                                    ),
                                                   ),
-                                                ),
-                                              );},
+                                                );
+                                              },
                                             ),
                                             // child: Container(
                                             //   height: 50,
@@ -957,19 +975,19 @@ class _OverviewTabState extends State<OverviewTab> {
                                               text: "SELL",
                                               onPressed: () {
                                                 Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => BuySellScreen(
-                                                    exchangeInstrumentId: exchangeInstrumentId,
-                                                    exchangeSegment: exchangeSegment,
-                                                    lastTradedPrice: marketData.price,
-                                                    close: close,
-                                                    displayName: displayName,
-                                                    isBuy: false,
-                                                    lotSize: snapshot.data!.lotSize,
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => BuySellScreen(
+                                                      exchangeInstrumentId: exchangeInstrumentId,
+                                                      exchangeSegment: exchangeSegment,
+                                                      lastTradedPrice: marketData.price,
+                                                      close: close,
+                                                      displayName: displayName,
+                                                      isBuy: false,
+                                                      lotSize: snapshot.data!.lotSize,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
+                                                );
                                               },
                                             ),
                                           ),
@@ -1157,7 +1175,11 @@ class _OverviewTabState extends State<OverviewTab> {
                                           padding: EdgeInsets.all(10.0),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [Text("marketData.totalBuyQuantity"), Text("TOTAL QUANTITY"), Text("marketData.totalSellQuantity")],
+                                            children: [
+                                              Text("marketData.totalBuyQuantity"),
+                                              Text("TOTAL QUANTITY"),
+                                              Text("marketData.totalSellQuantity")
+                                            ],
                                           ),
                                         )
                                       ],

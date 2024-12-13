@@ -55,8 +55,8 @@ class ApiService extends ChangeNotifier {
     }
 
     try {
-      final response =
-          await http.get(Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'), headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'});
+      final response = await http.get(Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'),
+          headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'});
 
       print("Response Body: ${response.body}");
 
@@ -392,7 +392,8 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<dynamic> GetNSCEMMaster() async {
-    String? apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
+    String? apiToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
     try {
       final response = await http.post(
         Uri.parse('http://192.168.102.251:5001/v1/dbcontractEQ'),
@@ -826,7 +827,8 @@ class ApiService extends ChangeNotifier {
 
           if (lastMap?['OrderStatus'] == "Filled") {
             NotificationController.createNewNotification(
-                title: "Order placed successfully", description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
+                title: "Order placed successfully",
+                description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
           } else if (lastMap?['OrderStatus'] == "Rejected") {
             // NotificationController.createNewNotification(
             //     title: "Order is Rejected",
@@ -835,7 +837,8 @@ class ApiService extends ChangeNotifier {
           } else if (lastMap?['OrderStatus'] == "Cancelled") {
             NotificationController.createNewNotification(
                 title: "Order is Cancelled",
-                description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
+                description:
+                    "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
           }
           // else{
           //   NotificationController.createNewNotification(
