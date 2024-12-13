@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class DownloadReportsScreen extends StatefulWidget {
   const DownloadReportsScreen({super.key});
@@ -11,7 +15,6 @@ class DownloadReportsScreen extends StatefulWidget {
   @override
   State<DownloadReportsScreen> createState() => _DownloadReportsScreenState();
 }
-
 
 class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
   String? selectedItem = 'PnL Summary';
@@ -26,7 +29,6 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
   DateTime fromDate = DateTime.now().subtract(Duration(days: 4));
   DateTime toDate = DateTime.now();
 
-
   String? selectedYear = "Apr 2024 - March 2025";
   List<String> financialYears = [
     "Apr 2024 - March 2025",
@@ -37,13 +39,13 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
   ];
   TextEditingController financialYearsController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
     financialYearsController.text = selectedYear.toString();
   }
 
+  final String baseurl = AppConfig.reportsUrl;
 
   Future<void> selectDate(BuildContext context, bool isFromDate) async {
     final DateTime? picked = await showDatePicker(
@@ -62,13 +64,40 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
       });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text('Download Reports'),
+      backgroundColor: AppColors.primaryBackgroundColor,
+      appBar: 
+        PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryBackgroundColor,
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                  ],
+                  stops: [0.5, 1, 0.5],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(1)),
+              
+            
+        child: AppBar(backgroundColor: Colors.transparent,
+          title: Text('Download Reports'),
+        ),),
+        
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -76,7 +105,7 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
           children: [
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.tertiaryGrediantColor1,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
@@ -108,7 +137,7 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
                   itemBuilder: (context, index) {
                     return Container(
                       padding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -163,46 +192,14 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
             SizedBox(
               height: 10,
             ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    downloadFile();
-                  },
-                  child: isLoading
-                      ? Container(
-                      height: 20,
-                      width: 20,
-                      child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          )))
-                      : Text('Download'),
-                ),
-                // ElevatedButton(style: ButtonStyle(
-                //   backgroundColor: MaterialStateProperty.all(Colors.blue),
-                // ),
-                //   onPressed: () {},
-                //   child: Text('Download'),
-                // ),
-              ],
-            ),
+             CustomButton(isLoading: isLoading, text: "Download", onPressed: () async {
+                  await downloadFile();
+                }),
           ],
         ),
       ),
     );
   }
-
 
   Future<File> downloadFile() async {
     try {
@@ -214,21 +211,17 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
         'Content-Type': 'application/json'
       };
       var request = http.Request(
-          'POST',
-          Uri.parse(
-              'http://192.168.130.43:1818/v1/user/report/pnl?source=trading_app'));
+          'POST', Uri.parse('$baseurl/v1/user/report/pnl?source=trading_app'));
       request.body = json.encode({
         "download_type": "PDF",
         "type": GetReportType(selectedItem),
-        "client_code": "A0044",
+        "client_code": "A0031",
         "year": int.parse(GetFinacialYear(selectedYear)),
       });
       request.headers.addAll(headers);
 
-
       http.StreamedResponse response = await request.send();
-
-
+print(response.statusCode);
       if (response.statusCode == 200) {
         var bytes = await response.stream.toBytes();
         Directory dir = (await getApplicationDocumentsDirectory());
@@ -246,31 +239,16 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
         await file.writeAsBytes(bytes);
         print('File downloaded to $newPath');
 
-
         return file;
-      } else if (response.statusCode == 404) {
-        setState(() {
-          isLoading = false;
-        });
-
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No data found for the selected year'),
-          ),
-        );
-
-
-        return File('404');
+      
       } else {
-        throw Exception('Failed to load file');
+        throw Exception('Failed to load file $e' );
       }
     } catch (e) {
       print(e);
       return File(e.toString());
     }
   }
-
 
   String GetReportType(selectedItem) {
     switch (selectedItem) {
@@ -283,12 +261,10 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
       case "Equity":
         return 'eq';
 
-
       default:
         return 'Unknown';
     }
   }
-
 
   String GetFinacialYear(selectedYear) {
     switch (selectedYear) {
@@ -303,12 +279,10 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
       case "Apr 2020 - March 2021":
         return '2020';
 
-
       default:
         return 'Unknown';
     }
   }
-
 
   void _showBottomSheet(BuildContext context, Function(String) updateYear) {
     showModalBottomSheet(
@@ -352,13 +326,13 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         foregroundColor:
-                        MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                       ),
                       child: Text('Done'),
                       onPressed: () {
@@ -375,11 +349,9 @@ class _DownloadReportsScreenState extends State<DownloadReportsScreen> {
     );
   }
 
-
   void updateYear(String year) {
     setState(() {
       financialYearsController.text = year;
     });
   }
 }
-

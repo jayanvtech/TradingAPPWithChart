@@ -8,8 +8,10 @@ import 'package:tradingapp/Authentication/Login_bloc/login_state.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
 import 'package:tradingapp/Authentication/biomatric_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  var baseUrl =AppConfig.baseUrl;
   LoginBloc() : super(LoginInitial()) {
     on<LoginUserEvent>((event, emit) async {
       emit(LoginLoading());
@@ -41,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<Map<String, dynamic>> loginUser(String userID, String password) async {
     try {
       var url =
-          Uri.parse('https://mtrade.arhamshare.com/apimarketdata/auth/login');
+          Uri.parse('$baseUrl/apimarketdata/auth/login');
       var response = await http.post(
         url,
         body: jsonEncode({
@@ -103,9 +105,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
 Future<Map<String, dynamic>> loginUserSession(
     String userID, String password) async {
+      var baseUrl =AppConfig.baseUrl;
   try {
     var url =
-        Uri.parse('https://mtrade.arhamshare.com/interactive/user/session');
+        Uri.parse('$baseUrl/interactive/user/session');
     var response = await http.post(
       url,
       body: jsonEncode({

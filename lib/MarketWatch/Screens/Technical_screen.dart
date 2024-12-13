@@ -396,7 +396,7 @@ class _CompanyProfileWidgetScreenState
 new TradingView.widget({
   "width": "100%",
   "height": 1180,
-  "symbol": "NSE:$SymbolName",
+  "symbol": "BSE:$SymbolName",
   "interval": "D",
   "timezone": "Etc/UTC",
   "theme": "dark",

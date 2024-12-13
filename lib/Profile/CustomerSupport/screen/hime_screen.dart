@@ -10,7 +10,7 @@ import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Profile/CustomerSupport/Model/catagory_fetch_model.dart';
 import 'package:tradingapp/Profile/CustomerSupport/Model/create_ticket_model.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class HelpDeskScreen extends StatefulWidget {
   const HelpDeskScreen({super.key});

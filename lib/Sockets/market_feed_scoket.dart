@@ -6,6 +6,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/bid_request_model.dart';
 import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 // Make sure this import is correct
 class MarketData {
@@ -126,6 +127,7 @@ class InstrumentMarketData {
 }
 
 class MarketFeedSocket extends ChangeNotifier {
+  var baseUrl =AppConfig.baseUrl;
   IO.Socket? _socket;
   final marketSubscribedDataStreamController =
       StreamController<MarketData>.broadcast();
@@ -152,7 +154,7 @@ class MarketFeedSocket extends ChangeNotifier {
     String? token = await getToken();
 
     String url =
-        'https://mtrade.arhamshare.com/?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
+        '$baseUrl?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
 
     _socket = IO.io(
       url,

@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 class DatabaseHelperMaster {
   static final DatabaseHelperMaster _instance =
@@ -280,10 +281,11 @@ class DatabaseHelperMaster {
 }
 
 class ApiServiceMaster {
+ var baseUrl= AppConfig.baseUrl;
   Future<void> fetchInstruments() async {
     final response = await http.post(
       Uri.parse(
-          'https://mtrade.arhamshare.com/apimarketdata/instruments/master'),
+          '$baseUrl/apimarketdata/instruments/master'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({
         "exchangeSegmentList": ["NSECM", "BSECM"]

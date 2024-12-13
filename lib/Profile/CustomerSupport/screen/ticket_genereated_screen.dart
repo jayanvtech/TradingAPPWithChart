@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:tradingapp/Profile/CustomerSupport/screen/ticket_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class TicketGenereatedScreen extends StatefulWidget {
   final String ticketId;

@@ -203,51 +203,56 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     //_notificationService.initialize();
-    return GetMaterialApp(
-      theme: ThemeData(
-        colorSchemeSeed: AppColors.primaryColor,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(1.0),
       ),
-      title: 'My App',
-      navigatorKey: MyApp.navigatorKey,
-      debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => MarketWatchManager(),
-            child: MyApp(),
-          ),
-          ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
-          ChangeNotifierProvider(
-            create: (context) => NscmDataProvider(),
-          ),
-          ChangeNotifierProvider<InteractiveSocketFeed>(
-            create: (contex) => InteractiveSocketFeed(),
-          ),
-          ChangeNotifierProvider(create: (_) => PositionProvider()),
-          //ChangeNotifierProvider(create: (contex) => InteractiveSocketFeed()..interactiveSocket()),
-        ],
-        child: ChangeNotifierProvider(
-          create: (_) => MarketFeedSocket()..connect(),
-          // child: isLoginValue == false ? LoginScreen() : ValidPasswordScreen(),
-          child: FutureBuilder<bool>(
-            future: isLogin(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else {
-                print("isLoginValue: $isLoginValue");
-                print("snapshot.data: ${snapshot.data}");
-                if (snapshot.data == true && isLoginValue == true) {
-                  // return MainScreen();
-                  return ValidPasswordScreen(
-                    isFromMainScreen: "true",
-                  );
+      child: GetMaterialApp(
+        theme: ThemeData(
+          colorSchemeSeed: AppColors.primaryColor,
+          textTheme: GoogleFonts.poppinsTextTheme(),
+        ),
+        title: 'My App',
+        navigatorKey: MyApp.navigatorKey,
+        debugShowCheckedModeBanner: false,
+        home: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => MarketWatchManager(),
+              child: MyApp(),
+            ),
+            ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
+            ChangeNotifierProvider(
+              create: (context) => NscmDataProvider(),
+            ),
+            ChangeNotifierProvider<InteractiveSocketFeed>(
+              create: (contex) => InteractiveSocketFeed(),
+            ),
+            ChangeNotifierProvider(create: (_) => PositionProvider()),
+            //ChangeNotifierProvider(create: (contex) => InteractiveSocketFeed()..interactiveSocket()),
+          ],
+          child: ChangeNotifierProvider(
+            create: (_) => MarketFeedSocket()..connect(),
+            // child: isLoginValue == false ? LoginScreen() : ValidPasswordScreen(),
+            child: FutureBuilder<bool>(
+              future: isLogin(),
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
                 } else {
-                  return LoginScreen();
+                  print("isLoginValue: $isLoginValue");
+                  print("snapshot.data: ${snapshot.data}");
+                  if (snapshot.data == true && isLoginValue == true) {
+                    // return MainScreen();
+                    return ValidPasswordScreen(
+                      isFromMainScreen: "true",
+                    );
+                  } else {
+                    return LoginScreen();
+                  }
                 }
-              }
-            },
+              },
+            ),
           ),
         ),
       ),

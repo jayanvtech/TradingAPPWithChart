@@ -126,22 +126,37 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
             Builder(
-              builder: (context) => IconButton(
+              builder: (context) => IconButton(highlightColor: Colors.transparent,
                 icon: Icon(Icons.read_more),
                 onPressed: () => Scaffold.of(context).openEndDrawer(),
               ),
             ),
           ],
+          
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-              ),
-              child: TabBar(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryBackgroundColor,
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                  ],
+                  stops: [0.5, 1, 0.5],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(1)),
+              child: TabBar(dividerColor: Colors.transparent,
                 indicatorColor: AppColors.primaryColor,
                 controller: _tabController,
                 isScrollable: true,
@@ -862,7 +877,7 @@ class _MarketDataWidgetState extends State<MarketDataWidget> {
       child: Container(
         padding: EdgeInsets.all(0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.primaryBackgroundColor,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(

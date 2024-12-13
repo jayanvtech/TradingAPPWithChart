@@ -32,9 +32,12 @@ class AppColors {
   static Color primaryColorDark2 = Color.fromARGB(255, 153, 153, 153);
   static Color primaryColorDark3 = Color.fromARGB(255, 214, 214, 214);
 
+//Unselected COlor
+  static Color primaryColorUnselected = Color(0xFFE9E9EF);
+  static Color primaryColorFontUnselected = Color(0xFFA1A2A6);
+
   //Background COlor
-  static Color primaryBackgroundColor =
-      Color.fromARGB(255, 255, 255, 255); //Pure WHite COlor
+  static Color primaryBackgroundColor = Color.fromARGB(255, 255, 255, 255); //Pure WHite COlor
 
   static Color secondaryColor = Color(0xFF3B92);
   // static Color tertiaryColor = Color(0x3A3A3A);
@@ -45,6 +48,34 @@ class AppColors {
   static Color VerticalLineColor3 = Color(0xFF67D947);
   static Color VerticalLineColor4 = Color(0xFFF14948);
 
-  static Color GreenColor = Color(0xFF6DD194);
-  static Color RedColor = Color.fromARGB(255, 252, 93, 101);
+  static Color GreenColor = Color(0xFF078A42);
+  static Color RedColor = Color(0xFFE11D1D);
+
+  static Color ImageOrangeBackgroundColor = Color(0xFFF9F1E6);
+
+//green Gredient
+  static Color GreenGredient1 = Color(0xFFFFFFFF);
+  static Color GreenGredient2 = Color(0xFFE4EFE9);
+
+//Red Gredient
+  static Color RedGredient1 = Color(0xFFFFFFFF);
+  static Color RedGredient2 = Color(0xFFEFE3E3);
+
+  //Buy  Green Color
+    static Color BuyGreenGredient1 = Color(0xFF0E9D4E);
+  static Color BuyGreenGredient2 = Color(0xFF0C6534);
+
+   //Sell  red Color
+    static Color SellRedGredient1 = Color(0xFFED3636);
+  static Color SellRedGredient2 = Color(0xFFAA1818);
+
+  //PaintBackgroundColor
+  static Color PaintBackgroundColor = Color(0xFFDFEAE4);
+
+  //BuysellProductLineColor
+  static Color BuysellProductLineColor = Color(0xFFB06C0C);
+  static Color BuysellProductLineColor2 = Color(0xFFFAB350);
+    //BuysellProductLineColor
+  static Color BuysellProductLineColorBackground = Color.fromARGB(255, 250, 239, 225);
+
 }

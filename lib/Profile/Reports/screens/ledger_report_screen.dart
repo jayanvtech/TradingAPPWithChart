@@ -91,7 +91,8 @@ class _LedgerReportScreenState extends State<LedgerReportScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120),
         child: Container(
-          child: AppBar(centerTitle: false,
+          child: AppBar(
+            centerTitle: false,
             actions: [
               IconButton(
                 onPressed: () {
@@ -452,10 +453,14 @@ class _LedgerReportScreenState extends State<LedgerReportScreen> {
                                                       SizedBox(
                                                         width: 5,
                                                       ),
-                                                      Container(width: 30,height: 30,
+                                                      Container(
+                                                        width: 30,
+                                                        height: 30,
                                                         padding:
                                                             EdgeInsets.all(5),
-                                                        child: Text(textAlign: TextAlign.center,
+                                                        child: Text(
+                                                          textAlign:
+                                                              TextAlign.center,
                                                           "Dr",
                                                           style: TextStyle(
                                                               color:
@@ -485,10 +490,14 @@ class _LedgerReportScreenState extends State<LedgerReportScreen> {
                                                       SizedBox(
                                                         width: 5,
                                                       ),
-                                                      Container(width: 30,height: 30,
+                                                      Container(
+                                                        width: 30,
+                                                        height: 30,
                                                         padding:
                                                             EdgeInsets.all(5),
-                                                        child: Text("Cr",textAlign: TextAlign.center,
+                                                        child: Text("Cr",
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white)),

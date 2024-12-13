@@ -54,13 +54,8 @@ class ApiService extends ChangeNotifier {
     }
 
     try {
-      final response = await http.get(
-          Uri.parse(
-              '$baseUrl/apimarketdata/search/instruments?searchString=$query'),
-          headers: {
-            'Authorization': '$apiToken',
-            'Content-Type': 'application/json'
-          });
+      final response =
+          await http.get(Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'), headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'});
 
       print("Response Body: ${response.body}");
 
@@ -73,13 +68,11 @@ class ApiService extends ChangeNotifier {
           return [];
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments ssswith status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments ssswith status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught: $e");
@@ -103,8 +96,7 @@ class ApiService extends ChangeNotifier {
 
     try {
       final response = await http.get(
-        Uri.parse(
-            '$baseUrl/apimarketdata/search/instruments?searchString=$query'),
+        Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'),
         headers: {
           'Authorization': '$apiToken',
           'Content-Type': 'application/json',
@@ -116,21 +108,17 @@ class ApiService extends ChangeNotifier {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['type'] == 'success' && data['result'] != null) {
-          return (data['result'] as List)
-              .map((item) => StockModel.fromJson(item))
-              .toList();
+          return (data['result'] as List).map((item) => StockModel.fromJson(item)).toList();
         } else {
           print("Data retrieval success but no results");
           return [];
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught: $e");
@@ -148,16 +136,14 @@ class ApiService extends ChangeNotifier {
       String partone1 = partone[0];
       String part2 = partone[1];
       final dbHelper = DatabaseHelper.instance;
-      final List<Map<String, dynamic>> localResults =
-          await dbHelper.searchInDatabaseWith2Params(partone1, part2);
+      final List<Map<String, dynamic>> localResults = await dbHelper.searchInDatabaseWith2Params(partone1, part2);
       if (localResults.isNotEmpty) {
         print("Found ${localResults.length} results in local database.");
         return localResults;
       }
     }
     final dbHelper = DatabaseHelper.instance;
-    final List<Map<String, dynamic>> localResults =
-        await dbHelper.searchInDatabase(query);
+    final List<Map<String, dynamic>> localResults = await dbHelper.searchInDatabase(query);
     if (localResults.isNotEmpty) {
       print("Found ${localResults.length} results in local database.");
       return localResults;
@@ -168,25 +154,18 @@ class ApiService extends ChangeNotifier {
     return apiResults;
   }
 
-  Future<dynamic> GetBhavCopy(
-      String exchangeInstrumentID, String exchangeSegment) async {
+  Future<dynamic> GetBhavCopy(String exchangeInstrumentID, String exchangeSegment) async {
     final String? apiToken = await getToken();
     if (apiToken == null) {
       throw Exception('Authentication token is not available.');
     }
 
     try {
-      var headers = {
-        'Authorization': apiToken,
-        'Content-Type': 'application/json'
-      };
+      var headers = {'Authorization': apiToken, 'Content-Type': 'application/json'};
       var body = json.encode({
         "source": "WebAPI",
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ]
       });
 
@@ -207,13 +186,11 @@ class ApiService extends ChangeNotifier {
           return "0";
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught: $e");
@@ -221,25 +198,18 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> GetDisplayName(
-      int exchangeInstrumentID, String exchangeSegment) async {
+  Future<dynamic> GetDisplayName(int exchangeInstrumentID, String exchangeSegment) async {
     final String? apiToken = await getToken();
     if (apiToken == null) {
       throw Exception('Authentication token is not available.');
     }
 
     try {
-      var headers = {
-        'Authorization': apiToken,
-        'Content-Type': 'application/json'
-      };
+      var headers = {'Authorization': apiToken, 'Content-Type': 'application/json'};
       var body = json.encode({
         "source": "WebAPI",
         "instruments": [
-          {
-            "exchangeSegment": 1.toInt(),
-            "exchangeInstrumentID": exchangeInstrumentID.toInt()
-          }
+          {"exchangeSegment": 1.toInt(), "exchangeInstrumentID": exchangeInstrumentID.toInt()}
         ]
       });
 
@@ -263,13 +233,11 @@ class ApiService extends ChangeNotifier {
           return "0";
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught: $e");
@@ -277,25 +245,18 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> GetDisplayNameforLogo(
-      int exchangeInstrumentID, String exchangeSegment) async {
+  Future<dynamic> GetDisplayNameforLogo(int exchangeInstrumentID, String exchangeSegment) async {
     final String? apiToken = await getToken();
     if (apiToken == null) {
       throw Exception('Authentication token is not available.');
     }
 
     try {
-      var headers = {
-        'Authorization': apiToken,
-        'Content-Type': 'application/json'
-      };
+      var headers = {'Authorization': apiToken, 'Content-Type': 'application/json'};
       var body = json.encode({
         "source": "WebAPI",
         "instruments": [
-          {
-            "exchangeSegment": 1.toInt(),
-            "exchangeInstrumentID": exchangeInstrumentID.toInt()
-          }
+          {"exchangeSegment": 1.toInt(), "exchangeInstrumentID": exchangeInstrumentID.toInt()}
         ]
       });
 
@@ -319,13 +280,11 @@ class ApiService extends ChangeNotifier {
           return "0";
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments ($exchangeInstrumentID) with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments ($exchangeInstrumentID) with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught: $e");
@@ -333,16 +292,12 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> MarketInstrumentSubscribe(
-      String exchangeSegment, String exchangeInstrumentID) async {
+  Future<dynamic> MarketInstrumentSubscribe(String exchangeSegment, String exchangeInstrumentID) async {
     String? apiToken = await getToken();
     try {
       final body = json.encode({
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ],
         "xtsMessageCode": 1502
       });
@@ -350,10 +305,7 @@ class ApiService extends ChangeNotifier {
       final response = await http.post(
         Uri.parse('$baseUrl/apimarketdata/instruments/subscription'),
         body: body,
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       // print(apiToken);
       // print(response.body);
@@ -361,8 +313,7 @@ class ApiService extends ChangeNotifier {
         print("Subscribed");
         return true;
       } else {
-        print(
-            "Data retrieval success ($exchangeSegment) but no  results In Subscribe API");
+        print("Data retrieval success ($exchangeSegment) but no  results In Subscribe API");
         return "0";
       }
     } catch (e) {
@@ -371,16 +322,12 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> MarketInstrumentSubscribe1505(
-      String exchangeSegment, String exchangeInstrumentID) async {
+  Future<dynamic> MarketInstrumentSubscribe1505(String exchangeSegment, String exchangeInstrumentID) async {
     String? apiToken = await getToken();
     try {
       final body = json.encode({
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ],
         "xtsMessageCode": 1505
       });
@@ -388,10 +335,7 @@ class ApiService extends ChangeNotifier {
       final response = await http.post(
         Uri.parse('$baseUrl/apimarketdata/instruments/subscription'),
         body: body,
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       // print(apiToken);
       // print(response.body);
@@ -399,8 +343,7 @@ class ApiService extends ChangeNotifier {
         // print("Subscribed");
         return true;
       } else {
-        print(
-            "Data retrieval success ($exchangeSegment) but no  results In Subscribe API");
+        print("Data retrieval success ($exchangeSegment) but no  results In Subscribe API");
         return "0";
       }
     } catch (e) {
@@ -409,26 +352,19 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> UnsubscribeMarketInstrument(
-      String exchangeSegment, String exchangeInstrumentID) async {
+  Future<dynamic> UnsubscribeMarketInstrument(String exchangeSegment, String exchangeInstrumentID) async {
     String? apiToken = await getToken();
     try {
       final body = json.encode({
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ],
         "xtsMessageCode": 1502
       });
       final response = await http.put(
         Uri.parse('$baseUrl/apimarketdata/instruments/subscription'),
         body: body,
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       print(response.body);
       if (response.statusCode == 200) {
@@ -445,8 +381,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> fetchFiiDiiDetailsMonthly({String? type}) async {
-    final response = await http.get(Uri.parse(
-        '$fiidiiserver/v1/get_fii_data_cash_fo_index_stocks/?type=$type'));
+    final response = await http.get(Uri.parse('$fiidiiserver/v1/get_fii_data_cash_fo_index_stocks/?type=$type'));
 
     if (response.statusCode == 200) {
       return json.decode(response.body) as Map<String, dynamic>;
@@ -456,8 +391,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<dynamic> GetNSCEMMaster() async {
-    String? apiToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
+    String? apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
     try {
       final response = await http.post(
         Uri.parse('http://192.168.102.251:5001/v1/dbcontractEQ'),
@@ -491,10 +425,7 @@ class ApiService extends ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/interactive/portfolio/positions?dayOrNet=NetWise'),
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       print("${response.body}");
       if (response.statusCode == 200) {
@@ -554,10 +485,7 @@ class ApiService extends ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/interactive/orders/trades'),
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -586,10 +514,7 @@ class ApiService extends ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/interactive/orders'),
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       print("66666666666666666666${response.body}");
       if (response.statusCode == 200) {
@@ -612,16 +537,14 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> GetOrderHistroy(
-      String OptionType, String FromDate, String ToDate) async {
+  Future<dynamic> GetOrderHistroy(String OptionType, String FromDate, String ToDate) async {
     String? apiToken = await getToken();
     String? userId = await getUserId();
     String? clientId = await getClientId();
 //2024-05-21
     try {
       final response = await http.get(
-        Uri.parse(
-            '$baseUrl/enterprise/reports/trade?clientID=A0033&userID=A0033&exchangeSegment=$OptionType&fromDate=$FromDate&toDate=$ToDate'),
+        Uri.parse('$baseUrl/enterprise/reports/trade?clientID=A0033&userID=A0033&exchangeSegment=$OptionType&fromDate=$FromDate&toDate=$ToDate'),
         headers: {
           'Authorization': '$apiToken',
           'Content-Type': 'application/json',
@@ -634,8 +557,7 @@ class ApiService extends ChangeNotifier {
         if (data['type'] == 'success' && data['result'] != null) {
           print("Data retrieval success in GetOrderHistroy");
           for (var item in data['result']['tradeReportList']) {}
-          print(
-              "45678965434567876543234567${data['result']['tradeReportList']}");
+          print("45678965434567876543234567${data['result']['tradeReportList']}");
           return data['result']['tradeReportList'];
         } else {
           print("Data retrieval success but no results in GetOrderHistroy");
@@ -659,32 +581,26 @@ class ApiService extends ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/interactive/portfolio/holdings?clientID=A0031'),
-        headers: {
-          'Authorization': '$apiToken',
-          'Content-Type': 'application/json'
-        },
+        headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'},
       );
       print(response.body);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['type'] == 'success' && data['result'] != null) {
-          Map<String, dynamic> holdings =
-              data['result']['RMSHoldings']['Holdings'];
+          Map<String, dynamic> holdings = data['result']['RMSHoldings']['Holdings'];
           Map<String, dynamic> finalHoldings = {};
           DatabaseHelperMaster dbHelper = DatabaseHelperMaster();
 
           for (var isin in holdings.keys) {
             var holding = holdings[isin];
 
-            List<Map<String, dynamic>> instruments =
-                await dbHelper.getInstrumentsByISIN(isin.toString());
+            List<Map<String, dynamic>> instruments = await dbHelper.getInstrumentsByISIN(isin.toString());
 
             // print('Instruments-------------------: $instruments');
             if (instruments.isNotEmpty) {
               holding['DisplayName'] = instruments.first['displayName'];
             } else {
-              holding['DisplayName'] =
-                  'Unknown'; // Fallback in case ISIN not found
+              holding['DisplayName'] = 'Unknown'; // Fallback in case ISIN not found
             }
 
             finalHoldings[isin] = holding;
@@ -705,25 +621,18 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<Result> GetInstrumentByID(
-      String exchangeInstrumentID, String exchangeSegment) async {
+  Future<Result> GetInstrumentByID(String exchangeInstrumentID, String exchangeSegment) async {
     final String? apiToken = await getToken();
     if (apiToken == null) {
       throw Exception('Authentication token is not available.');
     }
 
     try {
-      var headers = {
-        'Authorization': apiToken,
-        'Content-Type': 'application/json'
-      };
+      var headers = {'Authorization': apiToken, 'Content-Type': 'application/json'};
       var body = json.encode({
         "source": "WebAPI",
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ]
       });
 
@@ -739,18 +648,15 @@ class ApiService extends ChangeNotifier {
           Map<String, dynamic> result = data['result'][0];
           return Result.fromJson((result));
         } else {
-          print(
-              "Data retrieval success but no resultsin SerachInsturmentBYId in portfolio");
+          print("Data retrieval success but no resultsin SerachInsturmentBYId in portfolio");
           return Result();
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught in SerachInsturmentBYId: $e");
@@ -758,25 +664,18 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> GetInstrumentDisplayName(
-      String exchangeInstrumentID, String exchangeSegment) async {
+  Future<dynamic> GetInstrumentDisplayName(String exchangeInstrumentID, String exchangeSegment) async {
     final String? apiToken = await getToken();
     if (apiToken == null) {
       throw Exception('Authentication token is not available.');
     }
 
     try {
-      var headers = {
-        'Authorization': apiToken,
-        'Content-Type': 'application/json'
-      };
+      var headers = {'Authorization': apiToken, 'Content-Type': 'application/json'};
       var body = json.encode({
         "source": "WebAPI",
         "instruments": [
-          {
-            "exchangeSegment": exchangeSegment,
-            "exchangeInstrumentID": exchangeInstrumentID
-          }
+          {"exchangeSegment": exchangeSegment, "exchangeInstrumentID": exchangeInstrumentID}
         ]
       });
 
@@ -791,18 +690,15 @@ class ApiService extends ChangeNotifier {
         if (data['type'] == 'success' && data['result'] != null) {
           return data['result'][0]["DisplayName"].toString();
         } else {
-          print(
-              "Data retrieval success but no resultsin SerachInsturmentBYId in portfolio");
+          print("Data retrieval success but no resultsin SerachInsturmentBYId in portfolio");
           return "0";
         }
       } else if (response.statusCode == 401) {
-        throw Exception(
-            'Unauthorized: Please check your credentials or token validity.');
+        throw Exception('Unauthorized: Please check your credentials or token validity.');
       } else if (response.statusCode == 404) {
         throw Exception('Endpoint not found: Please check the URL.');
       } else {
-        throw Exception(
-            'Failed to load instruments with status code: ${response.statusCode}');
+        throw Exception('Failed to load instruments with status code: ${response.statusCode}');
       }
     } catch (e) {
       print("Exception caught in SerachInsturmentBYId: $e");
@@ -810,8 +706,7 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> placeOrder(Map<String, dynamic> orderDetails,
-      String? displayName, BuildContext context) async {
+  Future<void> placeOrder(Map<String, dynamic> orderDetails, String? displayName, BuildContext context) async {
     try {
       print("tryis calling");
       final String? apiToken = await getToken1();
@@ -829,15 +724,13 @@ class ApiService extends ChangeNotifier {
       print("hfhsdshdjshdjshjdsjdsjdsjdhsj${response.body}");
       if (response.statusCode != 200) {
         final responseBody = jsonDecode(response.body);
-        final String descriptionMessage =
-            responseBody['description'] ?? 'Order Rejected or Cancelled';
+        final String descriptionMessage = responseBody['description'] ?? 'Order Rejected or Cancelled';
         Get.snackbar('Order Rejected or Cancelled', descriptionMessage);
         throw Exception('Failed to place order');
       } else {
         print("Orderdddddddd placed successfully");
         final responseBody = jsonDecode(response.body);
-        final String descriptionMessage =
-            responseBody['description'] ?? 'Order placed successfully';
+        final String descriptionMessage = responseBody['description'] ?? 'Order placed successfully';
 
         Get.snackbar(descriptionMessage, 'Order placed successfully');
         Navigator.of(context).push(
@@ -892,8 +785,7 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> ModifyOrder(Map<String, dynamic> orderDetails,
-      String? displayName, BuildContext context) async {
+  Future<void> ModifyOrder(Map<String, dynamic> orderDetails, String? displayName, BuildContext context) async {
     try {
       print("tryis calling");
       final String? apiToken = await getToken1();
@@ -932,9 +824,7 @@ class ApiService extends ChangeNotifier {
 
           if (lastMap?['OrderStatus'] == "Filled") {
             NotificationController.createNewNotification(
-                title: "Order placed successfully",
-                description:
-                    "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
+                title: "Order placed successfully", description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
           } else if (lastMap?['OrderStatus'] == "Rejected") {
             // NotificationController.createNewNotification(
             //     title: "Order is Rejected",
@@ -943,8 +833,7 @@ class ApiService extends ChangeNotifier {
           } else if (lastMap?['OrderStatus'] == "Cancelled") {
             NotificationController.createNewNotification(
                 title: "Order is Cancelled",
-                description:
-                    "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
+                description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
           }
           // else{
           //   NotificationController.createNewNotification(
@@ -953,9 +842,7 @@ class ApiService extends ChangeNotifier {
           //   );
           // }
         } catch (e) {
-          NotificationController.createNewNotification(
-              title: "Order isn't placed",
-              description: "Internal Server Error!");
+          NotificationController.createNewNotification(title: "Order isn't placed", description: "Internal Server Error!");
         }
       }
     } catch (e) {
@@ -965,8 +852,7 @@ class ApiService extends ChangeNotifier {
 
   Future<void> cancelOrder(String appOrderID) async {
     try {
-      final url =
-          '$baseUrl/interactive/orders?appOrderID=$appOrderID'; // Replace with your actual URL
+      final url = '$baseUrl/interactive/orders?appOrderID=$appOrderID'; // Replace with your actual URL
       final String? apiToken = await getToken1();
 
       // Check if API token is null or empty
@@ -987,8 +873,7 @@ class ApiService extends ChangeNotifier {
         return jsonDecode(response.body);
       } else {
         // If the server returns an unexpected response, throw an error.
-        throw Exception(
-            'Failed to cancel order: ${response.statusCode} - ${response.reasonPhrase}');
+        throw Exception('Failed to cancel order: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (error) {
       // Handle potential errors here
@@ -1010,8 +895,7 @@ class ApiService extends ChangeNotifier {
 
   Future<List<dynamic>> fetchMarketUpdatesData() async {
     try {
-      final response =
-          await http.get(Uri.parse('$baseUrl/enterprise/common/holidaylist'));
+      final response = await http.get(Uri.parse('$baseUrl/enterprise/common/holidaylist'));
 
       if (response.statusCode == 200) {
         // If the server returns a 200 OK response, parse the JSON
@@ -1055,8 +939,7 @@ class ApiService extends ChangeNotifier {
           final cashFii = value['cash']['fii'];
           final cashDii = value['cash']['dii'];
           final fnoFiiquantitywise = value['future']['fii'];
-          final fnoDiiAmountwise =
-              value['future']['fii']['amount-wise']['net_oi'];
+          final fnoDiiAmountwise = value['future']['fii']['amount-wise']['net_oi'];
           final fiiBuySellDifference = cashFii['buy_sell_difference'];
           final diiBuySellDifference = cashDii['buy_sell_difference'];
 
@@ -1100,15 +983,13 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<List<FiiData>> fetchStockAndIndexData({String? type}) async {
-    final String apiUrl =
-        '$fiidiiserver/v1/get_fii_data_cash_fo_index_stocks/?type=$type';
+    final String apiUrl = '$fiidiiserver/v1/get_fii_data_cash_fo_index_stocks/?type=$type';
 
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body)['result'];
-      List<FiiData> fiiDataList =
-          jsonResponse.map((json) => FiiData.fromJson(json)).toList();
+      List<FiiData> fiiDataList = jsonResponse.map((json) => FiiData.fromJson(json)).toList();
       return fiiDataList;
     } else {
       throw Exception('Failed to load data');
@@ -1155,8 +1036,7 @@ class ApiService extends ChangeNotifier {
 
     try {
       final response = await http.get(
-        Uri.parse(
-            '$baseUrl/enterprise/user/profile?clientID=A0031&userID=A0031'),
+        Uri.parse('$baseUrl/enterprise/user/profile?clientID=A0031&userID=A0031'),
         headers: {
           'Authorization': Token.toString(),
         },
@@ -1227,8 +1107,7 @@ class ApiService extends ChangeNotifier {
           return null;
         }
       } else {
-        print(
-            'Error: Failed to fetch data. Status code: ${response.statusCode}');
+        print('Error: Failed to fetch data. Status code: ${response.statusCode}');
         return null;
       }
     } catch (error) {
@@ -1289,8 +1168,7 @@ class ApiService extends ChangeNotifier {
     try {
       final String? token = await getToken();
 
-      final url = Uri.parse(
-          '$iposerver/ipo/v1/bid/bidSubmit?client_code=A0031&source=connect');
+      final url = Uri.parse('$iposerver/ipo/v1/bid/bidSubmit?client_code=A0031&source=connect');
       final response = await http.post(
         url,
         headers: {
@@ -1312,8 +1190,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<TopGainersNLosers> fetchTopGainers() async {
-    final response = await http.get(Uri.parse(
-        'http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/top-gainers-loosers?index=gainers'));
+    final response = await http.get(Uri.parse('http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/top-gainers-loosers?index=gainers'));
     if (response.statusCode == 200) {
       return TopGainersNLosers.fromJson(jsonDecode(response.body));
     } else {
@@ -1322,8 +1199,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<IRCTCData?> fetchIRCTCData(String Symbol) async {
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/stock-analysis/top-corp-info-equity?symbol=$Symbol'; // Replace with your actual API endpoint
+    final url = '${AppConfig.baseUrl2}api/v1/stock-analysis/top-corp-info-equity?symbol=$Symbol'; // Replace with your actual API endpoint
 
     final response = await http.get(Uri.parse(url));
 
@@ -1339,13 +1215,12 @@ class ApiService extends ChangeNotifier {
   static Future<TicketData?> createTicketApiService() async {
     try {
       TicketData ticketAPIModel = TicketData();
-      var url = 'http://180.211.116.158:8080/mobile/helpdesk/category/fetch';
+      var url = '${AppConfig.baseUrl2}/category/fetch';
       var uri = Uri.parse(url);
       var responce = await http.get(uri);
       log("responce body ::${responce.body} status code :: ${responce.statusCode}");
       if (responce.statusCode == 200 || responce.statusCode == 201) {
-        var data = jsonDecode(responce.body),
-            ticketAPIModel = TicketData.fromJson(data['data']);
+        var data = jsonDecode(responce.body), ticketAPIModel = TicketData.fromJson(data['data']);
         log('ticketAPIModel :: ${ticketAPIModel.toJson()}');
         return ticketAPIModel;
       } else {
@@ -1358,31 +1233,25 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<List<SectorThemeModel>> fetchSectorStock() async {
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/sector-industry-analysis/sector-stocks?sector=all';
+    final url = '${AppConfig.baseUrl2}/api/v1/sector-industry-analysis/sector-stocks?sector=all';
 
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
       print(jsonData);
-      List<dynamic> sectorStocksJson = jsonData[
-          'data']; // Adjust the key based on your actual JSON structure
-      List<SectorThemeModel> sectorStocks = sectorStocksJson
-          .map((data) => SectorThemeModel.fromJson(data))
-          .toList();
+      List<dynamic> sectorStocksJson = jsonData['data']; // Adjust the key based on your actual JSON structure
+      List<SectorThemeModel> sectorStocks = sectorStocksJson.map((data) => SectorThemeModel.fromJson(data)).toList();
       return sectorStocks;
     } else {
       throw Exception('Failed to load data');
     }
   }
 
-  Future<List<LedgerReportModel>> fetchLedgerReportDetails(
-      String FromDate, String ToDate) async {
+  Future<List<LedgerReportModel>> fetchLedgerReportDetails(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      String baseUrl =
-          'http://180.211.116.158:8080/mobile/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1393,8 +1262,7 @@ class ApiService extends ChangeNotifier {
           "clientId": "A0044",
           "from_date": FromDate.toString(),
           "to_date": ToDate.toString(),
-          "cocd":
-              "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
+          "cocd": "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
           "trans_type": "all"
         }),
       );
@@ -1402,8 +1270,7 @@ class ApiService extends ChangeNotifier {
       if (response.statusCode == 200) {
         // Parse the list of transactions
         List<dynamic> jsonData = jsonDecode(response.body)['data'][0]['DATA'];
-        List<LedgerReportModel> transactions =
-            jsonData.map((data) => LedgerReportModel.fromJson(data)).toList();
+        List<LedgerReportModel> transactions = jsonData.map((data) => LedgerReportModel.fromJson(data)).toList();
 
         return transactions;
       } else {
@@ -1414,12 +1281,10 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsRecipt(
-      String FromDate, String ToDate) async {
+  Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsRecipt(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      String baseUrl =
-          'http://180.211.116.158:8080/mobile/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1430,8 +1295,7 @@ class ApiService extends ChangeNotifier {
           "clientId": "A0044",
           "from_date": FromDate.toString(),
           "to_date": ToDate.toString(),
-          "cocd":
-              "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
+          "cocd": "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
           "trans_type": "R"
         }),
       );
@@ -1439,8 +1303,7 @@ class ApiService extends ChangeNotifier {
       if (response.statusCode == 200) {
         // Parse the list of transactions
         List<dynamic> jsonData = jsonDecode(response.body)['data'][0]['DATA'];
-        List<FundtransaferModel> transactions =
-            jsonData.map((data) => FundtransaferModel.fromJson(data)).toList();
+        List<FundtransaferModel> transactions = jsonData.map((data) => FundtransaferModel.fromJson(data)).toList();
 
         return transactions;
       } else {
@@ -1451,12 +1314,10 @@ class ApiService extends ChangeNotifier {
     }
   }
 
-  Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsPAYout(
-      String FromDate, String ToDate) async {
+  Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsPAYout(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      String baseUrl =
-          'http://180.211.116.158:8080/mobile/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1467,8 +1328,7 @@ class ApiService extends ChangeNotifier {
           "clientId": "A0044",
           "from_date": FromDate.toString(),
           "to_date": ToDate.toString(),
-          "cocd":
-              "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
+          "cocd": "BSE_CASH,NSE_CASH,CD_NSE,MF_BSE,NSE_DLY,NSE_FNO,NSE_SLBM,MTF",
           "trans_type": "P"
         }),
       );
@@ -1477,8 +1337,7 @@ class ApiService extends ChangeNotifier {
       if (response.statusCode == 200) {
         // Parse the list of transactions
         List<dynamic> jsonData = jsonDecode(response.body)['data'][0]['DATA'];
-        List<FundtransaferModel> transactions =
-            jsonData.map((data) => FundtransaferModel.fromJson(data)).toList();
+        List<FundtransaferModel> transactions = jsonData.map((data) => FundtransaferModel.fromJson(data)).toList();
 
         return transactions;
       } else {
@@ -1494,11 +1353,9 @@ class ApiService extends ChangeNotifier {
   ) async {
     try {
       final token1 = await getToken1();
-      String baseUrl =
-          'http://180.211.116.158:8080/mobile/api/v1/techexcel/get-scrip-summary';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/techexcel/get-scrip-summary';
       String formatDate(String dateStr) {
-        DateTime dateTime =
-            DateFormat("MMMM, dd yyyy HH:mm:ss Z").parse(dateStr);
+        DateTime dateTime = DateFormat("MMMM, dd yyyy HH:mm:ss Z").parse(dateStr);
         String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
 
         return formattedDate;
@@ -1510,19 +1367,13 @@ class ApiService extends ChangeNotifier {
           'Authorization': '$token1',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          "company_code": "NSE_FNO",
-          "client_id": "A0044",
-          "trade_date": formatDate(trade_date),
-          "mkt_type": "FO"
-        }),
+        body: jsonEncode({"company_code": "NSE_FNO", "client_id": "A0044", "trade_date": formatDate(trade_date), "mkt_type": "FO"}),
       );
       print(formatDate(trade_date));
       print(response.body);
       if (response.statusCode == 200) {
         List<dynamic> jsonData = jsonDecode(response.body)['data'];
-        List<VoucherBillModel> transactions =
-            jsonData.map((data) => VoucherBillModel.fromJson(data)).toList();
+        List<VoucherBillModel> transactions = jsonData.map((data) => VoucherBillModel.fromJson(data)).toList();
 
         return transactions;
       } else {
@@ -1539,8 +1390,7 @@ class ApiService extends ChangeNotifier {
     try {
       final String? token = await getToken();
 
-      final url = Uri.parse(
-          'http://180.211.116.158:8080/mobile/helpdesk/ticket/create');
+      final url = Uri.parse('${AppConfig.baseUrl3}ticket/create');
       final response = await http.post(
         url,
         headers: {
@@ -1569,8 +1419,7 @@ class ApiService extends ChangeNotifier {
     try {
       final String? token = await getToken();
 
-      final url = Uri.parse(
-          'http://180.211.116.158:8080/mobile/helpdesk/ticket/fetch?client_id=A0031');
+      final url = Uri.parse('${AppConfig.baseUrl3}/ticket/fetch?client_id=A0031');
       final response = await http.get(
         url,
         headers: {
@@ -1582,8 +1431,7 @@ class ApiService extends ChangeNotifier {
       );
       print("____________________________________${response.body}");
       if (response.statusCode == 200) {
-        var response1 =
-            FetchTicketModelResponse.fromJson(jsonDecode(response.body));
+        var response1 = FetchTicketModelResponse.fromJson(jsonDecode(response.body));
         return response1;
       } else {
         throw Exception('Failed to submit bid ${response.statusCode}');

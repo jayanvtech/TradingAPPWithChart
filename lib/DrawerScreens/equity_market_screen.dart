@@ -10,6 +10,7 @@ import 'package:tradingapp/DrawerScreens/topgainers_model.dart';
 import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/MarketWatch/Screens/wishlist_instrument_details_screen.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 import 'package:tradingapp/Utils/const.dart/app_variables.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
 import 'package:tradingapp/master/MasterServices.dart';
@@ -21,8 +22,7 @@ class EquityMarketScreen extends StatefulWidget {
   State<EquityMarketScreen> createState() => _EquityMarketScreenState();
 }
 
-class _EquityMarketScreenState extends State<EquityMarketScreen>
-    with SingleTickerProviderStateMixin {
+class _EquityMarketScreenState extends State<EquityMarketScreen> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     // TODO: implement dispose
@@ -34,9 +34,7 @@ class _EquityMarketScreenState extends State<EquityMarketScreen>
   void UnsubscribeData() {
     for (var data in AppVariables.exchangeData) {
       ApiService().UnsubscribeMarketInstrument(
-        ExchangeConverter()
-            .getExchangeSegmentNumber(data['exchangeSegment']!)
-            .toString(),
+        ExchangeConverter().getExchangeSegmentNumber(data['exchangeSegment']!).toString(),
         data['exchangeInstrumentID']!,
       );
     }
@@ -44,8 +42,7 @@ class _EquityMarketScreenState extends State<EquityMarketScreen>
   }
 
   @override
-  late final TabController _tabController =
-      TabController(length: 4, vsync: this);
+  late final TabController _tabController = TabController(length: 4, vsync: this);
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -55,9 +52,7 @@ class _EquityMarketScreenState extends State<EquityMarketScreen>
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
             ),
             child: TabBar(
               indicatorColor: Colors.blue,
@@ -79,12 +74,7 @@ class _EquityMarketScreenState extends State<EquityMarketScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          TopGainersFullScreen(),
-          TopLoosersFullScreen(),
-          MostBoughtFullScreen(),
-          Week52HighNLowFullScreen()
-        ],
+        children: [TopGainersFullScreen(), TopLoosersFullScreen(), MostBoughtFullScreen(), Week52HighNLowFullScreen()],
       ),
     );
   }
@@ -114,33 +104,22 @@ class TopGainersFullScreen extends StatelessWidget {
                 child: Row(
                   children: sectors.entries.map((entry) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 side: BorderSide(
-                                  color: stockProvider.selectedSector ==
-                                          entry.value
-                                      ? Colors.blue
-                                      : Colors.grey[300]!,
+                                  color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                 )),
-                            foregroundColor:
-                                stockProvider.selectedSector == entry.value
-                                    ? Colors.blue
-                                    : Colors.grey,
-                            backgroundColor:
-                                stockProvider.selectedSector == entry.value
-                                    ? Colors.blue.withOpacity(0.1)
-                                    : Colors.white!,
+                            foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                            backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                             elevation: 0.0,
-                            shadowColor: Colors
-                                .transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
+                            shadowColor:
+                                Colors.transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
                             ),
                         onPressed: () {
-                          stockProvider
-                              .setFilter(entry.value); // Update filter value
+                          stockProvider.setFilter(entry.value); // Update filter value
                         },
                         child: Text(entry.key),
                       ),
@@ -152,8 +131,7 @@ class TopGainersFullScreen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: Provider.of<TopGainersProvider>(context, listen: false)
-                  .fetchStocks(),
+              future: Provider.of<TopGainersProvider>(context, listen: false).fetchStocks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -182,11 +160,9 @@ class TopGainersFullScreen extends StatelessWidget {
                         final masterServices = DatabaseHelperMaster();
 
                         return FutureBuilder(
-                            future: masterServices
-                                .getInstrumentsBySymbol(stock.symbol),
+                            future: masterServices.getInstrumentsBySymbol(stock.symbol),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(
                                     child: Skeletonizer(
                                   child: ListTile(
@@ -195,44 +171,27 @@ class TopGainersFullScreen extends StatelessWidget {
                                     trailing: Text(
                                       '${stock.perChange}%',
                                       style: TextStyle(
-                                        color:
-                                            double.parse(stock.perChange) >= 0
-                                                ? Colors.green
-                                                : Colors.red,
+                                        color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                       ),
                                     ),
                                   ),
                                 ));
                               } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
                               // print(snapshot.data!['exchangeInstrumentID']);
                               if (snapshot.data != null) {
-                                final exchangeInstrumentID =
-                                    snapshot.data!['exchangeInstrumentID'];
-                                final exchangeSegment =
-                                    snapshot.data!['exchangeSegment'];
+                                final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                final exchangeSegment = snapshot.data!['exchangeSegment'];
                                 AppVariables.exchangeData.add({
                                   'exchangeInstrumentID': exchangeInstrumentID,
-                                  'exchangeSegment': ExchangeConverter()
-                                      .getExchangeSegmentNumber(exchangeSegment)
-                                      .toString(),
+                                  'exchangeSegment': ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                 });
-                                ApiService().MarketInstrumentSubscribe(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID);
-                                AppVariables.topGainers.addAll(
-                                    {stock.symbol: exchangeInstrumentID});
+                                ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
+                                AppVariables.topGainers.addAll({stock.symbol: exchangeInstrumentID});
                                 void dispose() {
                                   ApiService().UnsubscribeMarketInstrument(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                     exchangeInstrumentID,
                                   );
                                   // Call the superclass dispose method if this is a StatefulWidget
@@ -254,51 +213,34 @@ class TopGainersFullScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ViewMoreInstrumentDetailScreen(
-                                      exchangeInstrumentId: snapshot
-                                          .data!['exchangeInstrumentID'],
+                                    builder: (context) => ViewMoreInstrumentDetailScreen(
+                                      exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                       exchangeSegment: 1.toString(),
                                       lastTradedPrice: stock.ltp,
                                       close: stock.prevPrice,
-                                      displayName: stock
-                                          .symbol, // snapshot.data!['DisplayName'],
+                                      displayName: stock.symbol, // snapshot.data!['DisplayName'],
                                     ),
                                   ),
                                 );
-                              }, child: Consumer<MarketFeedSocket>(
-                                  builder: (context, data, child) {
-                                final marketData = data.getDataById(int.parse(
-                                    snapshot.data!['exchangeInstrumentID']
-                                        .toString()));
-                                final priceChange = marketData != null
-                                    ? double.parse(marketData.price) -
-                                        double.parse(stock.prevPrice)
-                                    : 0;
-                                final priceChangeColor =
-                                    priceChange > 0 ? Colors.green : Colors.red;
+                              }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevPrice) : 0;
+                                final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                 return ListTile(
                                   title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(stock.symbol),
                                       Text(
-                                        marketData != null
-                                            ? '${marketData.price}'
-                                            : '${stock.ltp}',
+                                        marketData != null ? '${marketData.price}' : '${stock.ltp}',
                                         style: TextStyle(
-                                          color:
-                                              double.parse(stock.perChange) >= 0
-                                                  ? Colors.green
-                                                  : Colors.red,
+                                          color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                         ),
                                       )
                                     ],
                                   ),
                                   subtitle: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -337,10 +279,7 @@ class TopGainersFullScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                          marketData != null
-                                              ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)'
-                                              : '(${stock.perChange}&)',
+                                      Text(marketData != null ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)' : '(${stock.perChange}&)',
                                           style: TextStyle(
                                             color: priceChangeColor,
                                           ))
@@ -375,18 +314,15 @@ class TopGainersProvider with ChangeNotifier {
   Future<void> fetchStocks() async {
     _isLoading = true;
     _stocks.clear(); // Clear the stocks list
-    notifyListeners();
+    //notifyListeners();
 
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/top-gainers-loosers?index=gainers';
+    final url = '${AppConfig.localVasu}/api/v1/all-stocks-performance/top-gainers-loosers?index=gainers';
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        _stocks = (data['data'] as List)
-            .map((item) => TopGainersNLosers.fromJson(item))
-            .toList();
+        _stocks = (data['data'] as List).map((item) => TopGainersNLosers.fromJson(item)).toList();
         filterStocks(); // Filter based on selected sector
       } else {
         throw Exception('Failed to load stocks');
@@ -402,11 +338,9 @@ class TopGainersProvider with ChangeNotifier {
   void filterStocks() {
     // Filter stocks by the selected sector
     if (_selectedSector == 'allSec') {
-      _filteredStocks =
-          _stocks.where((stock) => stock.sector == 'allSec').toList();
+      _filteredStocks = _stocks.where((stock) => stock.sector == 'allSec').toList();
     } else {
-      _filteredStocks =
-          _stocks.where((stock) => stock.sector == _selectedSector).toList();
+      _filteredStocks = _stocks.where((stock) => stock.sector == _selectedSector).toList();
     }
     notifyListeners();
   }
@@ -437,18 +371,15 @@ class MostBoughtProvider with ChangeNotifier {
   Future<void> fetchStocks() async {
     _isLoading = true;
     _stocks.clear(); // Clear the stocks list
-    notifyListeners();
+    // notifyListeners();
 
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/most-bought-sold?entity=mainboard';
+    final url = '${AppConfig.localVasu}/api/v1/all-stocks-performance/most-bought-sold?entity=mainboard';
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        _stocks = (data['data'] as List)
-            .map((item) => MostBought.fromJson(item))
-            .toList();
+        _stocks = (data['data'] as List).map((item) => MostBought.fromJson(item)).toList();
 
         // Schedule the state modification after the build phase
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -470,12 +401,9 @@ class MostBoughtProvider with ChangeNotifier {
 
   void filterStocks() {
     if (_selectedSector == 'value') {
-      _filteredStocks =
-          _stocks.where((stock) => stock.subCategory == 'value').toList();
+      _filteredStocks = _stocks.where((stock) => stock.subCategory == 'value').toList();
     } else {
-      _filteredStocks = _stocks
-          .where((stock) => stock.subCategory == _selectedSector)
-          .toList();
+      _filteredStocks = _stocks.where((stock) => stock.subCategory == _selectedSector).toList();
     }
     notifyListeners();
   }
@@ -509,16 +437,13 @@ class Week52HighLowProvider with ChangeNotifier {
     _stocks.clear(); // Clear the stocks list
     notifyListeners();
 
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/last-52week?filter=all';
+    final url = '${AppConfig.localVasu}/api/v1/all-stocks-performance/last-52week?filter=all';
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        _stocks = (data['data'] as List)
-            .map((item) => Week52HighLowModel.fromJson(item))
-            .toList();
+        _stocks = (data['data'] as List).map((item) => Week52HighLowModel.fromJson(item)).toList();
         filterStocks(); // Filter based on selected sector
       } else {
         throw Exception('Failed to load stocks');
@@ -533,11 +458,9 @@ class Week52HighLowProvider with ChangeNotifier {
 
   void filterStocks() {
     if (_selectedSector == 'high') {
-      _filteredStocks =
-          _stocks.where((stock) => stock.filter == 'high').toList();
+      _filteredStocks = _stocks.where((stock) => stock.filter == 'high').toList();
     } else if (_selectedSector == 'low') {
-      _filteredStocks =
-          _stocks.where((stock) => stock.filter == 'low').toList();
+      _filteredStocks = _stocks.where((stock) => stock.filter == 'low').toList();
     } else {
       _filteredStocks = _stocks;
     }
@@ -563,8 +486,7 @@ class TopLoosersFullScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<TopLoosersProvider>(context, listen: false)
-            .refreshStocks(),
+        onRefresh: () => Provider.of<TopLoosersProvider>(context, listen: false).refreshStocks(),
         child: Column(
           children: [
             Consumer<TopLoosersProvider>(
@@ -584,33 +506,22 @@ class TopLoosersFullScreen extends StatelessWidget {
                   child: Row(
                     children: sectors.entries.map((entry) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   side: BorderSide(
-                                    color: stockProvider.selectedSector ==
-                                            entry.value
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
+                                    color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                   )),
-                              foregroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              backgroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.white!,
+                              foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                              backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                               elevation: 0.0,
-                              shadowColor: Colors
-                                  .transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
+                              shadowColor:
+                                  Colors.transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
                               ),
                           onPressed: () {
-                            stockProvider
-                                .setFilter(entry.value); // Update filter value
+                            stockProvider.setFilter(entry.value); // Update filter value
                           },
                           child: Text(entry.key),
                         ),
@@ -622,8 +533,7 @@ class TopLoosersFullScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder(
-                future: Provider.of<TopLoosersProvider>(context, listen: false)
-                    .fetchStocks(),
+                future: Provider.of<TopLoosersProvider>(context, listen: false).fetchStocks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -653,11 +563,9 @@ class TopLoosersFullScreen extends StatelessWidget {
                           final masterServices = DatabaseHelperMaster();
 
                           return FutureBuilder(
-                              future: masterServices
-                                  .getInstrumentsBySymbol(stock.symbol),
+                              future: masterServices.getInstrumentsBySymbol(stock.symbol),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(
                                       child: Skeletonizer(
                                     child: ListTile(
@@ -666,38 +574,23 @@ class TopLoosersFullScreen extends StatelessWidget {
                                       trailing: Text(
                                         '${stock.perChange}%',
                                         style: TextStyle(
-                                          color:
-                                              double.parse(stock.perChange) >= 0
-                                                  ? Colors.green
-                                                  : Colors.red,
+                                          color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                         ),
                                       ),
                                     ),
                                   ));
                                 } else if (snapshot.hasError) {
-                                  return Center(
-                                      child: Text('Error: ${snapshot.error}'));
+                                  return Center(child: Text('Error: ${snapshot.error}'));
                                 }
                                 // print(snapshot.data!['exchangeInstrumentID']);
                                 if (snapshot.data != null) {
-                                  final exchangeInstrumentID =
-                                      snapshot.data!['exchangeInstrumentID'];
-                                  final exchangeSegment =
-                                      snapshot.data!['exchangeSegment'];
+                                  final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                  final exchangeSegment = snapshot.data!['exchangeSegment'];
                                   AppVariables.exchangeData.add({
-                                    'exchangeInstrumentID':
-                                        exchangeInstrumentID,
-                                    'exchangeSegment': ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    'exchangeInstrumentID': exchangeInstrumentID,
+                                    'exchangeSegment': ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                   });
-                                  ApiService().MarketInstrumentSubscribe(
-                                      ExchangeConverter()
-                                          .getExchangeSegmentNumber(
-                                              exchangeSegment)
-                                          .toString(),
-                                      exchangeInstrumentID);
+                                  ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                   // print(
                                   //     'Exchange Instrument ID: $exchangeInstrumentID');
                                   // print('Exchange Segment: $exchangeSegment');
@@ -713,53 +606,34 @@ class TopLoosersFullScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ViewMoreInstrumentDetailScreen(
-                                        exchangeInstrumentId: snapshot
-                                            .data!['exchangeInstrumentID'],
+                                      builder: (context) => ViewMoreInstrumentDetailScreen(
+                                        exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                         exchangeSegment: 1.toString(),
                                         lastTradedPrice: stock.ltp,
                                         close: stock.prevPrice,
-                                        displayName: stock
-                                            .symbol, // snapshot.data!['DisplayName'],
+                                        displayName: stock.symbol, // snapshot.data!['DisplayName'],
                                       ),
                                     ),
                                   );
-                                }, child: Consumer<MarketFeedSocket>(
-                                    builder: (context, data, child) {
-                                  final marketData = data.getDataById(int.parse(
-                                      snapshot.data!['exchangeInstrumentID']
-                                          .toString()));
-                                  final priceChange = marketData != null
-                                      ? double.parse(marketData.price) -
-                                          double.parse(stock.prevPrice)
-                                      : 0;
-                                  final priceChangeColor = priceChange > 0
-                                      ? Colors.green
-                                      : Colors.red;
+                                }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                  final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                  final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevPrice) : 0;
+                                  final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                   return ListTile(
                                     title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(stock.symbol),
                                         Text(
-                                          marketData != null
-                                              ? '${marketData.price}'
-                                              : '${stock.ltp}',
+                                          marketData != null ? '${marketData.price}' : '${stock.ltp}',
                                           style: TextStyle(
-                                            color:
-                                                double.parse(stock.perChange) >=
-                                                        0
-                                                    ? Colors.green
-                                                    : Colors.red,
+                                            color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                           ),
                                         )
                                       ],
                                     ),
                                     subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -798,10 +672,7 @@ class TopLoosersFullScreen extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Text(
-                                            marketData != null
-                                                ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)'
-                                                : '(${stock.perChange}%)',
+                                        Text(marketData != null ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)' : '(${stock.perChange}%)',
                                             style: TextStyle(
                                               color: priceChangeColor,
                                             ))
@@ -840,16 +711,13 @@ class TopLoosersProvider with ChangeNotifier {
     _stocks.clear(); // Clear the stocks list
     notifyListeners();
 
-    final url =
-        'http://180.211.116.158:8080/mobile/api/v1/all-stocks-performance/top-gainers-loosers?index=loosers';
+    final url = '${AppConfig.localVasu}/api/v1/all-stocks-performance/top-gainers-loosers?index=loosers';
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        _stocks = (data['data'] as List)
-            .map((item) => TopGainersNLosers.fromJson(item))
-            .toList();
+        _stocks = (data['data'] as List).map((item) => TopGainersNLosers.fromJson(item)).toList();
         filterStocks(); // Filter based on selected sector
       } else {
         throw Exception('Failed to load stocks');
@@ -865,11 +733,9 @@ class TopLoosersProvider with ChangeNotifier {
   void filterStocks() {
     // Filter stocks by the selected sector
     if (_selectedSector == 'allSec') {
-      _filteredStocks =
-          _stocks.where((stock) => stock.sector == 'allSec').toList();
+      _filteredStocks = _stocks.where((stock) => stock.sector == 'allSec').toList();
     } else {
-      _filteredStocks =
-          _stocks.where((stock) => stock.sector == _selectedSector).toList();
+      _filteredStocks = _stocks.where((stock) => stock.sector == _selectedSector).toList();
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifyListeners();
@@ -897,8 +763,7 @@ class MostBoughtFullScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<MostBoughtProvider>(context, listen: false)
-            .refreshStocks(),
+        onRefresh: () => Provider.of<MostBoughtProvider>(context, listen: false).refreshStocks(),
         child: Column(
           children: [
             Consumer<MostBoughtProvider>(
@@ -914,33 +779,22 @@ class MostBoughtFullScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: sectors.entries.map((entry) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   side: BorderSide(
-                                    color: stockProvider.selectedSector ==
-                                            entry.value
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
+                                    color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                   )),
-                              foregroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              backgroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.white!,
+                              foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                              backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                               elevation: 0.0,
-                              shadowColor: Colors
-                                  .transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
+                              shadowColor:
+                                  Colors.transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
                               ),
                           onPressed: () {
-                            stockProvider
-                                .setFilter(entry.value); // Update filter value
+                            stockProvider.setFilter(entry.value); // Update filter value
                           },
                           child: Text(entry.key),
                         ),
@@ -952,8 +806,7 @@ class MostBoughtFullScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder(
-                future: Provider.of<MostBoughtProvider>(context, listen: false)
-                    .fetchStocks(),
+                future: Provider.of<MostBoughtProvider>(context, listen: false).fetchStocks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -983,11 +836,9 @@ class MostBoughtFullScreen extends StatelessWidget {
                           final masterServices = DatabaseHelperMaster();
 
                           return FutureBuilder(
-                              future: masterServices
-                                  .getInstrumentsBySymbol(stock.symbol),
+                              future: masterServices.getInstrumentsBySymbol(stock.symbol),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(
                                       child: Skeletonizer(
                                     child: ListTile(
@@ -996,37 +847,23 @@ class MostBoughtFullScreen extends StatelessWidget {
                                       trailing: Text(
                                         '${stock.createdAt}%',
                                         style: TextStyle(
-                                          color: double.parse(stock.change) >= 0
-                                              ? Colors.green
-                                              : Colors.red,
+                                          color: double.parse(stock.change) >= 0 ? Colors.green : Colors.red,
                                         ),
                                       ),
                                     ),
                                   ));
                                 } else if (snapshot.hasError) {
-                                  return Center(
-                                      child: Text('Error: ${snapshot.error}'));
+                                  return Center(child: Text('Error: ${snapshot.error}'));
                                 }
                                 // print(snapshot.data!['exchangeInstrumentID']);
                                 if (snapshot.data != null) {
-                                  final exchangeInstrumentID =
-                                      snapshot.data!['exchangeInstrumentID'];
-                                  final exchangeSegment =
-                                      snapshot.data!['exchangeSegment'];
+                                  final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                  final exchangeSegment = snapshot.data!['exchangeSegment'];
                                   AppVariables.exchangeData.add({
-                                    'exchangeInstrumentID':
-                                        exchangeInstrumentID,
-                                    'exchangeSegment': ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    'exchangeInstrumentID': exchangeInstrumentID,
+                                    'exchangeSegment': ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                   });
-                                  ApiService().MarketInstrumentSubscribe(
-                                      ExchangeConverter()
-                                          .getExchangeSegmentNumber(
-                                              exchangeSegment)
-                                          .toString(),
-                                      exchangeInstrumentID);
+                                  ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                   // print(
                                   //     'Exchange Instrument ID: $exchangeInstrumentID');
                                   // print('Exchange Segment: $exchangeSegment');
@@ -1042,52 +879,34 @@ class MostBoughtFullScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ViewMoreInstrumentDetailScreen(
-                                        exchangeInstrumentId: snapshot
-                                            .data!['exchangeInstrumentID'],
+                                      builder: (context) => ViewMoreInstrumentDetailScreen(
+                                        exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                         exchangeSegment: 1.toString(),
                                         lastTradedPrice: stock.lastPrice,
                                         close: stock.closePrice,
-                                        displayName: stock
-                                            .symbol, // snapshot.data!['DisplayName'],
+                                        displayName: stock.symbol, // snapshot.data!['DisplayName'],
                                       ),
                                     ),
                                   );
-                                }, child: Consumer<MarketFeedSocket>(
-                                    builder: (context, data, child) {
-                                  final marketData = data.getDataById(int.parse(
-                                      snapshot.data!['exchangeInstrumentID']
-                                          .toString()));
-                                  final priceChange = marketData != null
-                                      ? double.parse(marketData.price) -
-                                          double.parse(stock.closePrice)
-                                      : 0;
-                                  final priceChangeColor = priceChange > 0
-                                      ? Colors.green
-                                      : Colors.red;
+                                }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                  final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                  final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.closePrice) : 0;
+                                  final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                   return ListTile(
                                     title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(stock.symbol),
                                         Text(
-                                          marketData != null
-                                              ? '${marketData.price}'
-                                              : '${stock.lastPrice}',
+                                          marketData != null ? '${marketData.price}' : '${stock.lastPrice}',
                                           style: TextStyle(
-                                            color:
-                                                double.parse(stock.pChange) >= 0
-                                                    ? Colors.green
-                                                    : Colors.red,
+                                            color: double.parse(stock.pChange) >= 0 ? Colors.green : Colors.red,
                                           ),
                                         )
                                       ],
                                     ),
                                     subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -1158,9 +977,7 @@ class Week52HighNLowFullScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
-        onRefresh: () =>
-            Provider.of<Week52HighLowProvider>(context, listen: false)
-                .refreshStocks(),
+        onRefresh: () => Provider.of<Week52HighLowProvider>(context, listen: false).refreshStocks(),
         child: Column(
           children: [
             Consumer<Week52HighLowProvider>(
@@ -1176,33 +993,22 @@ class Week52HighNLowFullScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: sectors.entries.map((entry) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   side: BorderSide(
-                                    color: stockProvider.selectedSector ==
-                                            entry.value
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
+                                    color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                   )),
-                              foregroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              backgroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.white!,
+                              foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                              backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                               elevation: 0.0,
-                              shadowColor: Colors
-                                  .transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
+                              shadowColor:
+                                  Colors.transparent // backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.white, // Change color if selected
                               ),
                           onPressed: () {
-                            stockProvider
-                                .setFilter(entry.value); // Update filter value
+                            stockProvider.setFilter(entry.value); // Update filter value
                           },
                           child: Text(entry.key),
                         ),
@@ -1214,9 +1020,7 @@ class Week52HighNLowFullScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder(
-                future:
-                    Provider.of<Week52HighLowProvider>(context, listen: false)
-                        .fetchStocks(),
+                future: Provider.of<Week52HighLowProvider>(context, listen: false).fetchStocks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -1246,11 +1050,9 @@ class Week52HighNLowFullScreen extends StatelessWidget {
                           final masterServices = DatabaseHelperMaster();
 
                           return FutureBuilder(
-                              future: masterServices
-                                  .getInstrumentsBySymbol(stock.symbol),
+                              future: masterServices.getInstrumentsBySymbol(stock.symbol),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(
                                       child: Skeletonizer(
                                     child: ListTile(
@@ -1259,37 +1061,23 @@ class Week52HighNLowFullScreen extends StatelessWidget {
                                       trailing: Text(
                                         '${stock.createdAt}%',
                                         style: TextStyle(
-                                          color: double.parse(stock.change) >= 0
-                                              ? Colors.green
-                                              : Colors.red,
+                                          color: double.parse(stock.change) >= 0 ? Colors.green : Colors.red,
                                         ),
                                       ),
                                     ),
                                   ));
                                 } else if (snapshot.hasError) {
-                                  return Center(
-                                      child: Text('Error: ${snapshot.error}'));
+                                  return Center(child: Text('Error: ${snapshot.error}'));
                                 }
                                 // print(snapshot.data!['exchangeInstrumentID']);
                                 if (snapshot.data != null) {
-                                  final exchangeInstrumentID =
-                                      snapshot.data!['exchangeInstrumentID'];
-                                  final exchangeSegment =
-                                      snapshot.data!['exchangeSegment'];
+                                  final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                  final exchangeSegment = snapshot.data!['exchangeSegment'];
                                   AppVariables.exchangeData.add({
-                                    'exchangeInstrumentID':
-                                        exchangeInstrumentID,
-                                    'exchangeSegment': ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    'exchangeInstrumentID': exchangeInstrumentID,
+                                    'exchangeSegment': ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                   });
-                                  ApiService().MarketInstrumentSubscribe(
-                                      ExchangeConverter()
-                                          .getExchangeSegmentNumber(
-                                              exchangeSegment)
-                                          .toString(),
-                                      exchangeInstrumentID);
+                                  ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                   // print(
                                   //     'Exchange Instrument ID: $exchangeInstrumentID');
                                   // print('Exchange Segment: $exchangeSegment');
@@ -1305,52 +1093,34 @@ class Week52HighNLowFullScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ViewMoreInstrumentDetailScreen(
-                                        exchangeInstrumentId: snapshot
-                                            .data!['exchangeInstrumentID'],
+                                      builder: (context) => ViewMoreInstrumentDetailScreen(
+                                        exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                         exchangeSegment: 1.toString(),
                                         lastTradedPrice: stock.ltp,
                                         close: stock.prevClose,
-                                        displayName: stock
-                                            .symbol, // snapshot.data!['DisplayName'],
+                                        displayName: stock.symbol, // snapshot.data!['DisplayName'],
                                       ),
                                     ),
                                   );
-                                }, child: Consumer<MarketFeedSocket>(
-                                    builder: (context, data, child) {
-                                  final marketData = data.getDataById(int.parse(
-                                      snapshot.data!['exchangeInstrumentID']
-                                          .toString()));
-                                  final priceChange = marketData != null
-                                      ? double.parse(marketData.price) -
-                                          double.parse(stock.prevClose)
-                                      : 0;
-                                  final priceChangeColor = priceChange > 0
-                                      ? Colors.green
-                                      : Colors.red;
+                                }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                  final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                  final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevClose) : 0;
+                                  final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                   return ListTile(
                                     title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(stock.symbol),
                                         Text(
-                                          marketData != null
-                                              ? '${marketData.price}'
-                                              : '${stock.ltp}',
+                                          marketData != null ? '${marketData.price}' : '${stock.ltp}',
                                           style: TextStyle(
-                                            color:
-                                                double.parse(stock.pChange) >= 0
-                                                    ? Colors.green
-                                                    : Colors.red,
+                                            color: double.parse(stock.pChange) >= 0 ? Colors.green : Colors.red,
                                           ),
                                         )
                                       ],
                                     ),
                                     subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
@@ -1389,10 +1159,7 @@ class Week52HighNLowFullScreen extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Text(
-                                            marketData != null
-                                                ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)'
-                                                : '(${stock.pChange}%)',
+                                        Text(marketData != null ? '${priceChange.toStringAsFixed(2)}(${marketData.percentChange}%)' : '(${stock.pChange}%)',
                                             style: TextStyle(
                                               color: priceChangeColor,
                                             ))

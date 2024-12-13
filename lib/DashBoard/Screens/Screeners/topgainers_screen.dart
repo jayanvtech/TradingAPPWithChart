@@ -38,31 +38,20 @@ class TopGainersTop4Screen extends StatelessWidget {
                   child: Row(
                     children: sectors.entries.map((entry) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   side: BorderSide(
-                                    color: stockProvider.selectedSector ==
-                                            entry.value
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
+                                    color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                   )),
-                              foregroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              backgroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.white!,
+                              foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                              backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                               elevation: 0.0,
                               shadowColor: Colors.transparent),
-                          onPressed: () { HapticFeedback.mediumImpact(
-            
-           );
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
                             stockProvider.setFilter(entry.value);
                           },
                           child: Text(entry.key),
@@ -76,8 +65,7 @@ class TopGainersTop4Screen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: Provider.of<TopGainersProvider>(context, listen: false)
-                  .fetchStocks(),
+              future: Provider.of<TopGainersProvider>(context, listen: false).fetchStocks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -96,22 +84,14 @@ class TopGainersTop4Screen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: GridView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
-                              physics:
-                                  NeverScrollableScrollPhysics(), // Disable scrolling
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 100,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 100, crossAxisSpacing: 10, mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -121,19 +101,15 @@ class TopGainersTop4Screen extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(
-                                            color: Colors.grey[300]!),
+                                        border: Border.all(color: Colors.grey[300]!),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 height: 40,
@@ -146,19 +122,14 @@ class TopGainersTop4Screen extends StatelessWidget {
                                             ],
                                           ),
                                           Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 0, 10, 0),
+                                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text("mostBought"),
                                                   ],
@@ -185,31 +156,21 @@ class TopGainersTop4Screen extends StatelessWidget {
 
                 return Consumer<TopGainersProvider>(
                   builder: (context, stockProvider, child) {
-                    final filteredStocks = stockProvider.filteredStocks
-                        .take(4)
-                        .toList(); // Take only the top 4 elements
+                    final filteredStocks = stockProvider.filteredStocks.take(4).toList(); // Take only the top 4 elements
                     return GridView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      physics:
-                          NeverScrollableScrollPhysics(), // Disable scrolling
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 120,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 120, crossAxisSpacing: 10, mainAxisSpacing: 10),
                       itemCount: filteredStocks.length,
                       itemBuilder: (context, index) {
                         final stock = filteredStocks[index];
                         final masterServices = DatabaseHelperMaster();
 
                         return FutureBuilder(
-                            future: masterServices
-                                .getInstrumentsBySymbol(stock.symbol),
+                            future: masterServices.getInstrumentsBySymbol(stock.symbol),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(
                                     child: Skeletonizer(
                                   child: ListTile(
@@ -218,36 +179,22 @@ class TopGainersTop4Screen extends StatelessWidget {
                                     trailing: Text(
                                       '${double.parse(stock.perChange).toStringAsFixed(2)}%',
                                       style: TextStyle(
-                                        color:
-                                            double.parse(stock.perChange) >= 0
-                                                ? Colors.green
-                                                : Colors.red,
+                                        color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                       ),
                                     ),
                                   ),
                                 ));
                               } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
 
                               if (snapshot.data != null) {
-                                final exchangeInstrumentID =
-                                    snapshot.data!['exchangeInstrumentID'];
-                                final exchangeSegment =
-                                    snapshot.data!['exchangeSegment'];
-                                ApiService().MarketInstrumentSubscribe(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID);
+                                final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                final exchangeSegment = snapshot.data!['exchangeSegment'];
+                                ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                 void dispose() {
                                   ApiService().UnsubscribeMarketInstrument(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                     exchangeInstrumentID,
                                   );
                                 }
@@ -259,9 +206,8 @@ class TopGainersTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                              return GestureDetector(onTap: () {
+                                HapticFeedback.mediumImpact();
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -269,10 +215,8 @@ class TopGainersTop4Screen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ViewMoreInstrumentDetailScreen(
-                                      exchangeInstrumentId: snapshot
-                                          .data!['exchangeInstrumentID'],
+                                    builder: (context) => ViewMoreInstrumentDetailScreen(
+                                      exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                       exchangeSegment: 1.toString(),
                                       lastTradedPrice: stock.ltp,
                                       close: stock.prevPrice,
@@ -280,33 +224,23 @@ class TopGainersTop4Screen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              }, child: Consumer<MarketFeedSocket>(
-                                  builder: (context, data, child) {
-                                final marketData = data.getDataById(int.parse(
-                                    snapshot.data!['exchangeInstrumentID']
-                                        .toString()));
-                                final priceChange = marketData != null
-                                    ? double.parse(marketData.price) -
-                                        double.parse(stock.prevPrice)
-                                    : 0;
-                                final priceChangeColor =
-                                    priceChange > 0 ? Colors.green : Colors.red;
+                              }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevPrice) : 0;
+                                final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                 return Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
+                                    border: Border.all(color: Colors.grey[300]!),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
@@ -321,22 +255,17 @@ class TopGainersTop4Screen extends StatelessWidget {
                                           // SizedBox(width: 10),
                                           Text(
                                             stock.symbol.toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
+                                            style: TextStyle(fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              marketData != null
-                                                  ? marketData.price
-                                                  : stock.ltp.toString(),
+                                              marketData != null ? marketData.price : stock.ltp.toString(),
                                               style: TextStyle(
                                                 color: Colors.green,
                                                 fontWeight: FontWeight.w600,
@@ -344,18 +273,10 @@ class TopGainersTop4Screen extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(
-                                                    marketData != null
-                                                        ? priceChange
-                                                            .toStringAsFixed(2)
-                                                        : "0",
-                                                    style: TextStyle(
-                                                        color:
-                                                            priceChangeColor)),
+                                                Text(marketData != null ? priceChange.toStringAsFixed(2) : "0", style: TextStyle(color: priceChangeColor)),
                                                 Text(
                                                   '(${marketData != null ? marketData.percentChange : double.parse(stock.perChange).toStringAsFixed(2)}%)',
-                                                  style: TextStyle(
-                                                      color: priceChangeColor),
+                                                  style: TextStyle(color: priceChangeColor),
                                                 ),
                                               ],
                                             ),
@@ -406,31 +327,20 @@ class TopLoosersTop4Screen extends StatelessWidget {
                   child: Row(
                     children: sectors.entries.map((entry) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   side: BorderSide(
-                                    color: stockProvider.selectedSector ==
-                                            entry.value
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
+                                    color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                   )),
-                              foregroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              backgroundColor:
-                                  stockProvider.selectedSector == entry.value
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.white!,
+                              foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                              backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                               elevation: 0.0,
                               shadowColor: Colors.transparent),
-                          onPressed: () { HapticFeedback.heavyImpact(
-            
-           );
+                          onPressed: () {
+                            HapticFeedback.heavyImpact();
                             stockProvider.setFilter(entry.value);
                           },
                           child: Text(entry.key),
@@ -444,8 +354,7 @@ class TopLoosersTop4Screen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: Provider.of<TopLoosersProvider>(context, listen: false)
-                  .fetchStocks(),
+              future: Provider.of<TopLoosersProvider>(context, listen: false).fetchStocks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -464,22 +373,14 @@ class TopLoosersTop4Screen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: GridView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
-                              physics:
-                                  NeverScrollableScrollPhysics(), // Disable scrolling
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 100,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 100, crossAxisSpacing: 10, mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -489,19 +390,15 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(
-                                            color: Colors.grey[300]!),
+                                        border: Border.all(color: Colors.grey[300]!),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 height: 40,
@@ -514,19 +411,14 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                             ],
                                           ),
                                           Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 0, 10, 0),
+                                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text("mostBought"),
                                                   ],
@@ -553,31 +445,21 @@ class TopLoosersTop4Screen extends StatelessWidget {
 
                 return Consumer<TopLoosersProvider>(
                   builder: (context, stockProvider, child) {
-                    final filteredStocks = stockProvider.filteredStocks
-                        .take(4)
-                        .toList(); // Take only the top 4 elements
+                    final filteredStocks = stockProvider.filteredStocks.take(4).toList(); // Take only the top 4 elements
                     return GridView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      physics:
-                          NeverScrollableScrollPhysics(), // Disable scrolling
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 120,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 120, crossAxisSpacing: 10, mainAxisSpacing: 10),
                       itemCount: filteredStocks.length,
                       itemBuilder: (context, index) {
                         final stock = filteredStocks[index];
                         final masterServices = DatabaseHelperMaster();
 
                         return FutureBuilder(
-                            future: masterServices
-                                .getInstrumentsBySymbol(stock.symbol),
+                            future: masterServices.getInstrumentsBySymbol(stock.symbol),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(
                                     child: Skeletonizer(
                                   child: ListTile(
@@ -586,36 +468,22 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                     trailing: Text(
                                       '${double.parse(stock.perChange).toStringAsFixed(2)}%',
                                       style: TextStyle(
-                                        color:
-                                            double.parse(stock.perChange) >= 0
-                                                ? Colors.green
-                                                : Colors.red,
+                                        color: double.parse(stock.perChange) >= 0 ? Colors.green : Colors.red,
                                       ),
                                     ),
                                   ),
                                 ));
                               } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
 
                               if (snapshot.data != null) {
-                                final exchangeInstrumentID =
-                                    snapshot.data!['exchangeInstrumentID'];
-                                final exchangeSegment =
-                                    snapshot.data!['exchangeSegment'];
-                                ApiService().MarketInstrumentSubscribe(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID);
+                                final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                final exchangeSegment = snapshot.data!['exchangeSegment'];
+                                ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                 void dispose() {
                                   ApiService().UnsubscribeMarketInstrument(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                     exchangeInstrumentID,
                                   );
                                 }
@@ -627,9 +495,8 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                              return GestureDetector(onTap: () {
+                                HapticFeedback.mediumImpact();
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -637,10 +504,8 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ViewMoreInstrumentDetailScreen(
-                                      exchangeInstrumentId: snapshot
-                                          .data!['exchangeInstrumentID'],
+                                    builder: (context) => ViewMoreInstrumentDetailScreen(
+                                      exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                       exchangeSegment: 1.toString(),
                                       lastTradedPrice: stock.ltp,
                                       close: stock.prevPrice,
@@ -648,44 +513,28 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              }, child: Consumer<MarketFeedSocket>(
-                                  builder: (context, data, child) {
-                                final marketData = data.getDataById(int.parse(
-                                    snapshot.data!['exchangeInstrumentID']
-                                        .toString()));
-                                final priceChange = marketData != null
-                                    ? double.parse(marketData.price) -
-                                        double.parse(stock.prevPrice)
-                                    : 0;
-                                final priceChangeColor =
-                                    priceChange > 0 ? Colors.green : Colors.red;
+                              }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevPrice) : 0;
+                                final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                 return Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
+                                    border: Border.all(color: Colors.grey[300]!),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
-                                                  placeholderBuilder: (BuildContext
-                                                          context) =>
-                                                      Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(30.0),
-                                                          child:
-                                                              const CircularProgressIndicator()),
+                                                  placeholderBuilder: (BuildContext context) =>
+                                                      Container(padding: const EdgeInsets.all(30.0), child: const CircularProgressIndicator()),
                                                   "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
                                                   fit: BoxFit.fill,
                                                   height: 50,
@@ -697,22 +546,17 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                           // SizedBox(width: 10),
                                           Text(
                                             stock.symbol.toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
+                                            style: TextStyle(fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              marketData != null
-                                                  ? marketData.price
-                                                  : stock.ltp.toString(),
+                                              marketData != null ? marketData.price : stock.ltp.toString(),
                                               style: TextStyle(
                                                 color: priceChangeColor,
                                                 fontWeight: FontWeight.w600,
@@ -720,18 +564,10 @@ class TopLoosersTop4Screen extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(
-                                                    marketData != null
-                                                        ? priceChange
-                                                            .toStringAsFixed(2)
-                                                        : "0",
-                                                    style: TextStyle(
-                                                        color:
-                                                            priceChangeColor)),
+                                                Text(marketData != null ? priceChange.toStringAsFixed(2) : "0", style: TextStyle(color: priceChangeColor)),
                                                 Text(
                                                   ' (${marketData != null ? marketData.percentChange : double.parse(stock.perChange).toStringAsFixed(2)}%)',
-                                                  style: TextStyle(
-                                                      color: priceChangeColor),
+                                                  style: TextStyle(color: priceChangeColor),
                                                 ),
                                               ],
                                             ),
@@ -779,31 +615,20 @@ class MostBoughtTop4Screen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: sectors.entries.map((entry) {
                         return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     side: BorderSide(
-                                      color: stockProvider.selectedSector ==
-                                              entry.value
-                                          ? Colors.blue
-                                          : Colors.grey[300]!,
+                                      color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                     )),
-                                foregroundColor:
-                                    stockProvider.selectedSector == entry.value
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                backgroundColor:
-                                    stockProvider.selectedSector == entry.value
-                                        ? Colors.blue.withOpacity(0.1)
-                                        : Colors.white!,
+                                foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                                backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                                 elevation: 0.0,
                                 shadowColor: Colors.transparent),
-                            onPressed: () {HapticFeedback.heavyImpact(
-            
-           );
+                            onPressed: () {
+                              HapticFeedback.heavyImpact();
                               stockProvider.setFilter(entry.value);
                             },
                             child: Text(entry.key),
@@ -818,8 +643,7 @@ class MostBoughtTop4Screen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: Provider.of<MostBoughtProvider>(context, listen: false)
-                  .fetchStocks(),
+              future: Provider.of<MostBoughtProvider>(context, listen: false).fetchStocks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -837,22 +661,14 @@ class MostBoughtTop4Screen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: GridView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
-                              physics:
-                                  NeverScrollableScrollPhysics(), // Disable scrolling
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 100,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 100, crossAxisSpacing: 10, mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -862,19 +678,15 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(
-                                            color: Colors.grey[300]!),
+                                        border: Border.all(color: Colors.grey[300]!),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 height: 40,
@@ -887,19 +699,14 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                             ],
                                           ),
                                           Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 0, 10, 0),
+                                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text("mostBought"),
                                                   ],
@@ -926,31 +733,21 @@ class MostBoughtTop4Screen extends StatelessWidget {
 
                 return Consumer<MostBoughtProvider>(
                   builder: (context, stockProvider, child) {
-                    final filteredStocks = stockProvider.filteredStocks
-                        .take(4)
-                        .toList(); // Take only the top 4 elements
+                    final filteredStocks = stockProvider.filteredStocks.take(4).toList(); // Take only the top 4 elements
                     return GridView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      physics:
-                          NeverScrollableScrollPhysics(), // Disable scrolling
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 120,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 120, crossAxisSpacing: 10, mainAxisSpacing: 10),
                       itemCount: filteredStocks.length,
                       itemBuilder: (context, index) {
                         final stock = filteredStocks[index];
                         final masterServices = DatabaseHelperMaster();
 
                         return FutureBuilder(
-                            future: masterServices
-                                .getInstrumentsBySymbol(stock.symbol),
-                            builder: (context, snapshot) { 
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                            future: masterServices.getInstrumentsBySymbol(stock.symbol),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(
                                     child: Skeletonizer(
                                   child: ListTile(
@@ -959,30 +756,19 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                     trailing: Text(
                                       '${stock.lastPrice}%',
                                       style: TextStyle(
-                                        color: double.parse(stock.pChange) >= 0
-                                            ? Colors.green
-                                            : Colors.red,
+                                        color: double.parse(stock.pChange) >= 0 ? Colors.green : Colors.red,
                                       ),
                                     ),
                                   ),
                                 ));
                               } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
 
                               if (snapshot.data != null) {
-                                final exchangeInstrumentID =
-                                    snapshot.data!['exchangeInstrumentID'];
-                                final exchangeSegment =
-                                    snapshot.data!['exchangeSegment'];
-                                ApiService().MarketInstrumentSubscribe(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID);
-                             
+                                final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                final exchangeSegment = snapshot.data!['exchangeSegment'];
+                                ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
 
                                 // print(
                                 //     'Exchange Instrument ID: $exchangeInstrumentID');
@@ -991,11 +777,9 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
-            
-           );
-                                print("=========================================================${snapshot
-                                          .data!['exchangeInstrumentID']}");
+                              return GestureDetector(onTap: () {
+                                HapticFeedback.mediumImpact();
+                                print("=========================================================${snapshot.data!['exchangeInstrumentID']}");
                                 print('Tapped on ${stock.symbol}'
                                     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                     ' and name: ${snapshot.data!['name']}'
@@ -1003,10 +787,8 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ViewMoreInstrumentDetailScreen(
-                                      exchangeInstrumentId: snapshot
-                                          .data!['exchangeInstrumentID'],
+                                    builder: (context) => ViewMoreInstrumentDetailScreen(
+                                      exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                       exchangeSegment: 1.toString(),
                                       lastTradedPrice: stock.lastPrice,
                                       close: stock.previousClose,
@@ -1014,38 +796,26 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              }, child: Consumer<MarketFeedSocket>(
-                                  builder: (context, data, child) {
-                                final marketData = data.getDataById(int.parse(
-                                    snapshot.data!['exchangeInstrumentID']
-                                        .toString()));
-                                final priceChange = marketData != null
-                                    ? double.parse(marketData.price) -
-                                        double.parse(stock.previousClose)
-                                    : 0;
-                                final priceChangeColor =
-                                    priceChange > 0 ? Colors.green : Colors.red;
+                              }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.previousClose) : 0;
+                                final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                 return Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
+                                    border: Border.all(color: Colors.grey[300]!),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
-                                                  
-
                                                   "https://ekyc.arhamshare.com/img//trading_app_logos//${stock.symbol}.svg",
                                                   fit: BoxFit.fill,
                                                   height: 50,
@@ -1061,22 +831,17 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                           // SizedBox(width: 10),
                                           Text(
                                             stock.symbol.toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
+                                            style: TextStyle(fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              marketData != null
-                                                  ? marketData.price
-                                                  : stock.lastPrice.toString(),
+                                              marketData != null ? marketData.price : stock.lastPrice.toString(),
                                               style: TextStyle(
                                                 color: priceChangeColor,
                                                 fontWeight: FontWeight.w600,
@@ -1084,18 +849,10 @@ class MostBoughtTop4Screen extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(
-                                                    marketData != null
-                                                        ? priceChange
-                                                            .toStringAsFixed(2)
-                                                        : "0",
-                                                    style: TextStyle(
-                                                        color:
-                                                            priceChangeColor)),
+                                                Text(marketData != null ? priceChange.toStringAsFixed(2) : "0", style: TextStyle(color: priceChangeColor)),
                                                 Text(
                                                   ' (${marketData != null ? marketData.percentChange : double.parse(stock.pChange).toStringAsFixed(2)}%)',
-                                                  style: TextStyle(
-                                                      color: priceChangeColor),
+                                                  style: TextStyle(color: priceChangeColor),
                                                 ),
                                               ],
                                             ),
@@ -1143,31 +900,20 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: sectors.entries.map((entry) {
                         return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     side: BorderSide(
-                                      color: stockProvider.selectedSector ==
-                                              entry.value
-                                          ? Colors.blue
-                                          : Colors.grey[300]!,
+                                      color: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey[300]!,
                                     )),
-                                foregroundColor:
-                                    stockProvider.selectedSector == entry.value
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                backgroundColor:
-                                    stockProvider.selectedSector == entry.value
-                                        ? Colors.blue.withOpacity(0.1)
-                                        : Colors.white!,
+                                foregroundColor: stockProvider.selectedSector == entry.value ? Colors.blue : Colors.grey,
+                                backgroundColor: stockProvider.selectedSector == entry.value ? Colors.blue.withOpacity(0.1) : Colors.white!,
                                 elevation: 0.0,
                                 shadowColor: Colors.transparent),
-                            onPressed: () {HapticFeedback.heavyImpact(
-            
-           );
+                            onPressed: () {
+                              HapticFeedback.heavyImpact();
                               stockProvider.setFilter(entry.value);
                             },
                             child: Text(entry.key),
@@ -1182,8 +928,7 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: Provider.of<Week52HighLowProvider>(context, listen: false)
-                  .fetchStocks(),
+              future: Provider.of<Week52HighLowProvider>(context, listen: false).fetchStocks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -1202,22 +947,14 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: GridView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
-                              physics:
-                                  NeverScrollableScrollPhysics(), // Disable scrolling
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                              physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 100,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 100, crossAxisSpacing: 10, mainAxisSpacing: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
                                     // Get.to(
                                     //     () => ProfileScreen());
                                   },
@@ -1227,19 +964,15 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(
-                                            color: Colors.grey[300]!),
+                                        border: Border.all(color: Colors.grey[300]!),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 height: 40,
@@ -1252,19 +985,14 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                             ],
                                           ),
                                           Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 0, 10, 0),
+                                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text("mostBought"),
                                                   ],
@@ -1291,31 +1019,21 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
 
                 return Consumer<Week52HighLowProvider>(
                   builder: (context, stockProvider, child) {
-                    final filteredStocks = stockProvider.filteredStocks
-                        .take(4)
-                        .toList(); // Take only the top 4 elements
+                    final filteredStocks = stockProvider.filteredStocks.take(4).toList(); // Take only the top 4 elements
                     return GridView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      physics:
-                          NeverScrollableScrollPhysics(), // Disable scrolling
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
 
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 120,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 120, crossAxisSpacing: 10, mainAxisSpacing: 10),
                       itemCount: filteredStocks.length,
                       itemBuilder: (context, index) {
                         final stock = filteredStocks[index];
                         final masterServices = DatabaseHelperMaster();
 
                         return FutureBuilder(
-                            future: masterServices
-                                .getInstrumentsBySymbol(stock.symbol),
+                            future: masterServices.getInstrumentsBySymbol(stock.symbol),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(
                                     child: Skeletonizer(
                                   child: ListTile(
@@ -1324,35 +1042,22 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                     trailing: Text(
                                       '${stock.ltp}%',
                                       style: TextStyle(
-                                        color: double.parse(stock.pChange) >= 0
-                                            ? Colors.green
-                                            : Colors.red,
+                                        color: double.parse(stock.pChange) >= 0 ? Colors.green : Colors.red,
                                       ),
                                     ),
                                   ),
                                 ));
                               } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
 
                               if (snapshot.data != null) {
-                                final exchangeInstrumentID =
-                                    snapshot.data!['exchangeInstrumentID'];
-                                final exchangeSegment =
-                                    snapshot.data!['exchangeSegment'];
-                                ApiService().MarketInstrumentSubscribe(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
-                                    exchangeInstrumentID);
+                                final exchangeInstrumentID = snapshot.data!['exchangeInstrumentID'];
+                                final exchangeSegment = snapshot.data!['exchangeSegment'];
+                                ApiService().MarketInstrumentSubscribe(ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(), exchangeInstrumentID);
                                 void dispose() {
                                   ApiService().UnsubscribeMarketInstrument(
-                                    ExchangeConverter()
-                                        .getExchangeSegmentNumber(
-                                            exchangeSegment)
-                                        .toString(),
+                                    ExchangeConverter().getExchangeSegmentNumber(exchangeSegment).toString(),
                                     exchangeInstrumentID,
                                   );
                                 }
@@ -1364,9 +1069,8 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                 print('No data found for the given symbol.');
                               }
 
-                              return GestureDetector(onTap: () { HapticFeedback.mediumImpact(
-            
-           );
+                              return GestureDetector(onTap: () {
+                                HapticFeedback.mediumImpact();
                                 // print('Tapped on ${stock.symbol}'
                                 //     ' with exchangeInstrumentID: ${snapshot.data!['exchangeInstrumentID']}'
                                 //     ' and name: ${snapshot.data!['name']}'
@@ -1374,10 +1078,8 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ViewMoreInstrumentDetailScreen(
-                                      exchangeInstrumentId: snapshot
-                                          .data!['exchangeInstrumentID'],
+                                    builder: (context) => ViewMoreInstrumentDetailScreen(
+                                      exchangeInstrumentId: snapshot.data!['exchangeInstrumentID'],
                                       exchangeSegment: 1.toString(),
                                       lastTradedPrice: stock.ltp,
                                       close: stock.prevClose,
@@ -1385,33 +1087,23 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              }, child: Consumer<MarketFeedSocket>(
-                                  builder: (context, data, child) {
-                                final marketData = data.getDataById(int.parse(
-                                    snapshot.data!['exchangeInstrumentID']
-                                        .toString()));
-                                final priceChange = marketData != null
-                                    ? double.parse(marketData.price) -
-                                        double.parse(stock.prevClose)
-                                    : 0;
-                                final priceChangeColor =
-                                    priceChange > 0 ? Colors.green : Colors.red;
+                              }, child: Consumer<MarketFeedSocket>(builder: (context, data, child) {
+                                final marketData = data.getDataById(int.parse(snapshot.data!['exchangeInstrumentID'].toString()));
+                                final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(stock.prevClose) : 0;
+                                final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
                                 return Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
+                                    border: Border.all(color: Colors.grey[300]!),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                             child: CircleAvatar(
                                               child: ClipOval(
                                                 child: SvgPicture.network(
@@ -1426,22 +1118,17 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                           // SizedBox(width: 10),
                                           Text(
                                             stock.symbol.toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
+                                            style: TextStyle(fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              marketData != null
-                                                  ? marketData.price
-                                                  : stock.ltp.toString(),
+                                              marketData != null ? marketData.price : stock.ltp.toString(),
                                               style: TextStyle(
                                                 color: priceChangeColor,
                                                 fontWeight: FontWeight.w600,
@@ -1449,18 +1136,10 @@ class Week52HighNLowTop4Screen extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(
-                                                    marketData != null
-                                                        ? priceChange
-                                                            .toStringAsFixed(2)
-                                                        : "0",
-                                                    style: TextStyle(
-                                                        color:
-                                                            priceChangeColor)),
+                                                Text(marketData != null ? priceChange.toStringAsFixed(2) : "0", style: TextStyle(color: priceChangeColor)),
                                                 Text(
                                                   ' (${marketData != null ? marketData.percentChange : double.parse(stock.pChange).toStringAsFixed(2)}%)',
-                                                  style: TextStyle(
-                                                      color: priceChangeColor),
+                                                  style: TextStyle(color: priceChangeColor),
                                                 ),
                                               ],
                                             ),

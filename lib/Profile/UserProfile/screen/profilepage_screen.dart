@@ -24,7 +24,7 @@ import 'package:tradingapp/Profile/Reports/screens/ledger_report_screen.dart';
 import 'package:tradingapp/Profile/Reports/screens/download_report_screen.dart';
 import 'package:tradingapp/Profile/UserProfile/screen/user_details_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 import 'package:tradingapp/model/trade_balance_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -133,6 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
@@ -184,14 +185,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${snapshot.data!.clientName}',
+                                          '${snapshot.data?.clientName}',
                                           style: TextStyle(
                                               color: AppColors.primaryColorDark,
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                            'Client ID: ${snapshot.data!.clientId}',
+                                            'Client ID: ${snapshot.data?.clientId}',
                                             style: TextStyle(
                                                 color:
                                                     AppColors.primaryColorDark2,
@@ -216,6 +217,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(
                               height: 15,
+                            ),
+                            Text(
+                              "Hodlding",
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             Container(
                               padding: EdgeInsets.all(15),
@@ -267,7 +278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Equity",
+                                            "Ledger",
                                             style: TextStyle(
                                                 color:
                                                     AppColors.primaryColorDark2,
@@ -931,6 +942,154 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               height: 15,
                             ),
+                            // Container(
+                            //   padding: EdgeInsets.all(15),
+                            //   decoration: BoxDecoration(
+                            //       border: Border.fromBorderSide(BorderSide(
+                            //           color: Colors.grey.withOpacity(0.08))),
+                            //       boxShadow: [
+                            //         BoxShadow(
+                            //           color: Colors.grey.withOpacity(0.57),
+                            //           spreadRadius: 0,
+                            //           blurRadius: 1,
+                            //           offset: Offset(
+                            //               0, 1), // changes position of shadow
+                            //         ),
+                            //       ],
+                            //       gradient: LinearGradient(
+                            //         colors: [
+                            //           AppColors.primaryBackgroundColor,
+                            //           AppColors.tertiaryGrediantColor3,
+                            //           AppColors.tertiaryGrediantColor1
+                            //               .withOpacity(1),
+                            //           AppColors.primaryBackgroundColor,
+                            //           AppColors.tertiaryGrediantColor3,
+                            //         ],
+                            //         stops: [0.1, 0.9, 0.9, 0.4, 0.51],
+                            //         begin: Alignment.topCenter,
+                            //         end: Alignment.bottomCenter,
+                            //       ),
+                            //       // boxShadow: [
+                            //       //   BoxShadow(
+                            //       //     color: Colors.grey.withOpacity(0.57),
+                            //       //     spreadRadius: 0,
+                            //       //     blurRadius: 3,
+                            //       //     offset: Offset(
+                            //       //         0, 2), // changes position of shadow
+                            //       //   ),
+                            //       // ],
+                            //       borderRadius: BorderRadius.circular(10)),
+                            //   child: Column(
+                            //     children: [
+                            //       Row(
+                            //         mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Column(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.start,
+                            //             crossAxisAlignment:
+                            //                 CrossAxisAlignment.start,
+                            //             children: [
+                            //               Text(
+                            //                 "Commodity",
+                            //                 style: TextStyle(
+                            //                     color:
+                            //                         AppColors.primaryColorDark2,
+                            //                     fontSize: 13,
+                            //                     fontWeight: FontWeight.bold),
+                            //               ),
+                            //               Text(
+                            //                 "0",
+                            //                 style: TextStyle(
+                            //                     color:
+                            //                         AppColors.primaryColorDark1,
+                            //                     fontSize: 15,
+                            //                     fontWeight: FontWeight.bold),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //           //  SizedBox(width:MediaQuery.of(context).size.width/0.5),
+
+                            //           // SizedBox(width:MediaQuery.of(context).size.width/3),
+                            //           Column(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.end,
+                            //             crossAxisAlignment:
+                            //                 CrossAxisAlignment.end,
+                            //             children: [
+                            //               Row(
+                            //                 children: [
+                            //                   SvgPicture.asset(
+                            //                     'assets/AppIcon/danger_icon.svg',
+                            //                     height: 30,
+                            //                     width: 30,
+                            //                   ),
+                            //                   Container(
+                            //                     width: MediaQuery.of(context)
+                            //                             .size
+                            //                             .width /
+                            //                         2.15,
+                            //                     child: Text(
+                            //                       textAlign: TextAlign.end,
+                            //                       "commodities Trading is not activeted in this account",
+                            //                       style: TextStyle(
+                            //                           color: AppColors
+                            //                               .primaryColorDark2,
+                            //                           fontSize: 13,
+                            //                           fontWeight:
+                            //                               FontWeight.bold),
+                            //                     ),
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ],
+                            //       ),
+                            //       SizedBox(
+                            //         height: 10,
+                            //       ),
+                            //       Row(
+                            //         children: [
+                            //           Expanded(
+                            //             child: InkWell(
+                            //               onTap: () {},
+                            //               child: Container(
+                            //                 height: 50,
+                            //                 width: 150,
+                            //                 decoration: BoxDecoration(
+                            //                     gradient: LinearGradient(
+                            //                       colors: [
+                            //                         AppColors.primaryColor1,
+                            //                         AppColors.primaryColor2,
+                            //                         AppColors.primaryColor3,
+                            //                       ],
+                            //                       stops: [0.1, 0.9, 0.9],
+                            //                       begin: Alignment.topCenter,
+                            //                       end: Alignment.bottomCenter,
+                            //                     ),
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(10)),
+                            //                 child: Center(
+                            //                     child: Text(
+                            //                   "Active Commodities",
+                            //                   style: TextStyle(
+                            //                     color: Colors.white,
+                            //                     fontSize: 16,
+                            //                   ),
+                            //                 )),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                            SizedBox(
+                              height: 15,
+                            ),
                             Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
@@ -981,7 +1140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Commodity",
+                                            "Pledge Holding",
                                             style: TextStyle(
                                                 color:
                                                     AppColors.primaryColorDark2,
@@ -1009,19 +1168,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         children: [
                                           Row(
                                             children: [
-                                              SvgPicture.asset(
-                                                'assets/AppIcon/danger_icon.svg',
-                                                height: 30,
-                                                width: 30,
-                                              ),
                                               Container(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width /
-                                                    2.15,
+                                                    2,
                                                 child: Text(
                                                   textAlign: TextAlign.end,
-                                                  "commodities Trading is not activeted in this account",
+                                                  "Pledge stocks or Mutual Funds to increase trading balance",
                                                   style: TextStyle(
                                                       color: AppColors
                                                           .primaryColorDark2,
@@ -1062,7 +1216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
-                                              "Active Commodities",
+                                              "Pledge Stocks",
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -1079,759 +1233,612 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               height: 15,
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
                             Container(
-                              height: 230,
-                              width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  border: Border.fromBorderSide(BorderSide(
+                                      color: Colors.grey.withOpacity(0.08))),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.57),
+                                      spreadRadius: 0,
+                                      blurRadius: 1,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                    ),
+                                  ],
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      AppColors.primaryBackgroundColor,
+                                      AppColors.tertiaryGrediantColor3,
+                                      AppColors.tertiaryGrediantColor1
+                                          .withOpacity(1),
+                                      AppColors.primaryBackgroundColor,
+                                      AppColors.tertiaryGrediantColor3,
+                                    ],
+                                    stops: [0.1, 0.9, 0.9, 0.4, 0.51],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Colors.grey.withOpacity(0.57),
+                                  //     spreadRadius: 0,
+                                  //     blurRadius: 3,
+                                  //     offset: Offset(
+                                  //         0, 2), // changes position of shadow
+                                  //   ),
+                                  // ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Card(
-                                        color: Colors.white,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                                AppColors.tertiaryGrediantColor1
-                                                    .withOpacity(1),
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                              ],
-                                              stops: [0.1, 0.9, 0.9, 0.4, 0.51],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.all(15),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryColor
-                                                            .withOpacity(0.1),
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                      HugeIcons
-                                                          .strokeRoundedBlockchain01,
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      size: 34,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "Pledge Holdings",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              Text(
-                                                "Pledge Stocks or Mutual Funds you hold to Increase trading balance",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Text(
-                                                "Pledge Stocks > ",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      height: 230,
-                                      child: Card(
-                                        color: Colors.white,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                                AppColors.tertiaryGrediantColor1
-                                                    .withOpacity(1),
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                              ],
-                                              stops: [0.1, 0.9, 0.9, 0.4, 0.51],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          padding: EdgeInsets.all(15),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryColor
-                                                            .withOpacity(0.1),
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                      HugeIcons
-                                                          .strokeRoundedCreditCardChange,
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      size: 34,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "Pay Later(MTF)",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              Text(
-                                                "View and Analyze your MTF Stocks",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              SizedBox(
-                                                height: 50,
-                                              ),
-                                              Text(
-                                                "View Stocks > ",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Card(
-                              child: Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                    ],
-                                    stops: [0.1, 0.9, 0.9, 0.4, 0.51],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("DASH",
-                                            style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.primaryColor)),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          " Reports & Statements  ",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              background: Paint()
-                                                ..color = Colors.grey
-                                                    .withOpacity(0.1)),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "Morden Back office for investors and traders",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Divider(),
-                                    CustomInkWell(
-                                      onTap: () {},
-                                      title: 'Trades & Charges',
-                                      subtitle: 'All your charges in one place',
-                                      icons: Icons.track_changes_rounded,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomInkWell(
-                                      onTap: () {},
-                                      title: 'Profit and Loss',
-                                      subtitle: 'Analyse your profit and loss',
-                                      icons: Icons.trending_up,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomInkWell(
-                                      onTap: () {
-                                        Get.to(() => LedgerReportScreen());
-                                      },
-                                      title: 'Statement/Ledger',
-                                      subtitle: 'Your transaction history',
-                                      icons: Icons.stacked_bar_chart_sharp,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomInkWell(
-                                      onTap: () {
-                                        Get.to(() => FundTranscationScreen());
-                                      },
-                                      title: 'Fund Transactions',
-                                      subtitle:
-                                          'Add Funds and Withdraws histroy',
-                                      icons: Icons.account_balance_wallet,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomInkWell(
-                                      onTap: () {
-                                        Get.to(() => DownloadReportsScreen());
-                                      },
-                                      title: 'Download Reports',
-                                      subtitle: 'In PDF and Excel format',
-                                      icons: Icons.edit_document,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Card(
-                              color: Colors.white,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                    ],
-                                    stops: [0.1, 0.9, 0.9, 0.4, 0.51],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                ),
-                                padding: EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Help & Support",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primaryColor),
-                                    ),
-                                    Row(),
-                                    Container(
-                                      child: Text(
-                                        "Raise a ticket for any query or issue",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  Get.to(() =>
-                                                      RaiseTicketScreen());
-                                                },
-                                                child: Container(
-                                                  height: 85,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .primaryColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Flexible(
-                                                        child: Text(
-                                                            "Your Tickets",
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                      ),
-                                                      Flexible(
-                                                        flex: 2,
-                                                        child: Text(
-                                                          "Create and manage tickets for your questions",
-                                                          style: TextStyle(
-                                                            fontSize: 10,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                height: 85,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                padding: EdgeInsets.all(10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Call Us",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Flexible(
-                                                      child: Text(
-                                                        "Connect with customer support",
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                height: 85,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                padding: EdgeInsets.all(10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Contact Us",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    Expanded(
-                                                      child: Text(
-                                                        "Get in touch with us",
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                height: 85,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                padding: EdgeInsets.all(10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("FAQs",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Flexible(
-                                                      child: Text(
-                                                        "Get Solution to common queries",
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Card(
-                              color: Colors.white,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                                padding: EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomBasicInkWell(
-                                      onTap: () {},
-                                      title: 'Rate Us',
-                                      icons: Icons.star,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                      child: Divider(),
-                                    ),
-                                    CustomBasicInkWell(
-                                      onTap: () {},
-                                      title: 'Settings',
-                                      icons: Icons.settings,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                      child: Divider(),
-                                    ),
-                                    CustomBasicInkWell(
-                                      onTap: () {},
-                                      title: 'About Us',
-                                      icons: Icons.info,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  child: Column(
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "JOIN OUR COMMUNITY",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
+                                      Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    SocialWidget(
-                                                      iconSize: 28,
-
-                                                      placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .instagram,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.instagram.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                      ), //placeholder text style
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
-                                                ),
-                                              ],
-                                            ),
+                                          Text(
+                                            "Pay Later(MTF)",
+                                            style: TextStyle(
+                                                color:
+                                                    AppColors.primaryColorDark2,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    SocialWidget(
-                                                      iconSize: 28,
-
-                                                      placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .linkedin,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.linkedin.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                      ), //placeholder text style
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
-                                                ),
-                                              ],
-                                            ),
+                                          Text(
+                                            "0",
+                                            style: TextStyle(
+                                                color:
+                                                    AppColors.primaryColorDark1,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    SocialWidget(
-                                                      iconSize: 28,
+                                        ],
+                                      ),
+                                      //  SizedBox(width:MediaQuery.of(context).size.width/0.5),
 
-                                                      placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .twitter,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.twitter.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                      ), //placeholder text style
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  decoration: BoxDecoration(
+                                      // SizedBox(width:MediaQuery.of(context).size.width/3),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                child: Text(
+                                                  textAlign: TextAlign.end,
+                                                  "View and Analyze your MTF Stocks",
+                                                  style: TextStyle(
                                                       color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
+                                                          .primaryColorDark2,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    SocialWidget(
-                                                      iconSize: 28,
-
-                                                      placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .facebook,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.facebook.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                      ), //placeholder text style
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: 50,
+                                            width: 150,
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    AppColors.primaryColor1,
+                                                    AppColors.primaryColor2,
+                                                    AppColors.primaryColor3,
+                                                  ],
+                                                  stops: [0.1, 0.9, 0.9],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Center(
+                                                child: Text(
+                                              "View Stocks",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
+                                            )),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Reports & Statements",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: AppColors.primaryColor),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                    "Morden Back office for investors and traders"),
+                                
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                
+                                  CustomReportContainer(
+                                  onTap: (){
+                                    Get.to(() => LedgerReportScreen());
+                                  },
+                                  title: "Statement/Ledger",
+                                  subtitle: "Your transaction history",
+                                  leadingIcon:
+                                      HugeIcons.strokeRoundedAnalytics01,
+                                  trailingIcon:
+                                      HugeIcons.strokeRoundedArrowRight01,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              
+                               CustomReportContainer(
+                                  onTap: (){
+                                   Get.to(() => FundTranscationScreen());
+                                  },
+                                  title: "Fund Transactions",
+                                  subtitle: "Add Funds and Withdraws histroy",
+                                  leadingIcon:
+                                      HugeIcons.strokeRoundedWallet01,
+                                  trailingIcon:
+                                      HugeIcons.strokeRoundedArrowRight01,
+                                ),
+                                
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                
+                               CustomReportContainer(
+                                  onTap: (){},
+                                  title: "Profit & Loss",
+                                  subtitle: "Analyse your profit and loss",
+                                  leadingIcon:
+                                      HugeIcons.strokeRoundedAutoConversations,
+                                  trailingIcon:
+                                      HugeIcons.strokeRoundedArrowRight01,
+                                ),
+                               
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                CustomReportContainer(
+                                  onTap: (){
+                                   Get.to(() => DownloadReportsScreen());
+                                  },
+                                  title: "Download Reports",
+                                  subtitle: "In PDF and Excel format",
+                                  leadingIcon:
+                                      HugeIcons.strokeRoundedAlignBoxMiddleLeft,
+                                  trailingIcon:
+                                      HugeIcons.strokeRoundedArrowRight01,
+                                ),
+                               
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Help & Support",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.primaryColor),
+                                          ),
+                                          Text(
+                                              "Raise a ticket for any query or issue"),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(children: [
+                                                Expanded(
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  RaiseTicketScreen()));
+                                                    },
+                                                    child: Container(
+                                                        height: 85,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.1)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          color: Colors.white,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.57),
+                                                              spreadRadius: 0,
+                                                              blurRadius: 1,
+                                                              offset: Offset(0,
+                                                                  1), // changes position of shadow
+                                                            ),
+                                                          ],
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              AppColors
+                                                                  .primaryBackgroundColor,
+                                                              AppColors
+                                                                  .tertiaryGrediantColor3,
+                                                              AppColors
+                                                                  .tertiaryGrediantColor1
+                                                                  .withOpacity(
+                                                                      1),
+                                                              AppColors
+                                                                  .primaryBackgroundColor,
+                                                              AppColors
+                                                                  .tertiaryGrediantColor3,
+                                                            ],
+                                                            stops: [
+                                                              0.1,
+                                                              0.9,
+                                                              0.9,
+                                                              0.4,
+                                                              0.51
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                    "Your Tickets",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                                Icon(
+                                                                  HugeIcons
+                                                                      .strokeRoundedTicket01,
+                                                                  size: 30,
+                                                                  color: AppColors
+                                                                      .primaryColor,
+                                                                )
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Flexible(
+                                                              child: Text(
+                                                                "Create and manage tickets for your questions",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 10,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                      height: 85,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.1)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.57),
+                                                            spreadRadius: 0,
+                                                            blurRadius: 1,
+                                                            offset: Offset(0,
+                                                                1), // changes position of shadow
+                                                          ),
+                                                        ],
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            AppColors
+                                                                .primaryBackgroundColor,
+                                                            AppColors
+                                                                .tertiaryGrediantColor3,
+                                                            AppColors
+                                                                .tertiaryGrediantColor1
+                                                                .withOpacity(1),
+                                                            AppColors
+                                                                .primaryBackgroundColor,
+                                                            AppColors
+                                                                .tertiaryGrediantColor3,
+                                                          ],
+                                                          stops: [
+                                                            0.1,
+                                                            0.9,
+                                                            0.9,
+                                                            0.4,
+                                                            0.51
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        ),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text("Contact Us",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              Icon(
+                                                                HugeIcons
+                                                                    .strokeRoundedContact,
+                                                                size: 30,
+                                                                color: AppColors
+                                                                    .primaryColor,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Flexible(
+                                                            child: Text(
+                                                              "Connect with customer support",
+                                                              style: TextStyle(
+                                                                fontSize: 10,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )),
+                                                )
+                                              ]),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DownloadReportsScreen()));
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(15),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.57),
+                                                    spreadRadius: 0,
+                                                    blurRadius: 1,
+                                                    offset: Offset(0,
+                                                        1), // changes position of shadow
+                                                  ),
+                                                ],
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    AppColors
+                                                        .primaryBackgroundColor,
+                                                    AppColors
+                                                        .tertiaryGrediantColor3,
+                                                    AppColors
+                                                        .tertiaryGrediantColor1
+                                                        .withOpacity(1),
+                                                    AppColors
+                                                        .primaryBackgroundColor,
+                                                    AppColors
+                                                        .tertiaryGrediantColor3,
+                                                  ],
+                                                  stops: [
+                                                    0.1,
+                                                    0.9,
+                                                    0.9,
+                                                    0.4,
+                                                    0.51
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        HugeIcons
+                                                            .strokeRoundedAlignBoxMiddleLeft,
+                                                        size: 35,
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "FAQs",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: AppColors
+                                                                        .primaryColorDark),
+                                                              ),
+                                                              Text(
+                                                                  "Get solution to common queries",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: AppColors
+                                                                          .primaryColorDark2))
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Icon(
+                                                    HugeIcons
+                                                        .strokeRoundedArrowRight01,
+                                                    color: AppColors
+                                                        .primaryColorDark2,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          CustomButton(
+                                              isLoading: false,
+                                              text: "Log Out",
+                                              onPressed: () {
+                                                logout();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LoginScreen()));
+                                              })
+                                        ]))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              height: 100,
                             ),
                           ],
                         ),

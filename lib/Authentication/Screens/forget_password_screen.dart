@@ -5,7 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 import 'package:tradingapp/Utils/const.dart/app_images_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   final String username;
