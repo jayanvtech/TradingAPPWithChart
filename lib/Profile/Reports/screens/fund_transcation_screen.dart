@@ -70,13 +70,35 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+      backgroundColor: AppColors.primaryBackgroundColor,
+      appBar: AppBar(centerTitle: false,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryBackgroundColor,
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                  ],
+                  stops: [0.5, 1, 0.5],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(1)),
             child: TabBar(
+              dividerColor: Colors.transparent,
               isScrollable: true,
+              textScaler: TextScaler.linear(1),
               tabAlignment: TabAlignment.start,
               automaticIndicatorColorAdjustment: true,
               controller: _tabController,
@@ -92,10 +114,10 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
             onPressed: () {
               _showFilterOptions(context);
             },
-            icon: Icon(Icons.date_range_outlined),
+            icon: Icon(HugeIcons.strokeRoundedCalendarAdd01),
           ),
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primaryBackgroundColor,
         scrolledUnderElevation: 0,
         title: Text('Fund Transcation'),
       ),
@@ -221,7 +243,10 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                 parseDouble(transaction.drAmt));
                       }
 
-                      return ListView.builder(
+                      return ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                          color: Colors.grey[300],
+                        ),
                         itemCount: filteredTransactions.length,
                         itemBuilder: (context, index) {
                           final transaction = filteredTransactions[index];
@@ -253,8 +278,8 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                     Container(
                                       padding: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey[200]!),
+                                        // border: Border.all(
+                                        //     color: Colors.grey[200]!),
                                         borderRadius:
                                             BorderRadius.circular(5.0),
                                       ),
@@ -275,20 +300,40 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
 
                                                   Text(
                                                     formattedDate(transaction
-                                                                .billDate) ==
-                                                            "-"
-                                                        ? "${formattedDate(transaction.voucherDate)}"
-                                                        : "${formattedDate(transaction.billDate)}",
+                                                        .voucherDate),
                                                     style: TextStyle(
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
+                                                      color: AppColors
+                                                          .primaryColor,
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
                                                   selectedCocd == "ALL"
-                                                      ? Text(transaction.cocd)
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            color: AppColors
+                                                                .primaryColorDark3
+                                                                .withOpacity(
+                                                                    0.25),
+                                                          ),
+                                                          child: Text(
+                                                            transaction.cocd,
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .primaryColor),
+                                                          ),
+                                                        )
                                                       : Text(""),
                                                 ],
                                               ),
@@ -298,41 +343,47 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                                     : "${parseDouble(transaction.crAmt)}",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
-                                                  color:
-                                                      transaction.crAmt == "0"
-                                                          ? Colors.red
-                                                          : Colors.green,
+                                                  color: transaction.crAmt ==
+                                                          "0"
+                                                      ? AppColors.RedColor
+                                                      : AppColors.GreenColor,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: 180,
-                                                child: Text(
-                                                  transaction.narration,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              // transaction.TOTAL_BALANCE
-                                              //         .contains("-")
-                                              //     ? Text(
-                                              //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} DR",
-                                              //         style: TextStyle(
-                                              //           color: Colors.red,
-                                              //         ),
-                                              //       )
-                                              //     : Text(
-                                              //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} CR",
-                                              //         style: TextStyle(
-                                              //           color: Colors.green,
-                                              //         )),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.spaceBetween,
+                                          //   children: [
+                                          //     SizedBox(
+                                          //       width: 180,
+                                          //       child: Text(
+                                          //         style: TextStyle(
+                                          //           color: AppColors
+                                          //               .primaryColorDark2,
+                                          //           fontSize: 13,
+                                          //           fontWeight: FontWeight.w600,
+                                          //         ),
+                                          //         transaction.narration,
+                                          //         overflow:
+                                          //             TextOverflow.ellipsis,
+                                          //       ),
+                                          //     ),
+                                          //     // transaction.TOTAL_BALANCE
+                                          //     //         .contains("-")
+                                          //     //     ? Text(
+                                          //     //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} DR",
+                                          //     //         style: TextStyle(
+                                          //     //           color: Colors.red,
+                                          //     //         ),
+                                          //     //       )
+                                          //     //     : Text(
+                                          //     //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} CR",
+                                          //     //         style: TextStyle(
+                                          //     //           color: Colors.green,
+                                          //     //         )),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     )
@@ -462,7 +513,10 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                 parseDouble(transaction.drAmt));
                       }
 
-                      return ListView.builder(
+                      return ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                          color: Colors.grey[300],
+                        ),
                         itemCount: filteredTransactions.length,
                         itemBuilder: (context, index) {
                           final transaction = filteredTransactions[index];
@@ -494,11 +548,11 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                     Container(
                                       padding: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey[200]!),
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                      ),
+                                          // border: Border.all(
+                                          //     color: Colors.grey[200]!),
+                                          // borderRadius:
+                                          //     BorderRadius.circular(5.0),
+                                          ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -515,12 +569,13 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                                   // Text(transaction.voucherNo),
 
                                                   Text(
-                                                    formattedDate(transaction
-                                                                .billDate) ==
-                                                            "-"
-                                                        ? "${formattedDate(transaction.voucherDate)}"
-                                                        : "${formattedDate(transaction.billDate)}",
+                                                    formattedDate(
+                                                      transaction.voucherDate,
+                                                    ),
                                                     style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: AppColors
+                                                          .primaryColor,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -529,7 +584,27 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                                     width: 10,
                                                   ),
                                                   selectedCocd == "ALL"
-                                                      ? Text(transaction.cocd)
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            color: AppColors
+                                                                .primaryColorDark3
+                                                                .withOpacity(
+                                                                    0.25),
+                                                          ),
+                                                          child: Text(
+                                                            transaction.cocd,
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .primaryColor),
+                                                          ),
+                                                        )
                                                       : Text(""),
                                                 ],
                                               ),
@@ -538,46 +613,52 @@ class _FundTranscationScreenState extends State<FundTranscationScreen>
                                                     ? "-${parseDouble(transaction.drAmt)}"
                                                     : "${parseDouble(transaction.crAmt)}",
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  color:
-                                                      transaction.crAmt == "0"
-                                                          ? Colors.red
-                                                          : Colors.green,
-                                                ),
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: transaction.crAmt ==
+                                                            "0"
+                                                        ? AppColors.RedColor
+                                                        : AppColors.GreenColor),
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: 180,
-                                                child: Text(
-                                                  transaction.narration,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              // transaction.TOTAL_BALANCE
-                                              //         .contains("-")
-                                              //     ? Text(
-                                              //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} DR",
-                                              //         style: TextStyle(
-                                              //           color: Colors.red,
-                                              //         ),
-                                              //       )
-                                              //     : Text(
-                                              //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} CR",
-                                              //         style: TextStyle(
-                                              //           color: Colors.green,
-                                              //         )),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.spaceBetween,
+                                          //   children: [
+                                          //     // SizedBox(
+                                          //     //   width: 180,
+                                          //     //   child: Text(
+                                          //     //     style: TextStyle(
+                                          //     //       color: AppColors
+                                          //     //           .primaryColorDark2,
+                                          //     //       fontSize: 13,
+                                          //     //       fontWeight: FontWeight.w600,
+                                          //     //     ),
+                                          //     //     transaction.narration,
+                                          //     //     overflow:
+                                          //     //         TextOverflow.ellipsis,
+                                          //     //   ),
+                                          //     // ),
+                                          //     // transaction.TOTAL_BALANCE
+                                          //     //         .contains("-")
+                                          //     //     ? Text(
+                                          //     //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} DR",
+                                          //     //         style: TextStyle(
+                                          //     //           color: Colors.red,
+                                          //     //         ),
+                                          //     //       )
+                                          //     //     : Text(
+                                          //     //         "Bal: ${double.parse(transaction.TOTAL_BALANCE).toStringAsFixed(2)} CR",
+                                          //     //         style: TextStyle(
+                                          //     //           color: Colors.green,
+                                          //     //         )),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 5),
+                                   
                                   ],
                                 ),
                               ),

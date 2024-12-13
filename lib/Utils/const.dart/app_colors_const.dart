@@ -58,4 +58,34 @@ abstract interface class AppColors {
   static Color deepPurpleColor = Colors.deepPurple;
   static Color deepPurpleAccentColor = Colors.deepPurpleAccent;
   static Color blackColor = Color(0xFF000000);
+  static Color GreenColor = Color(0xFF078A42);
+  static Color RedColor = Color(0xFFE11D1D);
+
+  static Color ImageOrangeBackgroundColor = Color(0xFFF9F1E6);
+
+//green Gredient
+  static Color GreenGredient1 = Color(0xFFFFFFFF);
+  static Color GreenGredient2 = Color(0xFFE4EFE9);
+
+//Red Gredient
+  static Color RedGredient1 = Color(0xFFFFFFFF);
+  static Color RedGredient2 = Color(0xFFEFE3E3);
+
+  //Buy  Green Color
+    static Color BuyGreenGredient1 = Color(0xFF0E9D4E);
+  static Color BuyGreenGredient2 = Color(0xFF0C6534);
+
+   //Sell  red Color
+    static Color SellRedGredient1 = Color(0xFFED3636);
+  static Color SellRedGredient2 = Color(0xFFAA1818);
+
+  //PaintBackgroundColor
+  static Color PaintBackgroundColor = Color(0xFFDFEAE4);
+
+  //BuysellProductLineColor
+  static Color BuysellProductLineColor = Color(0xFFB06C0C);
+  static Color BuysellProductLineColor2 = Color(0xFFFAB350);
+    //BuysellProductLineColor
+  static Color BuysellProductLineColorBackground = Color.fromARGB(255, 250, 239, 225);
+
 }

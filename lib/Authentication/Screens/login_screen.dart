@@ -19,7 +19,7 @@ import 'package:tradingapp/Authentication/Screens/unblock_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 import 'package:tradingapp/Utils/const.dart/app_images_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {

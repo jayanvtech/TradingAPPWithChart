@@ -15,6 +15,8 @@ import 'package:tradingapp/Position/Screens/PositionScreen/order_status.dart';
 import 'package:tradingapp/Position/Screens/PositionScreen/viewmore_order_history.dart';
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
 import 'package:tradingapp/Position/Models/TradeOrderModel/tradeOrder_model.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 import 'package:tradingapp/Utils/exchangeConverter.dart';
 import 'package:tradingapp/market_screen.dart';
 import 'package:tradingapp/ordersocketvalues_model.dart';
@@ -33,7 +35,7 @@ class _PositionScreenState extends State<PositionScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -54,8 +56,9 @@ class _PositionScreenState extends State<PositionScreen>
     return Scaffold(
       drawer: DrawerDashboard1(),
       endDrawer: DrawerDashboard2(),
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: AppColors.primaryBackgroundColor,
         actions: [
           Builder(
             builder: (context) => IconButton(
@@ -64,25 +67,52 @@ class _PositionScreenState extends State<PositionScreen>
             ),
           ),
         ],
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         elevation: 0,
         title: const Text('Position'),
-        bottom: TabBar(
-          indicatorColor: Colors.blue,
-          isScrollable: true,
-          labelColor: Colors.blue,
-          tabAlignment: TabAlignment.start,
-          automaticIndicatorColorAdjustment: true,
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Order'),
-            Tab(text: 'Position'),
-            Tab(text: 'Trade Book'),
-            Tab(text: 'Order History'),
-          ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryBackgroundColor,
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                  ],
+                  stops: [0.5, 1, 0.5],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(1)),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorColor: AppColors.primaryColor,
+              // isScrollable: true,
+              labelColor: AppColors.primaryColor,
+              tabAlignment: TabAlignment.fill,
+              automaticIndicatorColorAdjustment: true,
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'Order'),
+                Tab(text: 'Position'),
+                Tab(text: 'Trade Book'),
+              ],
+            ),
+          ),
         ),
       ),
+
+      backgroundColor: AppColors.primaryBackgroundColor,
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -90,7 +120,7 @@ class _PositionScreenState extends State<PositionScreen>
           //#################################################### below code is for Position content##################################
           PositionProviderScreen(),
           TradeProviderScreen(),
-          OrderHistoryProviderScreen(),
+          // OrderHistoryProviderScreen(),
         ],
       ),
     );
@@ -286,299 +316,285 @@ class _PositionProviderScreenState extends State<PositionProviderScreen> {
   String search = '';
   String selectedFilter = 'ALL';
   String selectedExchangeSegment = 'ALL';
+  double totalMtm = 0.0;
+  double totalBenefitsSum = 0.0; // This will hold the sum of total benefits
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: ChangeNotifierProvider(
-        create: (context) => PositionProvider()..getPosition(),
-        child: Consumer<PositionProvider>(
-          builder: (context, positionProvider, child) {
-            if (positionProvider.positions == null) {
-              return Center(child: CircularProgressIndicator());
-            } else if (positionProvider.positions!.isEmpty) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/error_illustrations/order_error.svg',
-                    height: 200,
-                    width: 200,
-                  ),
-                  SizedBox(height: 30),
-                  Text(
-                    "You have no positions. Place an order to open a new position",
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              );
-            } else {
-              if (positionProvider.positions != null &&
-                  positionProvider.positions!.isNotEmpty) {
-                for (var position in positionProvider.positions!) {
-                  var exchangeSegment = position.exchangeSegment;
-                  var exchangeInstrumentID = position.exchangeInstrumentId;
+    return Scaffold(
+      backgroundColor: AppColors.primaryBackgroundColor,
+      bottomSheet: Container(
+        height: 130,
+        child: Text(
+          totalBenefitsSum
+              .toStringAsFixed(2), // Display the sum in bottom sheet
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ChangeNotifierProvider(
+          create: (context) => PositionProvider()..getPosition(),
+          child: Consumer<PositionProvider>(
+            builder: (context, positionProvider, child) {
+              if (positionProvider.positions == null) {
+                return Center(child: CircularProgressIndicator());
+              } else if (positionProvider.positions!.isEmpty) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/error_illustrations/order_error.svg',
+                      height: 200,
+                      width: 200,
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      "You have no positions. Place an order to open a new position",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                );
+              } else {
+                if (positionProvider.positions != null &&
+                    positionProvider.positions!.isNotEmpty) {
+                  for (var position in positionProvider.positions!) {
+                    var exchangeSegment = position.exchangeSegment;
+                    var exchangeInstrumentID = position.exchangeInstrumentId;
 
-                  ApiService().MarketInstrumentSubscribe(
-                    ExchangeConverter()
-                        .getExchangeSegmentNumber(exchangeSegment)
-                        .toString(),
-                    exchangeInstrumentID.toString(),
-                  );
+                    ApiService().MarketInstrumentSubscribe(
+                      ExchangeConverter()
+                          .getExchangeSegmentNumber(exchangeSegment)
+                          .toString(),
+                      exchangeInstrumentID.toString(),
+                    );
+                  }
                 }
-              }
 
-              // Apply both CNC/NRML/MIS and ExchangeSegment filters
-              List<Positions> filteredPositions = positionProvider.positions!;
+                // Apply both CNC/NRML/MIS and ExchangeSegment filters
+                List<Positions> filteredPositions = positionProvider.positions!;
 
-              // Filter based on product type
-              if (selectedFilter != 'ALL') {
-                filteredPositions = filteredPositions
-                    .where((position) => position.productType == selectedFilter)
-                    .toList();
-              }
+                // Filter based on product type
+                if (selectedFilter != 'ALL') {
+                  filteredPositions = filteredPositions
+                      .where(
+                          (position) => position.productType == selectedFilter)
+                      .toList();
+                }
 
-              // Filter based on exchange segment
-              if (selectedExchangeSegment != 'ALL') {
-                filteredPositions = filteredPositions
-                    .where((position) =>
-                        position.exchangeSegment == selectedExchangeSegment)
-                    .toList();
-              }
+                // Filter based on exchange segment
+                if (selectedExchangeSegment != 'ALL') {
+                  filteredPositions = filteredPositions
+                      .where((position) =>
+                          position.exchangeSegment == selectedExchangeSegment)
+                      .toList();
+                }
 
-              return Consumer<MarketFeedSocket>(
-                builder: (context, marketFeedSocket, child) {
-                  return Column(
-                    children: [
-                      // Filters row for product type and exchange segment
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FilterButtonPosition(
-                            text: 'ALL',
-                            isSelected: selectedFilter == 'ALL',
-                            onPressed: () {
-                              setState(() {
-                                selectedFilter = 'ALL';
-                              });
-                            },
-                          ),
-                          FilterButtonPosition(
-                            text: 'CNC',
-                            isSelected: selectedFilter == 'CNC',
-                            onPressed: () {
-                              setState(() {
-                                selectedFilter = 'CNC';
-                              });
-                            },
-                          ),
-                          FilterButtonPosition(
-                            text: 'NRML',
-                            isSelected: selectedFilter == 'NRML',
-                            onPressed: () {
-                              setState(() {
-                                selectedFilter = 'NRML';
-                              });
-                            },
-                          ),
-                          FilterButtonPosition(
-                            text: 'MIS',
-                            isSelected: selectedFilter == 'MIS',
-                            onPressed: () {
-                              setState(() {
-                                selectedFilter = 'MIS';
-                              });
-                            },
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.grey[200]!),
-                              ),
-                              child: PopupMenuButton<String>(
-                                color: Colors.white,
-                                onSelected: (String value) {
+                // Calculate total benefits sum
+                double calculateTotalBenefits(List<Positions> positions) {
+                  double total = 0.0;
+                  for (var position in positions) {
+                    var quentity = position.quantity;
+                    var exchangeInstrumentID = position.exchangeInstrumentId;
+                    final marketData = marketFeedSocket.getDataById(
+                        int.parse(exchangeInstrumentID.toString()));
+                    var lastTradedPrice =
+                        marketData?.price.toString() ?? 'Loading...';
+                    double? totalBenefits;
+                    if (lastTradedPrice != 'Loading...') {
+                      totalBenefits = (double.parse(lastTradedPrice) -
+                              double.parse(
+                                  position.buyAveragePrice.toString())) *
+                          quentity;
+                    }
+
+                    total += totalBenefits ?? 0.0;
+                  }
+                  return total;
+                }
+
+                totalBenefitsSum = calculateTotalBenefits(filteredPositions);
+
+                return Consumer<MarketFeedSocket>(
+                  builder: (context, marketFeedSocket, child) {
+                    return Column(
+                      children: [
+                        // Filters row for product type and exchange segment
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              FilterButtonPosition(
+                                text: 'ALL',
+                                isSelected: selectedFilter == 'ALL',
+                                onPressed: () {
                                   setState(() {
-                                    selectedExchangeSegment = value;
+                                    selectedFilter = 'ALL';
                                   });
                                 },
-                                itemBuilder: (BuildContext context) {
-                                  return [
-                                    'ALL',
-                                    'BSECM',
-                                    'NSECM',
-                                    'NSEFO',
-                                    'BSEFO'
-                                  ].map((String value) {
-                                    return PopupMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                          color:
-                                              selectedExchangeSegment == value
-                                                  ? Colors.blue
-                                                  : Colors.grey,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList();
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 7, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        selectedExchangeSegment,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Colors.white,
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ),
-                            ),
+                              FilterButtonPosition(
+                                text: 'CNC',
+                                isSelected: selectedFilter == 'CNC',
+                                onPressed: () {
+                                  setState(() {
+                                    selectedFilter = 'CNC';
+                                  });
+                                },
+                              ),
+                              FilterButtonPosition(
+                                text: 'NRML',
+                                isSelected: selectedFilter == 'NRML',
+                                onPressed: () {
+                                  setState(() {
+                                    selectedFilter = 'NRML';
+                                  });
+                                },
+                              ),
+                              FilterButtonPosition(
+                                text: 'MIS',
+                                isSelected: selectedFilter == 'MIS',
+                                onPressed: () {
+                                  setState(() {
+                                    selectedFilter = 'MIS';
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: filteredPositions.length,
-                          padding: const EdgeInsets.symmetric(vertical: 0.0),
-                          itemBuilder: (context, index) {
-                            var position = filteredPositions[index];
+                        ),
+                        Expanded(
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                              color: Colors.grey[300],
+                            ),
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: filteredPositions.length,
+                            padding: const EdgeInsets.symmetric(vertical: 0.0),
+                            itemBuilder: (context, index) {
+                              var position = filteredPositions[index];
 
-                            var quentity = position.quantity;
-                            var exchangeInstrumentID =
-                                position.exchangeInstrumentId;
-                            final marketData = marketFeedSocket.getDataById(
-                                int.parse(exchangeInstrumentID.toString()));
-                            var lastTradedPrice =
-                                marketData?.price.toString() ?? 'Loading...';
-                            double? totalBenefits;
-                            if (lastTradedPrice != 'Loading...') {
-                              totalBenefits = (double.parse(lastTradedPrice) -
-                                      double.parse(position.buyAveragePrice
-                                          .toString())) *
-                                  quentity;
-                            }
+                              var quentity = position.quantity;
+                              var exchangeInstrumentID =
+                                  position.exchangeInstrumentId;
+                              final marketData = marketFeedSocket.getDataById(
+                                  int.parse(exchangeInstrumentID.toString()));
+                              var lastTradedPrice =
+                                  marketData?.price.toString() ?? 'Loading...';
+                              double? totalBenefits;
+                              if (lastTradedPrice != 'Loading...') {
+                                totalBenefits = (double.parse(lastTradedPrice) -
+                                        double.parse(position.buyAveragePrice
+                                            .toString())) *
+                                    quentity;
+                                    
+                              }
+                              
+double calculateTotalBenefits(List<Positions> positions) {
+    double total = 0.0;
+    for (var position in positions) {
+      total += totalBenefits ?? 0.0;
+    }
+    return total;
+  }                totalBenefitsSum = calculateTotalBenefits(positionProvider.positions!);
 
-                            return Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              position.tradingSymbol,
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            totalBenefits != null
-                                                ? totalBenefits
-                                                    .toStringAsFixed(2)
-                                                : 'Loading...',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 2),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(position.marketLot),
-                                              SizedBox(width: 10),
-                                              Text(position.productType),
-                                              SizedBox(width: 10),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                marketData != null
-                                                    ? marketData.price
-                                                        .toString()
-                                                    : 'Loading...',
+
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryBackgroundColor,
+                                    shape: BoxShape.rectangle,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                position.tradingSymbol,
                                                 style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              Text(
-                                                  '(${marketData != null ? marketData.percentChange.toString() : 'Loading...'}%)'),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: 2),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Qty: ${position.quantity.toString()}",
-                                                style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 13,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                              SizedBox(width: 10),
-                                              Text(position.exchangeSegment),
-                                            ],
-                                          ),
-                                          Text(
-                                            "Avg: ${position.buyAveragePrice.toStringAsFixed(2)}",
-                                            style: TextStyle(),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            ),
+                                            Text(
+                                              totalBenefits != null
+                                                  ? totalBenefits
+                                                      .toStringAsFixed(2)
+                                                  : '0.0',
+                                              style: TextStyle(
+                                                  color: AppColors.RedColor),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 2),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Qty: ${position.quantity.toString()} X ${position.buyAveragePrice.toStringAsFixed(2)}",
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColorDark1),
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  position.productType,
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColorDark1),
+                                                ),
+                                                SizedBox(width: 10),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  marketData != null
+                                                      ? marketData.price
+                                                          .toString()
+                                                      : '0.0',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                                Text(
+                                                  '(${marketData != null ? marketData.percentChange.toString() : '0.0'}%)',
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColorDark1),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 80),
-                    ],
-                  );
-                },
-              );
-            }
-          },
+                        SizedBox(height: 80),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -661,7 +677,10 @@ class _TradeProviderScreenState extends State<TradeProviderScreen> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(children: [
                     Expanded(
-                      child: ListView.builder(
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                          color: Colors.grey[300],
+                        ),
                         shrinkWrap: false,
                         itemCount: positionProvider.positions!.length,
                         padding: const EdgeInsets.symmetric(
@@ -686,7 +705,7 @@ class _TradeProviderScreenState extends State<TradeProviderScreen> {
                           }
                           // print(positionProvider.positions![index].exchangeInstrumentID);
                           return Padding(
-                            padding: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(0.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 // boxShadow: [
@@ -696,10 +715,10 @@ class _TradeProviderScreenState extends State<TradeProviderScreen> {
                                 //       spreadRadius: 0.05,
                                 //       offset: Offset(0, 1))
                                 // ],
-                                color: Colors.white,
+                                color: AppColors.primaryBackgroundColor,
                                 shape: BoxShape.rectangle,
-                                border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.circular(5),
+                                // border: Border.all(color: Colors.grey[300]!),
+                                // borderRadius: BorderRadius.circular(5),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -759,15 +778,16 @@ class _TradeProviderScreenState extends State<TradeProviderScreen> {
                                                         .orderStatus
                                                         .toString(),
                                                     style: TextStyle(
-                                                      color: positionProvider
-                                                                  .positions![
-                                                                      index]
-                                                                  .orderStatus
-                                                                  .toString() ==
-                                                              'Filled'
-                                                          ? Colors.green
-                                                          : Colors.red,
-                                                    ),
+                                                        color: positionProvider
+                                                                    .positions![
+                                                                        index]
+                                                                    .orderStatus
+                                                                    .toString() ==
+                                                                'Filled'
+                                                            ? AppColors
+                                                                .GreenColor
+                                                            : AppColors
+                                                                .RedColor),
                                                   ),
                                                   // Text(
                                                   //   TotalBenifits != null
@@ -800,8 +820,10 @@ class _TradeProviderScreenState extends State<TradeProviderScreen> {
                                                                     .orderSide
                                                                     .toString() ==
                                                                 'BUY'
-                                                            ? Colors.green
-                                                            : Colors.red,
+                                                            ? AppColors
+                                                                .GreenColor
+                                                            : AppColors
+                                                                .RedColor,
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -939,7 +961,10 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                         builder: (context, marketFeedSocket, child) {
                           var reversedOrderValues =
                               orderProvider.filteredOrderValues!.toList();
-                          return ListView.builder(
+                          return ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                              color: Colors.grey[300],
+                            ),
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemCount: reversedOrderValues.length,
@@ -957,19 +982,41 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //       color: Colors.grey,
-                                    //       blurRadius: 0.5,
-                                    //       spreadRadius: 0.05,
-                                    //       offset: Offset(0, 1))
-                                    // ],
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
-                                    color: Colors.white,
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                                      // border: Border.all(
+                                      //   color: Colors.grey[200]!,
+                                      // ),
+                                      // gradient: LinearGradient(
+                                      //   colors: [
+                                      //     AppColors.primaryBackgroundColor,
+                                      //     AppColors.tertiaryGrediantColor1
+                                      //         .withOpacity(1),
+                                      //     AppColors.tertiaryGrediantColor1
+                                      //         .withOpacity(1),
+                                      //   ],
+                                      //   stops: [0.5, 1, 0.5],
+                                      //   begin: Alignment.topCenter,
+                                      //   end: Alignment.bottomCenter,
+                                      // ),
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.1),
+                                      //     spreadRadius: 0,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
+                                      borderRadius: BorderRadius.circular(5)),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //       color: Colors.grey,
+                                  //       blurRadius: 0.5,
+                                  //       spreadRadius: 0.05,
+                                  //       offset: Offset(0, 1))
+                                  // ],
+                                  // border:
+                                  //     Border.all(color: Colors.grey[300]!),
+
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
@@ -982,7 +1029,8 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                               child: Text(
                                                 orderValues.tradingSymbol,
                                                 style: TextStyle(
-                                                    color: Colors.black54,
+                                                    color: AppColors
+                                                        .primaryColorDark1,
                                                     // fontSize: 13,
                                                     fontWeight:
                                                         FontWeight.w600),
@@ -1000,11 +1048,12 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                                       color: orderValues
                                                                   .orderStatus ==
                                                               'Rejected'
-                                                          ? Colors.red
+                                                          ? AppColors.RedColor
                                                           : orderValues
                                                                       .orderStatus ==
                                                                   'New'
-                                                              ? Colors.blue
+                                                              ? AppColors
+                                                                  .primaryColor
                                                               : Colors.green,
                                                     )),
                                                 SizedBox(
@@ -1015,7 +1064,7 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                                   GestureDetector(
                                                     child: Icon(
                                                       Icons.info_outline,
-                                                      color: Colors.black,
+                                                      color: AppColors.RedColor,
                                                       size: 17,
                                                     ),
                                                     onTap: () {
@@ -1135,26 +1184,54 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Text(
-                                                    orderValues.orderSide,
-                                                    style: TextStyle(
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
                                                       color: orderValues
                                                                   .orderSide ==
                                                               'BUY'
-                                                          ? Colors.green
-                                                          : Colors.red,
+                                                          ? AppColors.GreenColor
+                                                          : AppColors.RedColor,
+                                                    ),
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      orderValues.orderSide,
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .primaryBackgroundColor
+                                                          // color: orderValues
+                                                          //             .orderSide ==
+                                                          //         'BUY'
+                                                          //     ? Colors.green
+                                                          //     : Colors.red,
+                                                          ),
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
-                                                  Text(orderValues.productType),
+                                                  Text(
+                                                    orderValues.productType,
+                                                    style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColorDark1,
+                                                    ),
+                                                  ),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
-                                                  Text(orderValues
-                                                      .exchangeSegment
-                                                      .toString())
+                                                  Text(
+                                                    orderValues.exchangeSegment
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColorDark1,
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                               Row(
@@ -1163,12 +1240,17 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                                     marketData != null
                                                         ? marketData.price
                                                             .toString()
-                                                        : 'Loading...',
+                                                        : '0.0',
                                                     style: TextStyle(
-                                                        color: Colors.red),
+                                                        color:
+                                                            AppColors.RedColor),
                                                   ),
                                                   Text(
-                                                      '(${marketData != null ? marketData.percentChange.toString() : 'Loading...'}%)'),
+                                                    '(${marketData != null ? marketData.percentChange.toString() : '0.0'}%)',
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .primaryColorDark1),
+                                                  ),
                                                 ],
                                               )
                                             ]),
@@ -1191,14 +1273,23 @@ class _OrderProviderScreenState extends State<OrderProviderScreen> {
                                                 SizedBox(
                                                   width: 10,
                                                 ),
-                                                Text(orderValues
-                                                    .exchangeTransactTime
-                                                    .toString())
+                                                Text(
+                                                  orderValues
+                                                      .exchangeTransactTime
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    color: AppColors
+                                                        .primaryColorDark1,
+                                                  ),
+                                                )
                                               ],
                                             ),
                                             Text(
                                               "Avg: ${orderValues.orderPrice.toString()}",
-                                              style: TextStyle(),
+                                              style: TextStyle(
+                                                color:
+                                                    AppColors.primaryColorDark1,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -1282,21 +1373,10 @@ class FilterButton extends StatelessWidget {
       child: badges.Badge(
         showBadge: isSelected,
         position: badges.BadgePosition.topStart(top: 0, start: 0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: isSelected
-                      ? BorderSide(color: Colors.blue)
-                      : BorderSide(color: Colors.grey[300]!)),
-              elevation: 0,
-              shadowColor: Colors.transparent,
-             
-              foregroundColor: isSelected ? Colors.blue : Colors.grey,
-              backgroundColor:
-                  isSelected ? Colors.blue.withOpacity(0.1) : Colors.white),
+        child: CustomSelectionButton(
+          isSelected: isSelected,
+          text: text,
           onPressed: onPressed,
-          child: Text(text),
         ),
       ),
     );
@@ -1318,21 +1398,10 @@ class FilterButtonPosition extends StatelessWidget {
       child: badges.Badge(
         showBadge: isSelected,
         position: badges.BadgePosition.topStart(top: 0, start: 0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: isSelected
-                      ? BorderSide(color: Colors.blue)
-                      : BorderSide(color: Colors.grey[300]!)),
-              elevation: 0,
-              shadowColor: Colors.transparent,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              foregroundColor: isSelected ? Colors.blue : Colors.grey,
-              backgroundColor:
-                  isSelected ? Colors.blue.withOpacity(0.1) : Colors.white),
+        child: CustomSelectionButton(
+          isSelected: isSelected,
+          text: text,
           onPressed: onPressed,
-          child: Text(text),
         ),
       ),
     );

@@ -55,8 +55,8 @@ class ApiService extends ChangeNotifier {
     }
 
     try {
-      final response = await http.get(Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'),
-          headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'});
+      final response =
+          await http.get(Uri.parse('$baseUrl/apimarketdata/search/instruments?searchString=$query'), headers: {'Authorization': '$apiToken', 'Content-Type': 'application/json'});
 
       print("Response Body: ${response.body}");
 
@@ -311,10 +311,10 @@ class ApiService extends ChangeNotifier {
       // print(apiToken);
       // print(response.body);
       if (response.statusCode == 200) {
-        print("Subscribed :: exchangeInstrumentID :: ${exchangeInstrumentID}");
+        print("Subscribed");
         return true;
       } else {
-        print("Data retrieval success ($exchangeSegment) but no  results In Subscribe API ::${response.statusCode}");
+        print("Data retrieval success ($exchangeSegment) but no  results In Subscribe API");
         return "0";
       }
     } catch (e) {
@@ -392,8 +392,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<dynamic> GetNSCEMMaster() async {
-    String? apiToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
+    String? apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamF5M2NoYXVoYW4iLCJleHAiOjE3MTU3ODM4NjB9.YxaJvTtjvMf_cNr9yYg1g16M7TYEb7onWae4b8IH37M";
     try {
       final response = await http.post(
         Uri.parse('http://192.168.102.251:5001/v1/dbcontractEQ'),
@@ -827,8 +826,7 @@ class ApiService extends ChangeNotifier {
 
           if (lastMap?['OrderStatus'] == "Filled") {
             NotificationController.createNewNotification(
-                title: "Order placed successfully",
-                description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
+                title: "Order placed successfully", description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} Successfully");
           } else if (lastMap?['OrderStatus'] == "Rejected") {
             // NotificationController.createNewNotification(
             //     title: "Order is Rejected",
@@ -837,8 +835,7 @@ class ApiService extends ChangeNotifier {
           } else if (lastMap?['OrderStatus'] == "Cancelled") {
             NotificationController.createNewNotification(
                 title: "Order is Cancelled",
-                description:
-                    "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
+                description: "A ${orderDetails['orderQuantity']} $displayName ${orderDetails['orderSide']} is Cancelled because ${lastMap?['CancelRejectReason']}");
           }
           // else{
           //   NotificationController.createNewNotification(
@@ -1219,7 +1216,7 @@ class ApiService extends ChangeNotifier {
   static Future<TicketData?> createTicketApiService() async {
     try {
       TicketData ticketAPIModel = TicketData();
-      var url = 'http://180.211.116.158:8080/mobile/helpdesk/category/fetch';
+      var url = '${AppConfig.baseUrl2}/category/fetch';
       var uri = Uri.parse(url);
       var responce = await http.get(uri);
       log("responce body ::${responce.body} status code :: ${responce.statusCode}");
@@ -1237,7 +1234,7 @@ class ApiService extends ChangeNotifier {
   }
 
   Future<List<SectorThemeModel>> fetchSectorStock() async {
-    final url = '${AppConfig.localVasu}/api/v1/sector-industry-analysis/sector-stocks?sector=all';
+    final url = '${AppConfig.baseUrl2}/api/v1/sector-industry-analysis/sector-stocks?sector=all';
 
     final response = await http.get(Uri.parse(url));
 
@@ -1255,8 +1252,7 @@ class ApiService extends ChangeNotifier {
   Future<List<LedgerReportModel>> fetchLedgerReportDetails(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      log('token1 :: ${token1}  FromDate :: ${FromDate} :: ToDate :: ${ToDate}');
-      String baseUrl = '${AppConfig.localVasu}/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1289,7 +1285,7 @@ class ApiService extends ChangeNotifier {
   Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsRecipt(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      String baseUrl = '${AppConfig.localVasu}/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1322,7 +1318,7 @@ class ApiService extends ChangeNotifier {
   Future<List<FundtransaferModel>> fetchFundTransactionReportDetailsPAYout(String FromDate, String ToDate) async {
     try {
       final token1 = await getToken1();
-      String baseUrl = '${AppConfig.localVasu}/api/v1/ledger/statement';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/ledger/statement';
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -1358,7 +1354,7 @@ class ApiService extends ChangeNotifier {
   ) async {
     try {
       final token1 = await getToken1();
-      String baseUrl = '${AppConfig.localVasu}/api/v1/techexcel/get-scrip-summary';
+      String baseUrl = '${AppConfig.baseUrl2}/api/v1/techexcel/get-scrip-summary';
       String formatDate(String dateStr) {
         DateTime dateTime = DateFormat("MMMM, dd yyyy HH:mm:ss Z").parse(dateStr);
         String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
@@ -1395,7 +1391,7 @@ class ApiService extends ChangeNotifier {
     try {
       final String? token = await getToken();
 
-      final url = Uri.parse('http://180.211.116.158:8080/mobile/helpdesk/ticket/create');
+      final url = Uri.parse('${AppConfig.baseUrl3}ticket/create');
       final response = await http.post(
         url,
         headers: {
@@ -1424,7 +1420,7 @@ class ApiService extends ChangeNotifier {
     try {
       final String? token = await getToken();
 
-      final url = Uri.parse('http://180.211.116.158:8080/mobile/helpdesk/ticket/fetch?client_id=A0031');
+      final url = Uri.parse('${AppConfig.baseUrl3}/ticket/fetch?client_id=A0031');
       final response = await http.get(
         url,
         headers: {

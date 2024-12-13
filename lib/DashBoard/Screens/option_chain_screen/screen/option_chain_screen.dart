@@ -12,10 +12,11 @@ import 'package:tradingapp/MarketWatch/Screens/wishlist_instrument_details_scree
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
 
 import 'package:tradingapp/DashBoard/Screens/option_chain_screen/model/option_chain_model.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 class OptionChainService {
   final String apiUrl =
-      'https://mtrade.arhamshare.com/apimarketdata/search/instruments?searchString=';
+      '${AppConfig.baseUrl}/apimarketdata/search/instruments?searchString=';
 
   Future<List<OptionChain>> fetchOptionChain(String searchString) async {
     try {

@@ -748,7 +748,7 @@ class _MarketDataWidgetState extends State<MarketDataWidget> {
       child: Container(
         padding: EdgeInsets.all(0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.primaryBackgroundColor,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(

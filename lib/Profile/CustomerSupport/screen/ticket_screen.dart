@@ -9,7 +9,7 @@ import 'package:tradingapp/Profile/CustomerSupport/Model/comment_ticket_model.da
 import 'package:tradingapp/Profile/CustomerSupport/Model/fetch_ticket_model.dart';
 import 'package:tradingapp/Profile/CustomerSupport/screen/hime_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class RaiseTicketScreen extends StatefulWidget {
   const RaiseTicketScreen({super.key});
@@ -31,16 +31,6 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
           padding: EdgeInsets.all(15),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "My TIckets",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text("All Tickets")
-                ],
-              ),
               SizedBox(
                 height: 10,
               ),
@@ -56,7 +46,8 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
                   if (snapshot.hasData) {
                     var data = snapshot.data!.data;
                     return Expanded(
-                      child: Skeletonizer(enabled: snapshot.connectionState == ConnectionState.waiting,
+                      child: Skeletonizer(
+                        enabled: snapshot.connectionState == ConnectionState.waiting,
                         child: ListView.separated(
                           separatorBuilder: (context, index) => SizedBox(
                             height: 15,
@@ -72,17 +63,14 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
                                     gradient: LinearGradient(
                                       colors: [
                                         AppColors.primaryBackgroundColor,
-                                        AppColors.tertiaryGrediantColor1
-                                            .withOpacity(1),
-                                        AppColors.tertiaryGrediantColor1
-                                            .withOpacity(1),
+                                        AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                        AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       ],
                                       stops: [0.5, 1, 0.5],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                     ),
-                                    border: Border.all(
-                                        color: AppColors.primaryColorDark3.withOpacity(0.5)),
+                                    border: Border.all(color: AppColors.primaryColorDark3.withOpacity(0.5)),
                                     boxShadow: [
                                       BoxShadow(
                                         color: AppColors.primaryColorDark3,
@@ -99,74 +87,51 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
                                       child: Container(
                                         child: Column(
                                           children: [
-                                           
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(
                                                   child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(SupportTicketDetails
-                                                          .ticket_id
-                                                          .toString()),
+                                                      Text("#${SupportTicketDetails.ticket_id.toString()}"),
                                                       Row(
                                                         children: [
                                                           Icon(
-                                                            HugeIcons
-                                                                .strokeRoundedClock01,
+                                                            HugeIcons.strokeRoundedClock01,
                                                             size: 12,
-                                                            color: AppColors
-                                                                .primaryColorDark1,
+                                                            color: AppColors.primaryColorDark1,
                                                           ),
                                                           SizedBox(
                                                             width: 5,
                                                           ),
                                                           Text(
-                                                            SupportTicketDetails
-                                                                .createdAt
-                                                                .subtract(
-                                                                    Duration(
-                                                                        hours: 5,
-                                                                        minutes:
-                                                                            30))
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 11),
+                                                            SupportTicketDetails.createdAt.subtract(Duration(hours: 5, minutes: 30)).toString(),
+                                                            style: TextStyle(fontSize: 11),
                                                           ),
                                                         ],
                                                       ),
                                                       Container(
                                                         width: 250,
-                                                        child: Text(
-                                                            SupportTicketDetails
-                                                                .title,
-                                                            overflow: TextOverflow
-                                                                .ellipsis),
+                                                        child: Text(SupportTicketDetails.title, overflow: TextOverflow.ellipsis),
                                                       ),
                                                     ],
                                                   ),
-                                                ),  
+                                                ),
                                                 Divider(),
                                                 Container(
                                                   decoration: BoxDecoration(),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
+                                                    mainAxisAlignment: MainAxisAlignment.end,
                                                     children: [
                                                       Container(
                                                         height: 50,
                                                         width: 50,
-                                                        child:
-                                                            SimpleCircularProgressBar(
+                                                        child: SimpleCircularProgressBar(
                                                           animationDuration: 0,
                                                           progressStrokeWidth: 5,
                                                           backStrokeWidth: 4,
-                                                          progressColors: const [
-                                                            Colors.grey
-                                                          ],
+                                                          progressColors: const [Colors.grey],
                                                         ),
                                                       ),
                                                     ],
@@ -179,24 +144,20 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
                                             ),
                                             Divider(),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
+                                                Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [Text(SupportTicketDetails.category_name),Text(SupportTicketDetails.subcategory_name)],
+                                                ),
                                                 Container(
                                                   width: 100,
                                                   padding: EdgeInsets.all(7),
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    color: AppColors
-                                                        .primaryColorLight3,
-                                                    borderRadius:
-                                                        BorderRadius.circular(10),
+                                                    border: Border.all(color: AppColors.primaryColor.withOpacity(0.2)),
+                                                    color: AppColors.primaryColorLight3,
+                                                    borderRadius: BorderRadius.circular(10),
                                                   ),
-                                                  child: Text("New",
-                                                      textAlign:
-                                                          TextAlign.center),
+                                                  child: Text(SupportTicketDetails.status, textAlign: TextAlign.center),
                                                 ),
                                               ],
                                             )
@@ -232,8 +193,7 @@ class _RaiseTicketScreenState extends State<RaiseTicketScreen> {
                   isLoading: false,
                   text: "Create Ticket",
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HelpDeskScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HelpDeskScreen()));
                   }),
             ],
           ),

@@ -121,6 +121,7 @@ class InstrumentMarketData {
 }
 
 class MarketFeedSocket extends ChangeNotifier {
+  var baseUrl =AppConfig.baseUrl;
   IO.Socket? _socket;
   final marketSubscribedDataStreamController = StreamController<MarketData>.broadcast();
 
@@ -144,7 +145,8 @@ class MarketFeedSocket extends ChangeNotifier {
     print("Connecting to MarketData...");
     String? token = await getToken();
 
-    String url = '${AppConfig.baseUrl}?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
+    String url =
+        '$baseUrl?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
 
     _socket = IO.io(
       url,

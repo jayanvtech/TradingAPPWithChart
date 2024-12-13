@@ -72,7 +72,7 @@ dependencies:
  connectivity_plus: ^6.0.3
  awesome_dialog: ^3.2.1
  tab_container: ^3.5.3
- vector_graphics: ^1.1.15
+
 #  webview_flutter_plus: ^0.4.7
  fluttertoast: ^8.2.6
  smart_auth: ^2.0.0

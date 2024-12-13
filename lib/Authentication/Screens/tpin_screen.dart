@@ -9,7 +9,7 @@ import 'dart:convert';
 
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
-import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
+import 'package:tradingapp/Utils/const.dart/custom_widgets.dart';
 
 class ValidPasswordScreen extends StatefulWidget {
   final String? isFromMainScreen;
