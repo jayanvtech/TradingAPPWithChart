@@ -42,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool isExpanded = false;
   bool isLoading = false;
+
   Future<String?> balanceRefresher() async {
     await ApiService().GetBalance();
 
@@ -102,9 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //     },
           //     icon: Icon(Icons.sort_by_alpha_outlined))
         ],
-        title: const Text(
-          'Profile',
-        ),
+        title: const Text('Profile'),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -118,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 future: ApiService().fetchUserProfile(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return Text('Error :: ${snapshot.error}');
                   }
                   // else if (snapshot.connectionState == ConnectionState.waiting) {
                   //   return Text('Error: ${snapshot.error}');
@@ -126,8 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   else {
                     return Skeletonizer(
-                      enabled: snapshot.connectionState ==
-                              ConnectionState.waiting ||
+                      enabled: snapshot.connectionState == ConnectionState.waiting ||
                           snapshot.connectionState == ConnectionState.none ||
                           snapshot.hasError,
                       child: Padding(
@@ -140,10 +138,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   gradient: LinearGradient(
                                     colors: [
                                       AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                     ],
                                     stops: [0.5, 1, 0.5],
                                     begin: Alignment.topCenter,
@@ -154,15 +150,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       color: Colors.grey.withOpacity(0.57),
                                       spreadRadius: 0,
                                       blurRadius: 3,
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
+                                      offset: Offset(0, 2), // changes position of shadow
                                     ),
                                   ],
                                   borderRadius: BorderRadius.circular(10)),
                               padding: EdgeInsets.all(15),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   CircleAvatar(
                                     child: SvgPicture.asset(
@@ -174,30 +168,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.to(() => UserProfileScreen(
-                                          userProfile: snapshot.data!));
+                                      Get.to(() => UserProfileScreen(userProfile: snapshot.data!));
                                     },
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${snapshot.data!.clientName}',
+                                          '${snapshot.data?.clientName}',
                                           style: TextStyle(
-                                              color: AppColors.primaryColorDark,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                            color: AppColors.primaryColorDark,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                         Text(
-                                            'Client ID: ${snapshot.data!.clientId}',
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                decorationThickness: 3,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold)),
+                                          'Client ID: ${snapshot.data?.clientId}',
+                                          style: TextStyle(
+                                            color: AppColors.primaryColorDark2,
+                                            decorationThickness: 3,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -220,23 +213,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                  border: Border.fromBorderSide(BorderSide(
-                                      color: Colors.grey.withOpacity(0.08))),
+                                  border: Border.fromBorderSide(BorderSide(color: Colors.grey.withOpacity(0.08))),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.57),
                                       spreadRadius: 0,
                                       blurRadius: 1,
-                                      offset: Offset(
-                                          0, 1), // changes position of shadow
+                                      offset: Offset(0, 1), // changes position of shadow
                                     ),
                                   ],
                                   gradient: LinearGradient(
                                     colors: [
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
                                     ],
@@ -257,59 +247,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Equity",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           ChangeNotifierProvider(
-                                            create: (context) =>
-                                                BalanceProvider()..GetBalance(),
+                                            create: (context) => BalanceProvider()..GetBalance(),
                                             child: Consumer<BalanceProvider>(
-                                              builder:
-                                                  (context, provider, child) {
+                                              builder: (context, provider, child) {
                                                 if (provider.balance == null) {
                                                   return Text("₹ 0");
                                                 }
-                                                if (provider
-                                                    .balance!.isNotEmpty) {
-                                                  var balance =
-                                                      provider.balance!.first;
+                                                if (provider.balance!.isNotEmpty) {
+                                                  var balance = provider.balance!.first;
                                                   return Column(
                                                     children: [
                                                       Text(
-                                                        "₹ ${double.parse(balance.netMarginAvailable).toStringAsFixed(2)}", // Replace `cashAvailable` with your actual field
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .primaryColorDark1,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                        "₹ ${double.parse(balance.netMarginAvailable).toStringAsFixed(2)}",
+                                                        // Replace `cashAvailable` with your actual field
+                                                        style:
+                                                            TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                                       ),
                                                     ],
                                                   );
                                                 } else {
                                                   return Text(
                                                     "0",
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .primaryColorDark1,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                                   );
                                                 }
                                               },
@@ -319,51 +289,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       //  SizedBox(width:MediaQuery.of(context).size.width/0.5),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text(
                                             "Utilized",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             "374677.90",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark1,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
                                       // SizedBox(width:MediaQuery.of(context).size.width/3),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text(
                                             "Collateral",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             "167537.90",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark1,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       )
@@ -378,20 +328,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: [
                                       Text(
                                         "Net",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColorDark,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: AppColors.primaryColorDark, fontSize: 16, fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         "167537.90",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColorDark,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: AppColors.primaryColorDark, fontSize: 16, fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -399,8 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: InkWell(
@@ -411,13 +354,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             height: 50,
                                             width: 150,
                                             decoration: BoxDecoration(
-                                                color: AppColors
-                                                    .primaryBackgroundColor,
-                                                border: Border.all(
-                                                    color:
-                                                        AppColors.primaryColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                color: AppColors.primaryBackgroundColor,
+                                                border: Border.all(color: AppColors.primaryColor),
+                                                borderRadius: BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
                                               "WITHDRAWAL",
@@ -451,8 +390,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomCenter,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                borderRadius: BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
                                               "ADD FUNDS",
@@ -473,82 +411,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 15,
                             ),
                             Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.57),
-                                      spreadRadius: 0,
-                                      blurRadius: 1,
-                                      offset: Offset(
-                                          0, 1), // changes position of shadow
-                                    ),
-                                  ],
-                                  border: Border.fromBorderSide(BorderSide(
-                                      color: Colors.grey.withOpacity(0.08))),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
-                                      AppColors.primaryBackgroundColor,
-                                      AppColors.tertiaryGrediantColor3,
-                                    ],
-                                    stops: [0.2, 1, 0.1, 0.1, 1],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.57),
+                                    spreadRadius: 0,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 1), // changes position of shadow
                                   ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Holdings",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold)),
-                                        Text("82748932.90/-",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold)),
-                                      ],
-                                    ),
-                                    Container(
-                                        height: 200,
-                                        child: AnimatedDoughnutChart()),
+                                ],
+                                border: Border.fromBorderSide(BorderSide(color: Colors.grey.withOpacity(0.08))),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.primaryBackgroundColor,
+                                    AppColors.tertiaryGrediantColor3,
+                                    AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                    AppColors.primaryBackgroundColor,
+                                    AppColors.tertiaryGrediantColor3,
                                   ],
-                                )),
+                                  stops: [0.2, 1, 0.1, 0.1, 1],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Holdings",
+                                          style: TextStyle(color: AppColors.primaryColorDark, fontSize: 17, fontWeight: FontWeight.bold)),
+                                      Text("82748932.90/-",
+                                          style: TextStyle(color: AppColors.primaryColorDark, fontSize: 17, fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  Container(height: 200, child: AnimatedDoughnutChart()),
+                                ],
+                              ),
+                            ),
                             SizedBox(
                               height: 15,
                             ),
                             Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                  border: Border.fromBorderSide(BorderSide(
-                                      color: Colors.grey.withOpacity(0.08))),
+                                  border: Border.fromBorderSide(BorderSide(color: Colors.grey.withOpacity(0.08))),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.57),
                                       spreadRadius: 0,
                                       blurRadius: 1,
-                                      offset: Offset(
-                                          0, 1), // changes position of shadow
+                                      offset: Offset(0, 1), // changes position of shadow
                                     ),
                                   ],
                                   gradient: LinearGradient(
                                     colors: [
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
                                     ],
@@ -569,30 +491,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Commodity",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             "8123677.90",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark1,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -600,26 +511,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                       // SizedBox(width:MediaQuery.of(context).size.width/3),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text(
                                             "Ledger",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             "167537.90",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark1,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       )
@@ -629,8 +530,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: InkWell(
@@ -641,13 +541,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             height: 50,
                                             width: 150,
                                             decoration: BoxDecoration(
-                                                color: AppColors
-                                                    .primaryBackgroundColor,
-                                                border: Border.all(
-                                                    color:
-                                                        AppColors.primaryColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                color: AppColors.primaryBackgroundColor,
+                                                border: Border.all(color: AppColors.primaryColor),
+                                                borderRadius: BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
                                               "WITHDRAWAL",
@@ -679,8 +575,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomCenter,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                borderRadius: BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
                                               "ADD FUNDS",
@@ -704,23 +599,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Container(
                                 padding: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
-                                    border: Border.fromBorderSide(BorderSide(
-                                        color: Colors.grey.withOpacity(0.08))),
+                                    border: Border.fromBorderSide(BorderSide(color: Colors.grey.withOpacity(0.08))),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.grey.withOpacity(0.57),
                                         spreadRadius: 0,
                                         blurRadius: 1,
-                                        offset: Offset(
-                                            0, 1), // changes position of shadow
+                                        offset: Offset(0, 1), // changes position of shadow
                                       ),
                                     ],
                                     gradient: LinearGradient(
                                       colors: [
                                         AppColors.primaryBackgroundColor,
                                         AppColors.tertiaryGrediantColor3,
-                                        AppColors.tertiaryGrediantColor1
-                                            .withOpacity(1),
+                                        AppColors.tertiaryGrediantColor1.withOpacity(1),
                                         AppColors.primaryBackgroundColor,
                                         AppColors.tertiaryGrediantColor3,
                                       ],
@@ -741,55 +633,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "MTF Available Units",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark2,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               "8123677.90",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark1,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
                                         //  SizedBox(width:MediaQuery.of(context).size.width/0.5),
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             Text(
                                               "MTF Margin Blocked",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark2,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               "374677.90",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark1,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
@@ -800,55 +671,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       height: 10,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "MTF Opening Balance",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark2,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               "90777.90",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark1,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
                                         //  SizedBox(width:MediaQuery.of(context).size.width/0.5),
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             Text(
                                               "MTF Withdrawal limit",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark2,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               "2314677.90",
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .primaryColorDark1,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
@@ -859,8 +709,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       height: 10,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: InkWell(
@@ -869,14 +718,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               height: 50,
                                               width: 150,
                                               decoration: BoxDecoration(
-                                                  color: AppColors
-                                                      .primaryBackgroundColor,
-                                                  border: Border.all(
-                                                      color: AppColors
-                                                          .primaryColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                  color: AppColors.primaryBackgroundColor,
+                                                  border: Border.all(color: AppColors.primaryColor),
+                                                  borderRadius: BorderRadius.circular(10)),
                                               child: Center(
                                                   child: Text(
                                                 "WITHDRAWAL",
@@ -908,9 +752,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                  borderRadius: BorderRadius.circular(10)),
                                               child: Center(
                                                   child: Text(
                                                 "ADD FUNDS",
@@ -934,23 +776,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                  border: Border.fromBorderSide(BorderSide(
-                                      color: Colors.grey.withOpacity(0.08))),
+                                  border: Border.fromBorderSide(BorderSide(color: Colors.grey.withOpacity(0.08))),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.57),
                                       spreadRadius: 0,
                                       blurRadius: 1,
-                                      offset: Offset(
-                                          0, 1), // changes position of shadow
+                                      offset: Offset(0, 1), // changes position of shadow
                                     ),
                                   ],
                                   gradient: LinearGradient(
                                     colors: [
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
                                     ],
@@ -971,30 +810,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Commodity",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark2,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             "0",
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark1,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(color: AppColors.primaryColorDark1, fontSize: 15, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -1002,10 +830,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                       // SizedBox(width:MediaQuery.of(context).size.width/3),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Row(
                                             children: [
@@ -1015,19 +841,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 width: 30,
                                               ),
                                               Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2.15,
+                                                width: MediaQuery.of(context).size.width / 2.15,
                                                 child: Text(
                                                   textAlign: TextAlign.end,
                                                   "commodities Trading is not activeted in this account",
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .primaryColorDark2,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: TextStyle(color: AppColors.primaryColorDark2, fontSize: 13, fontWeight: FontWeight.bold),
                                                 ),
                                               ),
                                             ],
@@ -1058,8 +876,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomCenter,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                borderRadius: BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(
                                               "Active Commodities",
@@ -1086,8 +903,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 230,
                               width: MediaQuery.of(context).size.width,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Container(
@@ -1095,20 +911,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: Colors.white,
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                             gradient: LinearGradient(
                                               colors: [
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                                AppColors.tertiaryGrediantColor1
-                                                    .withOpacity(1),
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
+                                                AppColors.primaryBackgroundColor,
+                                                AppColors.tertiaryGrediantColor3,
+                                                AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                                AppColors.primaryBackgroundColor,
+                                                AppColors.tertiaryGrediantColor3,
                                               ],
                                               stops: [0.1, 0.9, 0.9, 0.4, 0.51],
                                               begin: Alignment.topCenter,
@@ -1117,10 +927,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                           padding: EdgeInsets.all(15),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Stack(
                                                 alignment: Alignment.center,
@@ -1128,16 +936,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   Container(
                                                     height: 50,
                                                     width: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryColor
-                                                            .withOpacity(0.1),
-                                                        shape: BoxShape.circle),
+                                                    decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                     child: Icon(
-                                                      HugeIcons
-                                                          .strokeRoundedBlockchain01,
-                                                      color: AppColors
-                                                          .primaryColor,
+                                                      HugeIcons.strokeRoundedBlockchain01,
+                                                      color: AppColors.primaryColor,
                                                       size: 34,
                                                     ),
                                                   ),
@@ -1148,27 +950,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                               Text(
                                                 "Pledge Holdings",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                               ),
-                                              Text(
-                                                "Pledge Stocks or Mutual Funds you hold to Increase trading balance",
-                                                style: TextStyle(
+                                              Expanded(
+                                                child: Text(
+                                                  "Pledge Stocks or Mutual Funds you hold to Increase trading balance",
+                                                  style: TextStyle(
                                                     fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              SizedBox(
-                                                height: 20,
+                                                    fontWeight: FontWeight.w400,
+                                                    // overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
                                               ),
                                               Text(
                                                 "Pledge Stocks > ",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -1186,30 +982,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: Colors.white,
                                             gradient: LinearGradient(
                                               colors: [
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
-                                                AppColors.tertiaryGrediantColor1
-                                                    .withOpacity(1),
-                                                AppColors
-                                                    .primaryBackgroundColor,
-                                                AppColors
-                                                    .tertiaryGrediantColor3,
+                                                AppColors.primaryBackgroundColor,
+                                                AppColors.tertiaryGrediantColor3,
+                                                AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                                AppColors.primaryBackgroundColor,
+                                                AppColors.tertiaryGrediantColor3,
                                               ],
                                               stops: [0.1, 0.9, 0.9, 0.4, 0.51],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           padding: EdgeInsets.all(15),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Stack(
                                                 alignment: Alignment.center,
@@ -1217,16 +1005,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   Container(
                                                     height: 50,
                                                     width: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryColor
-                                                            .withOpacity(0.1),
-                                                        shape: BoxShape.circle),
+                                                    decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                     child: Icon(
-                                                      HugeIcons
-                                                          .strokeRoundedCreditCardChange,
-                                                      color: AppColors
-                                                          .primaryColor,
+                                                      HugeIcons.strokeRoundedCreditCardChange,
+                                                      color: AppColors.primaryColor,
                                                       size: 34,
                                                     ),
                                                   ),
@@ -1237,27 +1019,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                               Text(
                                                 "Pay Later(MTF)",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                               ),
                                               Text(
                                                 "View and Analyze your MTF Stocks",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                                               ),
                                               SizedBox(
                                                 height: 50,
                                               ),
                                               Text(
                                                 "View Stocks > ",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -1278,8 +1051,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     colors: [
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
                                     ],
@@ -1294,21 +1066,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("DASH",
-                                            style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.primaryColor)),
+                                        Text("DASH", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.primaryColor)),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         Text(
                                           " Reports & Statements  ",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              background: Paint()
-                                                ..color = Colors.grey
-                                                    .withOpacity(0.1)),
+                                          style: TextStyle(fontSize: 14, background: Paint()..color = Colors.grey.withOpacity(0.1)),
                                         ),
                                       ],
                                     ),
@@ -1351,8 +1115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Get.to(() => FundTranscationScreen());
                                       },
                                       title: 'Fund Transactions',
-                                      subtitle:
-                                          'Add Funds and Withdraws histroy',
+                                      subtitle: 'Add Funds and Withdraws histroy',
                                       icons: Icons.account_balance_wallet,
                                     ),
                                     SizedBox(
@@ -1383,8 +1146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     colors: [
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
-                                      AppColors.tertiaryGrediantColor1
-                                          .withOpacity(1),
+                                      AppColors.tertiaryGrediantColor1.withOpacity(1),
                                       AppColors.primaryBackgroundColor,
                                       AppColors.tertiaryGrediantColor3,
                                     ],
@@ -1400,10 +1162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Text(
                                       "Help & Support",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primaryColor),
+                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
                                     ),
                                     Row(),
                                     Container(
@@ -1416,44 +1175,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       height: 10,
                                     ),
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Expanded(
                                               child: InkWell(
                                                 onTap: () {
-                                                  Get.to(() =>
-                                                      RaiseTicketScreen());
+                                                  Get.to(() => RaiseTicketScreen());
                                                 },
                                                 child: Container(
                                                   height: 85,
                                                   decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .primaryColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
+                                                      border: Border.all(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(5)),
                                                   padding: EdgeInsets.all(10),
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Flexible(
-                                                        child: Text(
-                                                            "Your Tickets",
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
+                                                        child: Text("Your Tickets", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                                                       ),
                                                       Flexible(
                                                         flex: 2,
@@ -1476,25 +1218,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               child: Container(
                                                 height: 85,
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
+                                                    border: Border.all(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(5)),
                                                 padding: EdgeInsets.all(10),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Call Us",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                    Text("Call Us", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                                                     SizedBox(
                                                       height: 5,
                                                     ),
@@ -1521,25 +1251,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               child: Container(
                                                 height: 85,
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
+                                                    border: Border.all(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(5)),
                                                 padding: EdgeInsets.all(10),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Contact Us",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                    Text("Contact Us", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                                                     Expanded(
                                                       child: Text(
                                                         "Get in touch with us",
@@ -1559,25 +1277,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               child: Container(
                                                 height: 85,
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
+                                                    border: Border.all(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(5)),
                                                 padding: EdgeInsets.all(10),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("FAQs",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                    Text("FAQs", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                                                     SizedBox(
                                                       height: 5,
                                                     ),
@@ -1652,19 +1358,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: [
                                       Text(
                                         "JOIN OUR COMMUNITY",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: AppColors.primaryColor, fontSize: 17, fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           Container(
                                             child: Stack(
@@ -1679,15 +1380,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       iconSize: 28,
 
                                                       placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .instagram,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.instagram.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
+                                                      iconData: SocialIconsFlutter.instagram,
+                                                      iconColor: AppColors.primaryColor,
+                                                      link: 'https://www.instagram.com/',
+                                                      placeholderStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                       ), //placeholder text style
@@ -1697,11 +1393,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 Container(
                                                   height: 50,
                                                   width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
+                                                  decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                 ),
                                               ],
                                             ),
@@ -1719,15 +1411,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       iconSize: 28,
 
                                                       placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .linkedin,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.linkedin.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
+                                                      iconData: SocialIconsFlutter.linkedin,
+                                                      iconColor: AppColors.primaryColor,
+                                                      link: 'https://www.linkedin.com/',
+                                                      placeholderStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                       ), //placeholder text style
@@ -1737,11 +1424,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 Container(
                                                   height: 50,
                                                   width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
+                                                  decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                 ),
                                               ],
                                             ),
@@ -1759,15 +1442,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       iconSize: 28,
 
                                                       placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .twitter,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.twitter.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
+                                                      iconData: SocialIconsFlutter.twitter,
+                                                      iconColor: AppColors.primaryColor,
+                                                      link: 'https://www.twitter.com/',
+                                                      placeholderStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                       ), //placeholder text style
@@ -1777,11 +1455,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 Container(
                                                   height: 50,
                                                   width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
+                                                  decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                 ),
                                               ],
                                             ),
@@ -1799,15 +1473,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       iconSize: 28,
 
                                                       placeholderText: '',
-                                                      iconData:
-                                                          SocialIconsFlutter
-                                                              .facebook,
-                                                      iconColor: AppColors
-                                                          .primaryColor,
-                                                      link:
-                                                          'https://www.facebook.com/',
-                                                      placeholderStyle:
-                                                          TextStyle(
+                                                      iconData: SocialIconsFlutter.facebook,
+                                                      iconColor: AppColors.primaryColor,
+                                                      link: 'https://www.facebook.com/',
+                                                      placeholderStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                       ), //placeholder text style
@@ -1817,11 +1486,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 Container(
                                                   height: 50,
                                                   width: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primaryColor
-                                                          .withOpacity(0.1),
-                                                      shape: BoxShape.circle),
+                                                  decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                                                 ),
                                               ],
                                             ),
@@ -1854,11 +1519,7 @@ class CustomInkWell extends StatelessWidget {
   final String subtitle;
   final IconData icons;
 
-  CustomInkWell(
-      {required this.onTap,
-      required this.title,
-      required this.subtitle,
-      required this.icons});
+  CustomInkWell({required this.onTap, required this.title, required this.subtitle, required this.icons});
 
   @override
   Widget build(BuildContext context) {
@@ -1875,9 +1536,7 @@ class CustomInkWell extends StatelessWidget {
                     Container(
                       height: 50,
                       width: 50,
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withOpacity(0.1),
-                          shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                       child: Icon(
                         icons,
                         color: AppColors.primaryColor,
@@ -1922,8 +1581,7 @@ class CustomBasicInkWell extends StatelessWidget {
   final String title;
   final IconData icons;
 
-  CustomBasicInkWell(
-      {required this.onTap, required this.title, required this.icons});
+  CustomBasicInkWell({required this.onTap, required this.title, required this.icons});
 
   @override
   Widget build(BuildContext context) {
@@ -1940,9 +1598,7 @@ class CustomBasicInkWell extends StatelessWidget {
                     Container(
                       height: 30,
                       width: 30,
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withOpacity(0.1),
-                          shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
                       child: Icon(
                         icons,
                         color: AppColors.primaryColor,
@@ -1989,6 +1645,7 @@ class BalanceProvider with ChangeNotifier {
   }
 
   String searchTerm = '';
+
   List<Balance>? get balance => _balance;
 
   Future<void> GetBalance() async {

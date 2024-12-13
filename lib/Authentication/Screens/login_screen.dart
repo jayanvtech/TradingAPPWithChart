@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -131,15 +132,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           errorMessage: 'username',
                           obscureText: false,
                         ),
-                        const SizedBox(
-                          height: 20,
+                         SizedBox(
+                          height: 20.h,
                         ),
                         Row(
                           children: [
                             Icon(
                               HugeIcons.strokeRoundedSquareLock01,
                               color: AppColors.primaryColorDark2,
-                              size: 17,
+                              size: 17.sp,
                             ),
                             SizedBox(
                               width: 5,
@@ -252,8 +253,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Center(
                               child: _isLoading // Step 3: Check if loading
                                   ? CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          AppColors.primaryColor),
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                              AppColors.primaryColor),
                                     )
                                   : Text("Log in",
                                       style: TextStyle(
@@ -321,9 +323,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             // ),
                           ],
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.27,
-                        ),  
+                        // SizedBox(
+                        //   height: MediaQuery.of(context).size.height * 0.27,
+                        // ),
+                        Spacer(),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -334,7 +337,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 await launchUrl(Uri.https(url),
                                     mode: LaunchMode.inAppBrowserView,
                                     browserConfiguration:
-                                        BrowserConfiguration(showTitle: true));
+                                        BrowserConfiguration(
+                                            showTitle: true));
                               },
                               child: Text(
                                 style: TextStyle(

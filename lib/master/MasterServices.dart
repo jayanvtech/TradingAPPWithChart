@@ -4,10 +4,10 @@ import 'package:path/path.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 class DatabaseHelperMaster {
-  static final DatabaseHelperMaster _instance =
-      DatabaseHelperMaster._internal();
+  static final DatabaseHelperMaster _instance = DatabaseHelperMaster._internal();
   factory DatabaseHelperMaster() => _instance;
 
   static Database? _database;
@@ -51,8 +51,7 @@ class DatabaseHelperMaster {
     ''');
   }
 
-  Future<void> insertOrUpdateInstruments(
-      List<Map<String, dynamic>> instruments) async {
+  Future<void> insertOrUpdateInstruments(List<Map<String, dynamic>> instruments) async {
     final db = await database;
     for (var instrument in instruments) {
       await db.insert(
@@ -76,8 +75,7 @@ class DatabaseHelperMaster {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getInstrumentsByInstrumentID(
-      String ExchangeNSEInstrumentId) async {
+  Future<List<Map<String, dynamic>>> getInstrumentsByInstrumentID(String ExchangeNSEInstrumentId) async {
     final db = await database;
     return await db.query(
       'instruments',
@@ -257,15 +255,10 @@ class DatabaseHelperMaster {
     final result = await db.query(
       'instruments',
       columns: ['exchangeInstrumentID', 'exchangeSegment', 'name'],
-      where:
-          'name = ? AND exchangeSegment = ? AND series IN (${List.filled(seriesList.length, '?').join(', ')})',
+      where: 'name = ? AND exchangeSegment = ? AND series IN (${List.filled(seriesList.length, '?').join(', ')})',
       whereArgs: [symbol, 'NSECM', ...seriesList],
       orderBy: "CASE series " +
-          seriesList
-              .asMap()
-              .entries
-              .map((entry) => "WHEN '${entry.value}' THEN ${entry.key + 1}")
-              .join(' ') +
+          seriesList.asMap().entries.map((entry) => "WHEN '${entry.value}' THEN ${entry.key + 1}").join(' ') +
           " ELSE ${seriesList.length + 1} END",
       limit: 1,
     );
@@ -282,8 +275,7 @@ class DatabaseHelperMaster {
 class ApiServiceMaster {
   Future<void> fetchInstruments() async {
     final response = await http.post(
-      Uri.parse(
-          'https://mtrade.arhamshare.com/apimarketdata/instruments/master'),
+      Uri.parse('${AppConfig.baseUrl}apimarketdata/instruments/master'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({
         "exchangeSegmentList": ["NSECM", "BSECM"]
@@ -294,8 +286,7 @@ class ApiServiceMaster {
       final data = json.decode(response.body);
       if (data['type'] == 'success') {
         // Parse the result and insert/update into SQLite
-        List<Map<String, dynamic>> instruments =
-            parseInstruments(data['result']);
+        List<Map<String, dynamic>> instruments = parseInstruments(data['result']);
         await DatabaseHelperMaster().insertOrUpdateInstruments(instruments);
         print('Instruments fetched and stored successfully SQLITE');
       }
@@ -339,8 +330,7 @@ class ApiServiceMaster {
 
   Future<void> checkAndFetchInstruments() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    DateTime? lastFetchTime =
-        DateTime.tryParse(prefs.getString('lastFetchTime') ?? '');
+    DateTime? lastFetchTime = DateTime.tryParse(prefs.getString('lastFetchTime') ?? '');
 
     DateTime now = DateTime.now();
     bool shouldFetch = false;
@@ -349,7 +339,7 @@ class ApiServiceMaster {
       // First time in the day or app installed
       print('First time in the day or app installed');
       shouldFetch = true;
-    } else if (now.hour == 7 && now.minute == 0) {
+    } else if (now.hour == 10 && now.minute == 0) {
       print('7 AM');
       // Check if it's 7 AM
       shouldFetch = true;

@@ -13,7 +13,7 @@ class NscmDataProvider with ChangeNotifier {
       final data = await fetchNiftyData();
       await NscmDatabase().insertNscmData(data);
       _niftyData = data;
-     print(data);
+      print(data);
       notifyListeners();
     } catch (e) {
       print('Error fetching and storing data: $e');
@@ -27,8 +27,7 @@ class NscmDataProvider with ChangeNotifier {
       _niftyData = data;
       notifyListeners();
     } catch (e) {
-
-        print('Error updating data: $e');
-      }
+      print('Error updating data: $e');
     }
   }
+}

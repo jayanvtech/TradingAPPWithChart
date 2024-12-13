@@ -49,16 +49,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> SubscribeInstrument() async {
-    await ApiService()
-        .MarketInstrumentSubscribe(1.toString(), 26000.toString());
-    await ApiService()
-        .MarketInstrumentSubscribe(11.toString(), 26065.toString());
-    await ApiService()
-        .MarketInstrumentSubscribe(1.toString(), 26001.toString());
-    await ApiService()
-        .MarketInstrumentSubscribe(1.toString(), 26003.toString());
-    await ApiService()
-        .MarketInstrumentSubscribe(1.toString(), 26004.toString());
+    await ApiService().MarketInstrumentSubscribe(1.toString(), 26000.toString());
+    await ApiService().MarketInstrumentSubscribe(11.toString(), 26065.toString());
+    await ApiService().MarketInstrumentSubscribe(1.toString(), 26001.toString());
+    await ApiService().MarketInstrumentSubscribe(1.toString(), 26003.toString());
+    await ApiService().MarketInstrumentSubscribe(1.toString(), 26004.toString());
   }
 
   List<Widget> _buildScreens() {
@@ -93,8 +88,7 @@ class _MainScreenState extends State<MainScreen> {
         screen: HoldingScreen(), // Assuming MarketScreen for "Market" tab
         item: ItemConfig(
           activeForegroundColor: AppColors.primaryColor,
-          icon: Icon(HugeIcons
-              .strokeRoundedShoppingBag01), // Consider a more suitable icon
+          icon: Icon(HugeIcons.strokeRoundedShoppingBag01), // Consider a more suitable icon
           title: "Portfolio", textStyle: TextStyle(fontSize: 11),
           inactiveForegroundColor: AppColors.primaryColorDark2,
         ),
@@ -145,15 +139,9 @@ class _MainScreenState extends State<MainScreen> {
         selectedTabContext: (p0) {
           // HapticFeedback.heavyImpact();
         },
-        animatedTabBuilder:
-            (context, index, animationValue, newIndex, oldIndex, child) {
-          final double yOffset = newIndex > index
-              ? -animationValue
-              : (newIndex < index
-                  ? animationValue
-                  : (index < oldIndex
-                      ? animationValue - 1
-                      : 1 - animationValue));
+        animatedTabBuilder: (context, index, animationValue, newIndex, oldIndex, child) {
+          final double yOffset =
+              newIndex > index ? -animationValue : (newIndex < index ? animationValue : (index < oldIndex ? animationValue - 1 : 1 - animationValue));
           return FractionalTranslation(
             translation: Offset(yOffset, 0),
             child: child,
@@ -163,25 +151,20 @@ class _MainScreenState extends State<MainScreen> {
         onTabChanged: (index) {
           HapticFeedback.mediumImpact();
         },
-        navBarBuilder: (navBarConfig) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-          child: Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                    color: Color.fromARGB(76, 112, 146, 164),
-                    width: 0.5), // Top divider line
+        navBarBuilder: (navBarConfig) => Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Color.fromARGB(76, 112, 146, 164), width: 0.5), // Top divider line
+            ),
+          ),
+          child: Style1BottomNavBar(
+            navBarDecoration: NavBarDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
             ),
-            child: Style1BottomNavBar(
-              navBarDecoration: NavBarDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              navBarConfig: navBarConfig,
-            ),
+            navBarConfig: navBarConfig,
           ),
         ),
       );

@@ -1,11 +1,11 @@
-class IRCTCData {
+class StockCorporateDetailModel {
   List<Announcement> latestAnnouncements;
   List<CorporateAction> corporateActions;
   Map<String, List<ShareholdingPattern>> shareholdingPatterns;
   List<FinancialResult> financialResults;
   List<BoardMeeting> boardMeetings;
 
-  IRCTCData({
+  StockCorporateDetailModel({
     required this.latestAnnouncements,
     required this.corporateActions,
     required this.shareholdingPatterns,
@@ -13,28 +13,18 @@ class IRCTCData {
     required this.boardMeetings,
   });
 
-  factory IRCTCData.fromJson(Map<String, dynamic> json) {
-    return IRCTCData(
-      latestAnnouncements:
-          (json['data']['latest_announcements']['data'] as List)
-              .map((item) => Announcement.fromJson(item))
-              .toList(),
-      corporateActions: (json['data']['corporate_actions']['data'] as List)
-          .map((item) => CorporateAction.fromJson(item))
-          .toList(),
-      shareholdingPatterns: (json['data']['shareholdings_patterns']['data']
-              as Map<String, dynamic>)
-          .map((key, value) => MapEntry(
-              key,
-              (value as List)
-                  .map((item) => ShareholdingPattern.fromJson(item))
-                  .toList())),
-      financialResults: (json['data']['financial_results']['data'] as List)
-          .map((item) => FinancialResult.fromJson(item))
-          .toList(),
-      boardMeetings: (json['data']['borad_meeting']['data'] as List)
-          .map((item) => BoardMeeting.fromJson(item))
-          .toList(),
+  factory StockCorporateDetailModel.fromJson(Map<String, dynamic> json) {
+    return StockCorporateDetailModel(
+      latestAnnouncements: (json['data']['latest_announcements']['data'] as List).map((item) => Announcement.fromJson(item)).toList(),
+      corporateActions: (json['data']['corporate_actions']['data'] as List).map((item) => CorporateAction.fromJson(item)).toList(),
+      shareholdingPatterns: (json['data']['shareholdings_patterns']['data'] as Map<String, dynamic>).map(
+        (key, value) => MapEntry(
+          key,
+          (value as List).map((item) => ShareholdingPattern.fromJson(item)).toList(),
+        ),
+      ),
+      financialResults: (json['data']['financial_results']['data'] as List).map((item) => FinancialResult.fromJson(item)).toList(),
+      boardMeetings: (json['data']['borad_meeting']['data'] as List).map((item) => BoardMeeting.fromJson(item)).toList(),
     );
   }
 }
@@ -44,10 +34,7 @@ class Announcement {
   final String broadcastDate;
   final String subject;
 
-  Announcement(
-      {required this.symbol,
-      required this.broadcastDate,
-      required this.subject});
+  Announcement({required this.symbol, required this.broadcastDate, required this.subject});
 
   factory Announcement.fromJson(Map<String, dynamic> json) {
     return Announcement(
@@ -63,8 +50,7 @@ class CorporateAction {
   final String exDate;
   final String purpose;
 
-  CorporateAction(
-      {required this.symbol, required this.exDate, required this.purpose});
+  CorporateAction({required this.symbol, required this.exDate, required this.purpose});
 
   factory CorporateAction.fromJson(Map<String, dynamic> json) {
     return CorporateAction(
@@ -79,8 +65,8 @@ class ShareholdingPattern {
   final String category;
   final String percentage;
   final String key;
-  ShareholdingPattern(
-      {required this.category, required this.percentage, required this.key});
+
+  ShareholdingPattern({required this.category, required this.percentage, required this.key});
 
   factory ShareholdingPattern.fromJson(Map<String, dynamic> json) {
     return ShareholdingPattern(
@@ -150,8 +136,7 @@ class BoardMeeting {
   final String purpose;
   final String meetingDate;
 
-  BoardMeeting(
-      {required this.symbol, required this.purpose, required this.meetingDate});
+  BoardMeeting({required this.symbol, required this.purpose, required this.meetingDate});
 
   factory BoardMeeting.fromJson(Map<String, dynamic> json) {
     return BoardMeeting(

@@ -1,5 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io';
 
 // import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +9,7 @@ import 'dart:io';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tradingapp/DashBoard/Screens/FII/DII/fii_dii_screen.dart';
 import 'package:tradingapp/DrawerScreens/equity_market_screen.dart';
 import 'package:tradingapp/MarketWatch/Provider/corporate_info_provider.dart';
 import 'package:tradingapp/Profile/Reports/screens/ledger_report_screen.dart';
@@ -29,6 +32,7 @@ import 'package:tradingapp/Position/Screens/PositionScreen/position_screen.dart'
 import 'package:tradingapp/Sockets/market_feed_scoket.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
 import 'package:tradingapp/Utils/changenotifier.dart';
+
 // import 'package:tradingapp/Utils/firebase_messeging.dart';
 import 'package:tradingapp/market_screen.dart';
 import 'package:tradingapp/master/nscm_provider.dart';
@@ -57,8 +61,7 @@ Future<void> requestPermissions() async {
 
   if (!isAllowed) {
     // This opens a dialog for the user to confirm notification permissions
-    isAllowed =
-        await AwesomeNotifications().requestPermissionToSendNotifications();
+    isAllowed = await AwesomeNotifications().requestPermissionToSendNotifications();
 
     if (!isAllowed) {
       // Handle the case where the user declines the permissions
@@ -68,9 +71,7 @@ Future<void> requestPermissions() async {
 }
 
 void main() async {
-  HttpClient client = new HttpClient()
-    ..badCertificateCallback =
-        ((X509Certificate cert, String host, int port) => true);
+  HttpClient client = new HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
   WidgetsFlutterBinding.ensureInitialized();
   await ApiServiceMaster().checkAndFetchInstruments();
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,7 +98,10 @@ void main() async {
 
   //MarketFeedSocket marketFeedSocket = MarketFeedSocket();
   HttpOverrides.global = new MyHttpOverrides();
-
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(
     MultiProvider(
       providers: [
@@ -147,8 +151,7 @@ Future<bool> isUserLoggedIn() async {
 }
 
 class MyApp extends StatefulWidget {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -203,60 +206,70 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     //_notificationService.initialize();
-    return GetMaterialApp(
-      theme: ThemeData(
-        colorSchemeSeed: AppColors.primaryColor,
-        textTheme: GoogleFonts.poppinsTextTheme(),
-      ),
-      title: 'My App',
-      navigatorKey: MyApp.navigatorKey,
-      debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => MarketWatchManager(),
-            child: MyApp(),
+    return ScreenUtilInit(
+      designSize: Size(402, 874),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(1.0),
           ),
-          ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
-          ChangeNotifierProvider(
-            create: (context) => NscmDataProvider(),
+          child: GetMaterialApp(
+            theme: ThemeData(
+              colorSchemeSeed: AppColors.primaryColor,
+              textTheme: GoogleFonts.poppinsTextTheme(),
+            ),
+            title: 'My App',
+            navigatorKey: MyApp.navigatorKey,
+            debugShowCheckedModeBanner: false,
+            home: MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                  create: (context) => MarketWatchManager(),
+                  child: MyApp(),
+                ),
+                ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
+                ChangeNotifierProvider(
+                  create: (context) => NscmDataProvider(),
+                ),
+                ChangeNotifierProvider<InteractiveSocketFeed>(
+                  create: (contex) => InteractiveSocketFeed(),
+                ),
+                ChangeNotifierProvider(create: (_) => PositionProvider()),
+                //ChangeNotifierProvider(create: (contex) => InteractiveSocketFeed()..interactiveSocket()),
+              ],
+              child: ChangeNotifierProvider(
+                create: (_) => MarketFeedSocket()..connect(),
+                // child: isLoginValue == false ? LoginScreen() : ValidPasswordScreen(),
+                child: FutureBuilder<bool>(
+                  future: isLogin(),
+                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else {
+                      print("isLoginValue: $isLoginValue");
+                      print("snapshot.data: ${snapshot.data}");
+                      if (snapshot.data == true && isLoginValue == true) {
+                        // return MainScreen();
+                        return ValidPasswordScreen(
+                          isFromMainScreen: "true",
+                        );
+                      } else {
+                        return LoginScreen();
+                      }
+                    }
+                  },
+                ),
+              ),
+            ),
           ),
-          ChangeNotifierProvider<InteractiveSocketFeed>(
-            create: (contex) => InteractiveSocketFeed(),
-          ),
-          ChangeNotifierProvider(create: (_) => PositionProvider()),
-          //ChangeNotifierProvider(create: (contex) => InteractiveSocketFeed()..interactiveSocket()),
-        ],
-        child: ChangeNotifierProvider(
-          create: (_) => MarketFeedSocket()..connect(),
-          // child: isLoginValue == false ? LoginScreen() : ValidPasswordScreen(),
-          child: FutureBuilder<bool>(
-            future: isLogin(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else {
-                print("isLoginValue: $isLoginValue");
-                print("snapshot.data: ${snapshot.data}");
-                if (snapshot.data == true && isLoginValue == true) {
-                  // return MainScreen();
-                  return ValidPasswordScreen(
-                    isFromMainScreen: "true",
-                  );
-                } else {
-                  return LoginScreen();
-                }
-              }
-            },
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  // Future<void> backgroundHandler(RemoteMessage message) async {
-  //   print('Handling a background message ${message.messageId}');
-  // }
+// Future<void> backgroundHandler(RemoteMessage message) async {
+//   print('Handling a background message ${message.messageId}');
+// }
 }
 
 // class PushNotificationService {
@@ -292,8 +305,6 @@ class _MyAppState extends State<MyApp> {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }

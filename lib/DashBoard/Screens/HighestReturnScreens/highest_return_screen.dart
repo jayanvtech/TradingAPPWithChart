@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
 
 class HighestReturnScreen extends StatefulWidget {
   const HighestReturnScreen({super.key});
@@ -8,11 +10,9 @@ class HighestReturnScreen extends StatefulWidget {
 }
 
 class _HighestReturnScreenState extends State<HighestReturnScreen> {
-  @override
-  String? _selectedDuration; // The selected duration
-
+  String _selectedDuration = '1 Week'; // The selected duration
+  List<String> durations = ['1 Week', '1 Month', '3 Months', '52 Weeks'];
   Widget build(BuildContext context) {
-    List<String> durations = ['1 Week', '1 Month', '3 Months', '52 Weeks'];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,8 +27,16 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
               child: Row(
                 children: durations.map((String value) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: CustomSelectionButton(
+                        isSelected: _selectedDuration == value,
+                        text: value,
+                        onPressed: () {
+                          setState(() {
+                            _selectedDuration = value;
+                          });
+                        },
+                      ) /*Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         color: _selectedDuration == value
@@ -52,8 +60,8 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
                         },
                         child: Text(value),
                       ),
-                    ),
-                  );
+                    ),*/
+                      );
                 }).toList(),
               ),
             ),
@@ -67,10 +75,10 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('IRCTC',style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400
-                ),),
+                Text(
+                  'IRCTC',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -89,8 +97,7 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('10.8% Return in $_selectedDuration',
-                    style: TextStyle(color: Colors.black54)),
+                Text('10.8% Return in $_selectedDuration', style: TextStyle(color: Colors.black54)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -106,10 +113,10 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('PAYTM',style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400
-                ),),
+                Text(
+                  'PAYTM',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   children: [
                     Text(
@@ -127,8 +134,7 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('22.2% Return in $_selectedDuration',
-                    style: TextStyle(color: Colors.black54)),
+                Text('22.2% Return in $_selectedDuration', style: TextStyle(color: Colors.black54)),
                 Row(
                   children: [
                     Text(
@@ -143,10 +149,10 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('NBCC',style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400
-                ),),
+                Text(
+                  'NBCC',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   children: [
                     Text(
@@ -164,8 +170,7 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('25.9% Return in $_selectedDuration',
-                    style: TextStyle(color: Colors.black54)),
+                Text('25.9% Return in $_selectedDuration', style: TextStyle(color: Colors.black54)),
                 Row(
                   children: [
                     Text(
@@ -180,10 +185,10 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('TATA MOTORS',style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400
-                ),),
+                Text(
+                  'TATA MOTORS',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   children: [
                     Text(
@@ -201,8 +206,7 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('34.1% Return in $_selectedDuration',
-                    style: TextStyle(color: Colors.black54)),
+                Text('34.1% Return in $_selectedDuration', style: TextStyle(color: Colors.black54)),
                 Row(
                   children: [
                     Text(
@@ -217,10 +221,10 @@ class _HighestReturnScreenState extends State<HighestReturnScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('IRFC',style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400
-                ),),
+                Text(
+                  'IRFC',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   children: [
                     Text(

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,13 +35,10 @@ class ViewMoreInstrumentDetailScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ViewMoreInstrumentDetailScreen> createState() =>
-      _ViewMoreInstrumentDetailScreenState();
+  State<ViewMoreInstrumentDetailScreen> createState() => _ViewMoreInstrumentDetailScreenState();
 }
 
-class _ViewMoreInstrumentDetailScreenState
-    extends State<ViewMoreInstrumentDetailScreen>
-    with SingleTickerProviderStateMixin {
+class _ViewMoreInstrumentDetailScreenState extends State<ViewMoreInstrumentDetailScreen> with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
   @override
@@ -54,22 +52,15 @@ class _ViewMoreInstrumentDetailScreenState
     return Scaffold(
       appBar: AppBar(
         title: Consumer<MarketFeedSocket>(builder: (context, data, child) {
-          if (data.getDataById(int.parse(widget.exchangeInstrumentId)) ==
-              null) {
+          if (data.getDataById(int.parse(widget.exchangeInstrumentId)) == null) {
             return Container();
           }
-          final marketData =
-              data.getDataById(int.parse(widget.exchangeInstrumentId));
+          final marketData = data.getDataById(int.parse(widget.exchangeInstrumentId));
 
-          final priceChange = marketData != null
-              ? double.parse(marketData.price) - double.parse(widget.close)
-              : 0;
+          final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(widget.close) : 0;
           final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
           return Skeletonizer(
-            enabled:
-                data.getDataById(int.parse(widget.exchangeInstrumentId)) == null
-                    ? true
-                    : false,
+            enabled: data.getDataById(int.parse(widget.exchangeInstrumentId)) == null ? true : false,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,11 +69,13 @@ class _ViewMoreInstrumentDetailScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     widget.exchangeSegment == '2'
-                        ? Text(widget.displayName,style: TextStyle(fontSize: 15),)
+                        ? Text(
+                            widget.displayName,
+                            style: TextStyle(fontSize: 15),
+                          )
                         : Text(widget.displayName),
                     Text(
-                      ExchangeConverter().getExchangeSegmentName(
-                          int.parse(widget.exchangeSegment)),
+                      ExchangeConverter().getExchangeSegmentName(int.parse(widget.exchangeSegment)),
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
@@ -94,8 +87,7 @@ class _ViewMoreInstrumentDetailScreenState
                       children: [
                         Text(
                           "₹" + marketData!.price.toString(),
-                          style:
-                              TextStyle(color: priceChangeColor, fontSize: 18),
+                          style: TextStyle(color: priceChangeColor, fontSize: 18),
                         ),
                         Icon(
                           Icons.arrow_drop_up,
@@ -141,20 +133,15 @@ class _ViewMoreInstrumentDetailScreenState
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                    height: 500,
-                    child: TechnicalAnalysisWidgetScreen(widget.displayName)),
-                Container(
-                    height: 510,
-                    child: CheckBeforeBuyWidgetScreen(widget.displayName)),
+                Container(height: 500, child: TechnicalAnalysisWidgetScreen(widget.displayName)),
+                Container(height: 510, child: CheckBeforeBuyWidgetScreen(widget.displayName)),
                 SizedBox(
                   height: 100,
                 ),
               ],
             ),
           ),
-          Container(
-              height: 500, child: TrendlyneWidgetScreen(widget.displayName)),
+          Container(height: 500, child: TrendlyneWidgetScreen(widget.displayName)),
           Container(
             height: 810,
             child: TradingViewWidgetScreen(widget.displayName),
@@ -227,8 +214,7 @@ class _OverviewTabState extends State<OverviewTab> {
       body: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return FutureBuilder<Result>(
-              future: ApiService()
-                  .GetInstrumentByID(exchangeInstrumentId, exchangeSegment),
+              future: ApiService().GetInstrumentByID(exchangeInstrumentId, exchangeSegment),
               builder: (context, snapshot) {
                 //  print("1111${snapshot.data?.bhavcopy?.close}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -268,20 +254,13 @@ class _OverviewTabState extends State<OverviewTab> {
 
                 return Consumer<MarketFeedSocket>(
                   builder: (context, data, child) {
-                    final marketData =
-                        data.getDataById(int.parse(exchangeInstrumentId));
-                    final priceChange = marketData != null
-                        ? double.parse(marketData.price) - double.parse(close)
-                        : 0;
-                    final priceChangeColor =
-                        priceChange > 0 ? Colors.green : Colors.red;
+                    final marketData = data.getDataById(int.parse(exchangeInstrumentId));
+                    final priceChange = marketData != null ? double.parse(marketData.price) - double.parse(close) : 0;
+                    final priceChangeColor = priceChange > 0 ? Colors.green : Colors.red;
 
                     if (marketData != null) {
                       return Skeletonizer(
-                        enabled:
-                            snapshot.connectionState == ConnectionState.waiting
-                                ? true
-                                : false,
+                        enabled: snapshot.connectionState == ConnectionState.waiting ? true : false,
                         child: SingleChildScrollView(
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 40.0),
@@ -297,8 +276,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               padding: EdgeInsets.all(10),
@@ -306,8 +284,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 children: [
                                                   Text(
                                                     "OPEN",
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
+                                                    style: TextStyle(color: Colors.black54),
                                                   ),
                                                   Text(marketData.Open),
                                                 ],
@@ -319,8 +296,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 children: [
                                                   Text(
                                                     "HIGH",
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
+                                                    style: TextStyle(color: Colors.black54),
                                                   ),
                                                   Text(marketData.High),
                                                 ],
@@ -332,8 +308,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 children: [
                                                   Text(
                                                     "LOW",
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
+                                                    style: TextStyle(color: Colors.black54),
                                                   ),
                                                   Text(marketData.Low),
                                                 ],
@@ -345,11 +320,9 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 children: [
                                                   Text(
                                                     "PREV. CLOSE",
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
+                                                    style: TextStyle(color: Colors.black54),
                                                   ),
-                                                  Text(marketData.close
-                                                      .toString()),
+                                                  Text(marketData.close.toString()),
                                                 ],
                                               ),
                                             ),
@@ -363,31 +336,18 @@ class _OverviewTabState extends State<OverviewTab> {
                                               Padding(
                                                 padding: EdgeInsets.all(5),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Expanded(
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text('QTY',
                                                               style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .black87,
+                                                                fontWeight: FontWeight.normal,
+                                                                color: Colors.black87,
                                                               )),
-                                                          Text('BUY PRICE',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal)),
+                                                          Text('BUY PRICE', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.normal)),
                                                         ],
                                                       ),
                                                     ),
@@ -396,25 +356,17 @@ class _OverviewTabState extends State<OverviewTab> {
                                                     ),
                                                     Expanded(
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text('BUY PRICE',
                                                               style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .black87,
+                                                                fontWeight: FontWeight.normal,
+                                                                color: Colors.black87,
                                                               )),
                                                           Text('QTY',
                                                               style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .black87,
+                                                                fontWeight: FontWeight.normal,
+                                                                color: Colors.black87,
                                                               )),
                                                         ],
                                                       ),
@@ -426,39 +378,26 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 thickness: 0.5,
                                               ),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Container(
                                                     height: 200,
                                                     width: 180,
                                                     child: ListView.builder(
                                                       shrinkWrap: false,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount: marketData
-                                                          .bids.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        var bid = marketData
-                                                            .bids[index];
+                                                      physics: NeverScrollableScrollPhysics(),
+                                                      itemCount: marketData.bids.length,
+                                                      itemBuilder: (context, index) {
+                                                        var bid = marketData.bids[index];
                                                         return Container(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  10),
+                                                          padding: EdgeInsets.all(10),
                                                           child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
-                                                              Text(
-                                                                  '${bid.size}'),
+                                                              Text('${bid.size}'),
                                                               Text(
                                                                 '${bid.price}',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .green),
+                                                                style: TextStyle(color: Colors.green),
                                                               ),
                                                             ],
                                                           ),
@@ -472,31 +411,16 @@ class _OverviewTabState extends State<OverviewTab> {
                                                       // width: 180,
                                                       child: ListView.builder(
                                                         shrinkWrap: true,
-                                                        physics:
-                                                            NeverScrollableScrollPhysics(),
-                                                        itemCount: marketData
-                                                            .asks.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          var asks = marketData
-                                                              .asks[index];
+                                                        physics: NeverScrollableScrollPhysics(),
+                                                        itemCount: marketData.asks.length,
+                                                        itemBuilder: (context, index) {
+                                                          var asks = marketData.asks[index];
                                                           return Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                      '${asks.price}',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.red)),
-                                                                  Text(
-                                                                      '${asks.size}'),
-                                                                ]),
+                                                            padding: EdgeInsets.all(10),
+                                                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                              Text('${asks.price}', style: TextStyle(color: Colors.red)),
+                                                              Text('${asks.size}'),
+                                                            ]),
                                                           );
                                                         },
                                                       ),
@@ -510,15 +434,11 @@ class _OverviewTabState extends State<OverviewTab> {
                                               Padding(
                                                 padding: EdgeInsets.all(10.0),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text(marketData
-                                                        .totalBuyQuantity),
+                                                    Text(marketData.totalBuyQuantity),
                                                     Text("TOTAL QUANTITY"),
-                                                    Text(marketData
-                                                        .totalSellQuantity)
+                                                    Text(marketData.totalSellQuantity)
                                                   ],
                                                 ),
                                               )
@@ -543,56 +463,33 @@ class _OverviewTabState extends State<OverviewTab> {
                                           children: [
                                             Text(
                                               "Performance",
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.black,
-                                                  fontSize: 15),
+                                              style: GoogleFonts.inter(color: Colors.black, fontSize: 15),
                                             ),
                                             IconButton(
                                                 onPressed: () {
                                                   showModalBottomSheet(
-                                                    backgroundColor:
-                                                        Colors.white,
+                                                    backgroundColor: Colors.white,
                                                     context: context,
                                                     builder: (context) {
                                                       return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    8.0),
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                         child: Column(
                                                           children: <Widget>[
                                                             Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      top:
-                                                                          15.0),
+                                                              padding: const EdgeInsets.only(top: 15.0),
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   Container(
                                                                     height: 40,
                                                                     width: 40,
                                                                     decoration: BoxDecoration(
-                                                                        shape: BoxShape
-                                                                            .circle,
-                                                                        color: Colors
-                                                                            .blueAccent
-                                                                            .shade100
-                                                                            .withOpacity(0.4)),
-                                                                    child:
-                                                                        Center(
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .event_note_outlined,
-                                                                        color: Colors
-                                                                            .blueAccent,
-                                                                        size:
-                                                                            20,
+                                                                        shape: BoxShape.circle, color: Colors.blueAccent.shade100.withOpacity(0.4)),
+                                                                    child: Center(
+                                                                      child: Icon(
+                                                                        Icons.event_note_outlined,
+                                                                        color: Colors.blueAccent,
+                                                                        size: 20,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -600,20 +497,12 @@ class _OverviewTabState extends State<OverviewTab> {
                                                               ),
                                                             ),
                                                             Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
                                                                 Text(
                                                                   "Performance",
                                                                   style: GoogleFonts.inter(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
+                                                                      color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
                                                                 )
                                                               ],
                                                             ),
@@ -621,21 +510,15 @@ class _OverviewTabState extends State<OverviewTab> {
                                                               height: 4,
                                                             ),
                                                             Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
                                                                 Flexible(
                                                                   child: Text(
                                                                     "Metrics provide data illustrating the company's stock performance, with these figures fluctuating daily.",
-                                                                    style: GoogleFonts
-                                                                        .inter(
-                                                                      color: Colors
-                                                                          .black,
+                                                                    style: GoogleFonts.inter(
+                                                                      color: Colors.black,
                                                                     ),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
+                                                                    textAlign: TextAlign.center,
                                                                   ),
                                                                 ),
                                                               ],
@@ -644,44 +527,24 @@ class _OverviewTabState extends State<OverviewTab> {
                                                               height: 15,
                                                             ),
                                                             Expanded(
-                                                                child:
-                                                                    Container(
-                                                              child: ListView
-                                                                  .builder(
-                                                                itemCount:
-                                                                    PerformanceTitles
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
+                                                                child: Container(
+                                                              child: ListView.builder(
+                                                                itemCount: PerformanceTitles.length,
+                                                                itemBuilder: (context, index) {
                                                                   return Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            4.0),
-                                                                    child:
-                                                                        Container(
-                                                                      child:
-                                                                          ListTile(
-                                                                        title:
-                                                                            Text(
-                                                                          PerformanceTitles[
-                                                                              index],
-                                                                          style: GoogleFonts.inter(
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w600),
+                                                                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                                                    child: Container(
+                                                                      child: ListTile(
+                                                                        title: Text(
+                                                                          PerformanceTitles[index],
+                                                                          style: GoogleFonts.inter(color: Colors.black, fontWeight: FontWeight.w600),
                                                                         ),
-                                                                        subtitle:
-                                                                            Text(
-                                                                          PerformanceSubTitles[
-                                                                              index],
-                                                                          style:
-                                                                              GoogleFonts.inter(
-                                                                            color:
-                                                                                Colors.black,
+                                                                        subtitle: Text(
+                                                                          PerformanceSubTitles[index],
+                                                                          style: GoogleFonts.inter(
+                                                                            color: Colors.black,
                                                                           ),
-                                                                          textAlign:
-                                                                              TextAlign.start,
+                                                                          textAlign: TextAlign.start,
                                                                         ),
                                                                       ),
                                                                     ),
@@ -706,20 +569,15 @@ class _OverviewTabState extends State<OverviewTab> {
                                           height: 10,
                                         ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Today's Low",
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.black,
-                                                  fontSize: 12),
+                                              style: GoogleFonts.inter(color: Colors.black, fontSize: 12),
                                             ),
                                             Text(
                                               "Today's High",
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.black,
-                                                  fontSize: 12),
+                                              style: GoogleFonts.inter(color: Colors.black, fontSize: 12),
                                             ),
                                           ],
                                         ),
@@ -730,38 +588,27 @@ class _OverviewTabState extends State<OverviewTab> {
                                         RangeChart(
                                           low: double.parse(marketData.Low),
                                           high: double.parse(marketData.High),
-                                          current:
-                                              double.parse(marketData.price),
+                                          current: double.parse(marketData.price),
                                         ),
 
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "52 Week's Low",
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.black,
-                                                  fontSize: 12),
+                                              style: GoogleFonts.inter(color: Colors.black, fontSize: 12),
                                             ),
                                             Text(
                                               "52 week's High",
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.black,
-                                                  fontSize: 12),
+                                              style: GoogleFonts.inter(color: Colors.black, fontSize: 12),
                                             ),
                                           ],
                                         ),
 
                                         RangeChart(
-                                          low: double.parse(snapshot
-                                              .data!.fiftyTwoWeekLow
-                                              .toString()),
-                                          high: double.parse(snapshot
-                                              .data!.fiftyTwoWeekHigh
-                                              .toString()),
-                                          current:
-                                              double.parse(marketData.price),
+                                          low: double.parse(snapshot.data!.fiftyTwoWeekLow.toString()),
+                                          high: double.parse(snapshot.data!.fiftyTwoWeekHigh.toString()),
+                                          current: double.parse(marketData.price),
                                         ),
                                       ],
                                     ),
@@ -777,49 +624,49 @@ class _OverviewTabState extends State<OverviewTab> {
                                       color: Colors.white,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         TextButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          OptionChainScreen(
-                                                            exchangeInstrumentID:
-                                                                exchangeInstrumentId,
-                                                            exchangeSegment:
-                                                                exchangeSegment,
-                                                            displayName:
-                                                                displayName,
-                                                            lastTradedPrice:
-                                                                lastTradedPrice,
-                                                          )));
-                                            },
-                                            child: Text("Option Chain")),
+                                          style: ButtonStyle(
+                                            padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => OptionChainScreen(
+                                                  exchangeInstrumentID: exchangeInstrumentId,
+                                                  exchangeSegment: exchangeSegment,
+                                                  displayName: displayName,
+                                                  lastTradedPrice: lastTradedPrice,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Text("Option Chain"),
+                                        ),
                                         VerticalDivider(),
                                         TextButton(
+                                            style: ButtonStyle(
+                                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                                            ),
                                             onPressed: () {
-                                              
                                               Get.to(() => ChartingFromTV(displayName));
-
                                             },
                                             child: Text("Charts")),
                                         VerticalDivider(),
                                         TextButton(
+                                            style: ButtonStyle(
+                                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                                            ),
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InstrumentDetailsScreen(
-                                                          ExchangeInstrumentID:
-                                                              exchangeInstrumentId,
-                                                          ExchangeInstrumentName:
-                                                              displayName,
-                                                          displayname:
-                                                              displayName,
+                                                    builder: (context) => InstrumentDetailsScreen(
+                                                          ExchangeInstrumentID: exchangeInstrumentId,
+                                                          ExchangeInstrumentName: displayName,
+                                                          displayname: displayName,
                                                         )),
                                               );
                                             },
@@ -839,8 +686,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                     height: 60,
                                     width: double.infinity,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Expanded(
                                           child: GestureDetector(
@@ -848,19 +694,14 @@ class _OverviewTabState extends State<OverviewTab> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BuySellScreen(
-                                                    exchangeInstrumentId:
-                                                        exchangeInstrumentId,
-                                                    exchangeSegment:
-                                                        exchangeSegment,
-                                                    lastTradedPrice:
-                                                        marketData.price,
+                                                  builder: (context) => BuySellScreen(
+                                                    exchangeInstrumentId: exchangeInstrumentId,
+                                                    exchangeSegment: exchangeSegment,
+                                                    lastTradedPrice: marketData.price,
                                                     close: close,
                                                     displayName: displayName,
                                                     isBuy: true,
-                                                    lotSize:
-                                                        snapshot.data!.lotSize,
+                                                    lotSize: snapshot.data!.lotSize,
                                                   ),
                                                 ),
                                               );
@@ -868,17 +709,12 @@ class _OverviewTabState extends State<OverviewTab> {
                                             child: Container(
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                                borderRadius: BorderRadius.circular(10),
                                                 color: Colors.green,
                                               ),
                                               child: Center(
-                                                  child: Text("BUY",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18))),
+                                                  child:
+                                                      Text("BUY", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18))),
                                             ),
                                           ),
                                         ),
@@ -891,19 +727,14 @@ class _OverviewTabState extends State<OverviewTab> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BuySellScreen(
-                                                    exchangeInstrumentId:
-                                                        exchangeInstrumentId,
-                                                    exchangeSegment:
-                                                        exchangeSegment,
-                                                    lastTradedPrice:
-                                                        marketData.price,
+                                                  builder: (context) => BuySellScreen(
+                                                    exchangeInstrumentId: exchangeInstrumentId,
+                                                    exchangeSegment: exchangeSegment,
+                                                    lastTradedPrice: marketData.price,
                                                     close: close,
                                                     displayName: displayName,
                                                     isBuy: false,
-                                                    lotSize:
-                                                        snapshot.data!.lotSize,
+                                                    lotSize: snapshot.data!.lotSize,
                                                   ),
                                                 ),
                                               );
@@ -911,17 +742,12 @@ class _OverviewTabState extends State<OverviewTab> {
                                             child: Container(
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                                borderRadius: BorderRadius.circular(10),
                                                 color: Colors.red,
                                               ),
                                               child: Center(
-                                                  child: Text("SELL",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18))),
+                                                  child:
+                                                      Text("SELL", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18))),
                                             ),
                                           ),
                                         ),
@@ -951,8 +777,7 @@ class _OverviewTabState extends State<OverviewTab> {
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         padding: EdgeInsets.all(10),
@@ -960,8 +785,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                           children: [
                                             Text(
                                               "OPEN",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
                                             ),
                                             Text("MarketData.Open"),
                                           ],
@@ -973,8 +797,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                           children: [
                                             Text(
                                               "HIGH",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
                                             ),
                                             Text("marketData.High"),
                                           ],
@@ -986,8 +809,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                           children: [
                                             Text(
                                               "LOW",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
                                             ),
                                             Text("marketData.Low"),
                                           ],
@@ -999,8 +821,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                           children: [
                                             Text(
                                               "PREV. CLOSE",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
                                             ),
                                             Text("marketData.close.toString("),
                                           ],
@@ -1016,28 +837,18 @@ class _OverviewTabState extends State<OverviewTab> {
                                         Padding(
                                           padding: EdgeInsets.all(5),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text('QTY',
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
+                                                          fontWeight: FontWeight.normal,
                                                           color: Colors.black87,
                                                         )),
-                                                    Text('BUY PRICE',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black87,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal)),
+                                                    Text('BUY PRICE', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.normal)),
                                                   ],
                                                 ),
                                               ),
@@ -1046,20 +857,16 @@ class _OverviewTabState extends State<OverviewTab> {
                                               ),
                                               Expanded(
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text('BUY PRICE',
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
+                                                          fontWeight: FontWeight.normal,
                                                           color: Colors.black87,
                                                         )),
                                                     Text('QTY',
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
+                                                          fontWeight: FontWeight.normal,
                                                           color: Colors.black87,
                                                         )),
                                                   ],
@@ -1072,8 +879,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                           thickness: 0.5,
                                         ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               height: 200,
@@ -1082,21 +888,16 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 shrinkWrap: true,
                                                 itemCount: 5,
                                                 itemBuilder: (context, index) {
-                                                  var bid =
-                                                      "marketData.bids[index]";
+                                                  var bid = "marketData.bids[index]";
                                                   return Container(
                                                     padding: EdgeInsets.all(10),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Text('${"bid.size"}'),
                                                         Text(
                                                           '${"bid.price"}',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.green),
+                                                          style: TextStyle(color: Colors.green),
                                                         ),
                                                       ],
                                                     ),
@@ -1111,26 +912,14 @@ class _OverviewTabState extends State<OverviewTab> {
                                                 child: ListView.builder(
                                                   shrinkWrap: true,
                                                   itemCount: 5,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    var asks =
-                                                        " marketData.asks[index]";
+                                                  itemBuilder: (context, index) {
+                                                    var asks = " marketData.asks[index]";
                                                     return Container(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                '${"asks.price"}',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .red)),
-                                                            Text(
-                                                                '${"asks.size"}'),
-                                                          ]),
+                                                      padding: EdgeInsets.all(10),
+                                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                        Text('${"asks.price"}', style: TextStyle(color: Colors.red)),
+                                                        Text('${"asks.size"}'),
+                                                      ]),
                                                     );
                                                   },
                                                 ),
@@ -1144,14 +933,11 @@ class _OverviewTabState extends State<OverviewTab> {
                                         Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                  "marketData.totalBuyQuantity"),
+                                              Text("marketData.totalBuyQuantity"),
                                               Text("TOTAL QUANTITY"),
-                                              Text(
-                                                  "marketData.totalSellQuantity")
+                                              Text("marketData.totalSellQuantity")
                                             ],
                                           ),
                                         )
@@ -1227,10 +1013,8 @@ class RangeChartPainter extends CustomPainter {
     final double markerPosition = ((current - low) / (high - low)) * rangeWidth;
     final Path markerPath = Path()
       ..moveTo(markerPosition, rangeTop - markerSize / 2)
-      ..lineTo(markerPosition - markerSize / 2,
-          rangeTop + rangeHeight + markerSize / 2)
-      ..lineTo(markerPosition + markerSize / 2,
-          rangeTop + rangeHeight + markerSize / 2)
+      ..lineTo(markerPosition - markerSize / 2, rangeTop + rangeHeight + markerSize / 2)
+      ..lineTo(markerPosition + markerSize / 2, rangeTop + rangeHeight + markerSize / 2)
       ..close();
     paint.color = Colors.blueGrey;
     canvas.drawPath(markerPath, paint);
@@ -1253,8 +1037,7 @@ class RangeChartPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     );
     highTextPainter.layout(minWidth: 0, maxWidth: size.width);
-    highTextPainter.paint(
-        canvas, Offset(size.width - highTextPainter.width, rangeTop - 20));
+    highTextPainter.paint(canvas, Offset(size.width - highTextPainter.width, rangeTop - 20));
   }
 
   @override

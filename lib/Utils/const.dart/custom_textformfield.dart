@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-
 import 'package:flutter_svg/svg.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
@@ -31,11 +30,15 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 47,
-      child: TextFormField(textAlignVertical: TextAlignVertical.center,
-
-        style:  TextStyle(color:  AppColors.primaryColorDark2,fontSize: 15,),
-        strutStyle:  StrutStyle(),
+    return Container(
+      height: 47,
+      child: TextFormField(
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+          color: AppColors.primaryColorDark2,
+          fontSize: 15,
+        ),
+        strutStyle: StrutStyle(),
         controller: controller,
         focusNode: FocusNode(),
         textInputAction: TextInputAction.next,
@@ -47,11 +50,11 @@ class CustomTextFormField extends StatelessWidget {
             ),
             borderSide: BorderSide(color: AppColors.primaryColorDark2),
           ),
-          border:  OutlineInputBorder(
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5.0),
             ),
-            borderSide: BorderSide(color:  AppColors.primaryColorDark2),
+            borderSide: BorderSide(color: AppColors.primaryColorDark2),
           ),
           labelText: labelText,
           suffixIcon: IconButton(onPressed: onClick, icon: Icon(icon, color: AppColors.primaryColorDark2)),
@@ -67,7 +70,6 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
-
 
 class CustomButton extends StatelessWidget {
   final bool isLoading;
@@ -104,8 +106,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: isLoading
               ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
                 )
               : Text(
                   text,
@@ -115,6 +116,62 @@ class CustomButton extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomSelectionButton extends StatelessWidget {
+  final bool isSelected;
+  final String text;
+  final VoidCallback onPressed;
+  final EdgeInsetsGeometry? padding;
+
+  const CustomSelectionButton({
+    Key? key,
+    required this.isSelected,
+    required this.text,
+    required this.onPressed,
+    this.padding,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        // width: 100,
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 23, vertical: 10),
+        height: 40,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[200]!),
+          borderRadius: BorderRadius.circular(7),
+          gradient: LinearGradient(
+            stops: [0.002, 0.7, 0.9],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: isSelected
+                ? [
+                    AppColors.primaryGrediantColor1,
+                    AppColors.primaryGrediantColor2,
+                    AppColors.primaryGrediantColor2,
+                  ]
+                : [
+                    AppColors.primaryBackgroundColor,
+                    AppColors.primaryColorUnselected,
+                    AppColors.primaryColorUnselected,
+                  ],
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: isSelected ? AppColors.primaryColorLight3 : AppColors.primaryColorFontUnselected,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
@@ -165,8 +222,6 @@ class SvgPictureClass extends StatelessWidget {
   }
 }
 
-
-
 class AnimatedDoughnutChart extends StatefulWidget {
   const AnimatedDoughnutChart({Key? key}) : super(key: key);
 
@@ -216,15 +271,19 @@ class _AnimatedDoughnutChartState extends State<AnimatedDoughnutChart> {
               dataLabelSettings: const DataLabelSettings(
                 alignment: ChartAlignment.far,
                 labelIntersectAction: LabelIntersectAction.shift,
-            //  /   connectorLineSettings: ConnectorLineSettings(length: '0%'),
-                isVisible: true,labelPosition: ChartDataLabelPosition.outside,
+                //  /   connectorLineSettings: ConnectorLineSettings(length: '0%'),
+                isVisible: true,
+                labelPosition: ChartDataLabelPosition.outside,
                 labelAlignment: ChartDataLabelAlignment.outer,
                 textStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
               ),
               enableTooltip: true,
-              animationDuration: 1500, // Animation for doughnut
-              explode: true, // Explodes the first segment
-              explodeIndex: 0, // Default exploded section
+              animationDuration: 1500,
+              // Animation for doughnut
+              explode: true,
+              // Explodes the first segment
+              explodeIndex: 0,
+              // Default exploded section
               innerRadius: '45%', // This makes it a doughnut chart
             ),
           ],

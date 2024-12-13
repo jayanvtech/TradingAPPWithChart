@@ -1,394 +1,39 @@
-// ignore_for_file: unnecessary_import
-
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/MarketWatch/model/corporate_info_model.dart';
-import 'package:tradingapp/MarketWatch/Provider/corporate_info_provider.dart';
+import 'package:tradingapp/Utils/common_text.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
+import 'package:tradingapp/Utils/instrument_details_common_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InstrumentDetailsScreen extends StatefulWidget {
   final ExchangeInstrumentID;
   final displayname;
   final ExchangeInstrumentName;
-  const InstrumentDetailsScreen(
-      {Key? key,
-      this.ExchangeInstrumentID,
-      this.ExchangeInstrumentName,
-      required this.displayname})
-      : super(key: key);
+
+  const InstrumentDetailsScreen({Key? key, this.ExchangeInstrumentID, this.ExchangeInstrumentName, required this.displayname}) : super(key: key);
 
   @override
-  State<InstrumentDetailsScreen> createState() =>
-      _InstrumentDetailsScreenState();
+  State<InstrumentDetailsScreen> createState() => _InstrumentDetailsScreenState();
 }
 
 class _InstrumentDetailsScreenState extends State<InstrumentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.displayname),backgroundColor: Colors.white,),
-      body: SingleChildScrollView(
-        child: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.all(10),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: Colors.white!),
-            child: Expanded(
-              child: Column(
-                children: [
-                  Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: CorporateInfoPage(
-                        ExchangeInstrumentID: widget.ExchangeInstrumentID,
-                        displayname: widget.displayname,
-                        ExchangeInstrumentName: widget.ExchangeInstrumentName,
-                      )),
-                  // Container(
-                  //     padding: EdgeInsets.all(1),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(5),
-                  //       color: Colors.white,
-                  //     ),
-                  //     child: Expanded(
-                  //       child: Column(
-                  //         children: [
-                  //           // Row(
-                  //           //   children: [
-                  //           //     Container(
-                  //           //         height: 40,
-                  //           //         width: 40,
-                  //           //         decoration: BoxDecoration(
-                  //           //           borderRadius: BorderRadius.circular(10),
-                  //           //           color: Colors.green.withOpacity(0.2),
-                  //           //         ),
-                  //           //         child: Center(
-                  //           //             child: Icon(Icons.trending_up_rounded))),
-                  //           //     SizedBox(
-                  //           //       width: 10,
-                  //           //     ),
-                  //           //     Column(
-                  //           //       mainAxisAlignment: MainAxisAlignment.center,
-                  //           //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //           //       children: [
-                  //           //         Text("Overall Gain"),
-                  //           //         Row(
-                  //           //           children: [Text("3.10"), Text("(10.00%)")],
-                  //           //         )
-                  //           //       ],
-                  //           //     ),
-                  //           //   ],
-                  //           // ),
-                  //         ],
-                  //       ),
-                  //     )),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Container(
-                  //     width: MediaQuery.of(context).size.width,
-                  //     padding: EdgeInsets.all(10),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(10),
-                  //       color: Colors.white,
-                  //     ),
-                  //     child: Column(
-                  //       children: [
-                  //         Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Container(
-                  //               width: MediaQuery.of(context).size.width * 0.4,
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(10),
-                  //                 color: Colors.white,
-                  //               ),
-                  //               child: Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Text("Invested"),
-                  //                   Text("₹5000"),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //             Column(
-                  //               mainAxisAlignment: MainAxisAlignment.center,
-                  //               crossAxisAlignment: CrossAxisAlignment.end,
-                  //               children: [
-                  //                 Text("Market Value"),
-                  //                 Text("₹5000"),
-                  //               ],
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         SizedBox(
-                  //           height: 10,
-                  //         ),
-                  //         Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Text("Qantity"),
-                  //                   Text("700"),
-                  //                 ],
-                  //               ),
-                  //               Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment: CrossAxisAlignment.end,
-                  //                 children: [
-                  //                   Text("ATP"),
-                  //                   Text("₹902"),
-                  //                 ],
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
-
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Container(
-                  //     child: Column(
-                  //   children: [
-                  //     Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Container(
-                  //           padding: EdgeInsets.all(10),
-                  //           decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(10),
-                  //             color: Colors.white,
-                  //           ),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Text("Today's Gain"),
-                  //                   Row(
-                  //                     children: [
-                  //                       Text("₹5000"),
-                  //                       Text("(1.0%)"),
-                  //                     ],
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //               Text("data")
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // )),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   padding: EdgeInsets.all(10),
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           Text("Indian Rail Tour Corp Ltd"),
-                  //           GestureDetector(
-                  //             onTap: () {},
-                  //             child: Row(
-                  //               children: [
-                  //                 Text("Stock Details"),
-                  //                 SizedBox(
-                  //                   width: 10,
-                  //                 ),
-                  //                 Icon(
-                  //                   Icons.arrow_forward_ios,
-                  //                   size: 12,
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           )
-                  //         ],
-                  //       ),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       Container(
-                  //         decoration: BoxDecoration(
-                  //           border: Border.all(color: Colors.grey[300]!),
-                  //           shape: BoxShape.rectangle,
-                  //           borderRadius: BorderRadius.circular(5),
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //           children: [
-                  //             Container(
-                  //               padding: EdgeInsets.all(10),
-                  //               child: Column(
-                  //                 children: [
-                  //                   Text("Open"),
-                  //                   Text("1124"),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //             Container(
-                  //               padding: EdgeInsets.all(10),
-                  //               child: Column(
-                  //                 children: [
-                  //                   Text("High"),
-                  //                   Text("1124"),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //             Container(
-                  //               padding: EdgeInsets.all(10),
-                  //               child: Column(
-                  //                 children: [
-                  //                   Text("Low"),
-                  //                   Text("1124"),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //             Container(
-                  //               padding: EdgeInsets.all(10),
-                  //               child: Column(
-                  //                 children: [
-                  //                   Text("Prev Close"),
-                  //                   Text("1124"),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           Column(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Text("Average traded Price"),
-                  //               Text("1124"),
-                  //             ],
-                  //           ),
-                  //           Column(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Text("Volume"),
-                  //               Text("17.90 L"),
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Container(
-                  //   height: 50,
-                  //   width: double.infinity,
-                  //   padding: EdgeInsets.all(10),
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Center(
-                  //           child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           Icon(Icons.bar_chart),
-                  //           SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           Text("View Chart", style: TextStyle()),
-                  //         ],
-                  //       )),
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Expanded(child: Container(
-                  //   height: 100,
-                  // ),),
-                  // Container(
-                  //   height: 60,
-                  //   width: double.infinity,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //     children: [
-                  //       Expanded(
-                  //         child: Container(
-                  //           height: 50,
-                  //           decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(10),
-                  //             color: Colors.green,
-                  //           ),
-                  //           child: Center(
-                  //               child: Text("BUY",
-                  //                   style: TextStyle(
-                  //                       color: Colors.white,
-                  //                       fontWeight: FontWeight.bold,
-                  //                       fontSize: 18))),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         width: 10,
-                  //       ),
-                  //       Expanded(
-                  //         child: Container(
-                  //           height: 50,
-                  //           decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(10),
-                  //             color: Colors.red,
-                  //           ),
-                  //           child: Center(
-                  //               child: Text("SELL",
-                  //                   style: TextStyle(
-                  //                       color: Colors.white,
-                  //                       fontWeight: FontWeight.bold,
-                  //                       fontSize: 18))),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
-              ),
-            )),
+      appBar: AppBar(
+        title: CommonText(text: widget.displayname),
+        backgroundColor: AppColors.primaryBackgroundColor,
+        scrolledUnderElevation: 0,
+      ),
+      body: CorporateInfoPage(
+        ExchangeInstrumentID: widget.ExchangeInstrumentID,
+        displayname: widget.displayname,
+        ExchangeInstrumentName: widget.ExchangeInstrumentName,
       ),
     );
   }
@@ -399,220 +44,452 @@ class CorporateInfoPage extends StatefulWidget {
   final displayname;
   final ExchangeInstrumentName;
 
-  const CorporateInfoPage(
-      {super.key,
-      this.ExchangeInstrumentID,
-      this.ExchangeInstrumentName,
-      this.displayname});
+  const CorporateInfoPage({super.key, this.ExchangeInstrumentID, this.ExchangeInstrumentName, this.displayname});
+
   @override
   _IRCTCPageState createState() => _IRCTCPageState();
 }
 
 class _IRCTCPageState extends State<CorporateInfoPage> {
-  late Future<IRCTCData?> futureIRCTCData;
+  late Future<StockCorporateDetailModel?> futureIRCTCData;
   Map<int, bool> _isExpanded = {};
 
   bool isVisible = false;
+
   @override
   void initState() {
     super.initState();
-    futureIRCTCData = ApiService().fetchIRCTCData(widget.displayname);
+    futureIRCTCData = ApiService().getCorporateStockDetailsData(widget.displayname);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: FutureBuilder<IRCTCData?>(
+      backgroundColor: AppColors.primaryBackgroundColor,
+      body: FutureBuilder<StockCorporateDetailModel?>(
         future: futureIRCTCData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: CommonText(text: 'Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data != null) {
-            IRCTCData data = snapshot.data!;
+            StockCorporateDetailModel data = snapshot.data!;
+
+            /// filter Year For Corporate Action
+            Map<String, List<CorporateAction>> groupEventsByYear() {
+              Map<String, List<CorporateAction>> groupedEvents = {};
+              for (var event in data.corporateActions) {
+                final year = event.exDate.split('-').last;
+                if (!groupedEvents.containsKey(year)) {
+                  groupedEvents[year] = [];
+                }
+                groupedEvents[year]!.add(event);
+              }
+              return groupedEvents;
+            }
+
+            final groupedEvents = groupEventsByYear();
+            final years = groupedEvents.keys.toList();
+
+            /// filter Yer for Latest Announcements
+            Map<String, List<Announcement>> groupEventsByYearLatestAnnouncements() {
+              final Map<String, List<Announcement>> groupedEvents = {};
+              for (var event in data.latestAnnouncements) {
+                final year = event.broadcastDate.split('-').last.split(' ').first;
+                if (!groupedEvents.containsKey(year)) {
+                  groupedEvents[year] = [];
+                }
+                groupedEvents[year]?.add(event);
+              }
+              return groupedEvents;
+            }
+
+            final groupedEventsAnnouncements = groupEventsByYearLatestAnnouncements();
+            final yearsAnnouncements = groupedEventsAnnouncements.keys.toList();
 
             return ListView(
               children: [
-                ListTile(
-                  title: Text('Latest Announcements'),
-                  subtitle: data.latestAnnouncements.isNotEmpty
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: data.latestAnnouncements
-                              .map((announcement) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey[300]!),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            announcement.broadcastDate,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(announcement.subject),
-                                        ],
+                /// Latest Announcements View ==>
+                if (data.latestAnnouncements.isNotEmpty)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CommonText(
+                            text: 'Latest Announcements',
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          CommonText(text: 'View All', fontSize: 14.sp),
+                        ],
+                      ).paddingSymmetric(vertical: 10.h),
+                      /* ...List.generate(
+                        4,
+                        (index) {
+                          var element = data.latestAnnouncements[index];
+                          DateTime parsedDate = DateFormat("dd-MMM-yyyy HH:mm:ss").parse(element.broadcastDate);
+                          String formattedDate = DateFormat("d MMM").format(parsedDate);
+                          return CustomDetailsCard(
+                            title: element.subject,
+                            onTap: () {},
+                            leadingText: formattedDate,
+                            isShowLeadingText: true,
+                            padding: element.subject.length < 35 ? EdgeInsets.all(20) : null,
+                          ).paddingOnly(bottom: 10.h);
+                        },
+                      ),*/
+
+                      ///
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: yearsAnnouncements.length,
+                        // itemCount: yearsAnnouncements.length,
+                        itemBuilder: (context, index) {
+                          final year = yearsAnnouncements[index];
+                          final yearAnnouncements = groupedEventsAnnouncements[year]!;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: year,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ).paddingOnly(bottom: 8.h, left: 5.w),
+                              ...List.generate(
+                                yearAnnouncements.length,
+                                (eventIndex) {
+                                  final element = yearAnnouncements[eventIndex];
+                                  DateTime date = DateFormat("dd-MMM-yyyy").parse(element.broadcastDate ?? '');
+                                  String formattedDate = DateFormat("dd\nMMM").format(date);
+                                  return CustomDetailsCard(
+                                    padding: EdgeInsets.all(20),
+                                    title: element.subject,
+                                    onTap: () {},
+                                    leadingText: formattedDate,
+                                    isShowLeadingText: true,
+                                  ).paddingOnly(bottom: 10.h);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ).paddingSymmetric(horizontal: 15.w),
+
+                /// Corporate Actions View ==>
+                if (data.corporateActions.isNotEmpty)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CommonText(
+                            text: 'Corporate Actions',
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          CommonText(text: 'View All', fontSize: 14.sp),
+                        ],
+                      ).paddingSymmetric(vertical: 10.h),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 1,
+                        // itemCount: years.length,
+                        itemBuilder: (context, index) {
+                          final year = years[index];
+                          final yearEvents = groupedEvents[year]!;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: year,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ).paddingOnly(bottom: 8.h, left: 5.w),
+                              ...List.generate(
+                                yearEvents.length,
+                                (eventIndex) {
+                                  final element = yearEvents[eventIndex];
+                                  DateTime date = DateFormat("dd-MMM-yyyy").parse(element.exDate);
+                                  String formattedDate = DateFormat("dd\nMMM").format(date);
+                                  return CustomDetailsCard(
+                                    padding: EdgeInsets.all(20),
+                                    title: element.purpose,
+                                    onTap: () {},
+                                    leadingText: formattedDate,
+                                    isShowLeadingText: true,
+                                  ).paddingOnly(bottom: 10.h);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ).paddingSymmetric(horizontal: 15.w),
+
+                CommonText(
+                  text: 'Shareholdings Patterns',
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ).paddingOnly(left: 15.w),
+
+                /// Share holding pattern chart ==>
+                Container(
+                  height: 170,
+                  child: buildShareholdingPatternChart(
+                    promoter: double.parse(data.shareholdingPatterns.entries.first.value.first.percentage),
+                    public: double.parse(data.shareholdingPatterns.entries.first.value[1].percentage),
+                    shareByEmployee: double.parse(data.shareholdingPatterns.entries.first.value[2].percentage),
+                  ),
+                ),
+                if (data.financialResults.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CommonText(
+                        text: 'Financial Results',
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ).paddingOnly(left: 15.w),
+                      ...List.generate(
+                        data.financialResults.length,
+                        (index) {
+                          var element = data.financialResults[index];
+                          return Container(
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.greyColor.withOpacity(0.1)),
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.primaryBackgroundColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.greyColor.withOpacity(0.57),
+                                  spreadRadius: 0,
+                                  blurRadius: 1,
+                                  offset: Offset(0, 1), // changes position of shadow
+                                ),
+                              ],
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.primaryBackgroundColor,
+                                  AppColors.tertiaryGrediantColor3,
+                                  AppColors.tertiaryGrediantColor1.withOpacity(1),
+                                  AppColors.primaryBackgroundColor,
+                                  AppColors.tertiaryGrediantColor3,
+                                ],
+                                stops: [0.1, 0.9, 0.9, 0.4, 0.51],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CommonText(
+                                          text: element.fromDate,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        CommonText(text: "To").paddingSymmetric(horizontal: 8),
+                                        CommonText(
+                                          text: element.toDate,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CommonText(text: "Income:- "),
+                                        CommonText(
+                                          text: element.income,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        CommonText(text: "Expenditure:-"),
+                                        CommonText(
+                                          text: element.expenditure,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ).paddingSymmetric(vertical: 5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CommonText(text: "audited:- "),
+                                        CommonText(
+                                          text: element.audited,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        launch(
+                                          element.naAttachment.toString(),
+                                        );
+                                      },
+                                      child: CommonText(
+                                        text: "Download PDF",
+                                        color: Colors.blue,
                                       ),
                                     ),
-                                  ))
-                              .toList(),
-                        )
-                      : Text('No data'),
-                ),
-                ListTile(
-                  title: Text('Corporate Actions',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: data.corporateActions.isNotEmpty
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: data.corporateActions
-                              .map((action) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0),
-                                    child: Container(
-                                      height: 70,
-                                      padding: EdgeInsets.all(10),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey[300]!),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            action.exDate,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            action.purpose,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                        )
-                      : Text('No data'),
-                ),
-                ListTile(
-                  title: Text('Shareholding Patterns'),
-                  subtitle: Text(data.shareholdingPatterns.keys.isNotEmpty
-                      ? data.shareholdingPatterns.keys.first
-                      : 'No data'),
-                ),
-                SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  title: ChartTitle(text: 'Shareholding Patterns'),
-                  legend: Legend(isVisible: true),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <ChartSeries>[
-                    LineSeries<ShareholdingPattern, String>(
-                      enableTooltip: true,
-                      dataSource: data.shareholdingPatterns.entries
-                          .expand((entry) =>
-                              entry.value.map((pattern) => ShareholdingPattern(
-                                    key: entry.key,
-                                    category: pattern.category,
-                                    percentage: pattern.percentage,
-                                  )))
-                          .toList(),
-                      xValueMapper: (ShareholdingPattern data, _) => data.key,
-                      yValueMapper: (ShareholdingPattern data, _) =>
-                          double.parse(data.percentage),
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      name: 's',
-                      width: 2,
-                      color: Colors.blue, // Customize color
-                    ),
-                    // Add more LineSeries for other categories
-                  ],
-                ),
-                SfCircularChart(
-                  title: ChartTitle(text: 'Shareholding Patterns'),
-                  legend: Legend(isVisible: true),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <CircularSeries>[
-                    PieSeries<ShareholdingPattern, String>(
-                      dataSource: data.shareholdingPatterns.entries
-                          .expand((entry) =>
-                              entry.value.map((pattern) => ShareholdingPattern(
-                                    key: entry.key,
-                                    category: pattern.category,
-                                    percentage: pattern.percentage,
-                                  )))
-                          .toList(),
-                      xValueMapper: (ShareholdingPattern data, _) =>
-                          data.category,
-                      yValueMapper: (ShareholdingPattern data, _) =>
-                          double.parse(data.percentage),
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      name: 'Shareholding',
-                    ),
-                  ],
-                ),
-                ListTile(
-                  title: Text('Board Meetings'),
-                  subtitle: Text(data.boardMeetings.isNotEmpty
-                      ? data.boardMeetings[0].meetingDate
-                      : 'No data'),
-                ),
-                ListTile(
-                  title: Text('Finacial Results',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+
+                /// financial
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: data.financialResults
+                //       .map(
+                //         (action) => Padding(
+                //           padding: const EdgeInsets.symmetric(vertical: 4.0),
+                //           child: Container(
+                //             height: 85,
+                //             padding: EdgeInsets.all(10),
+                //             width: double.infinity,
+                //             decoration: BoxDecoration(
+                //                 border: Border.all(color: Colors.grey[300]!), borderRadius: BorderRadius.circular(5), color: Colors.white),
+                //             child: Column(
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Row(
+                //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                   children: [
+                //                     Row(
+                //                       children: [
+                //                         Text("From: "),
+                //                         Text(
+                //                           action.fromDate,
+                //                           style: TextStyle(fontWeight: FontWeight.normal),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     Row(
+                //                       children: [
+                //                         Text("To: "),
+                //                         Text(
+                //                           action.toDate,
+                //                           overflow: TextOverflow.ellipsis,
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 Row(
+                //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                   children: [
+                //                     Row(
+                //                       children: [
+                //                         Text("Income: "),
+                //                         Text(
+                //                           action.income,
+                //                           style: TextStyle(fontWeight: FontWeight.normal),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     Row(
+                //                       children: [
+                //                         Text("Expenditure: "),
+                //                         Text(
+                //                           action.expenditure,
+                //                           overflow: TextOverflow.ellipsis,
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 Row(
+                //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                   children: [
+                //                     Row(
+                //                       children: [
+                //                         Text("audited: "),
+                //                         Text(
+                //                           action.audited,
+                //                           overflow: TextOverflow.ellipsis,
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     InkWell(
+                //                       onTap: () {
+                //                         launch(
+                //                           action.naAttachment.toString(),
+                //                         );
+                //                       },
+                //                       child: Text(
+                //                         "Download PDF",
+                //                         style: TextStyle(color: Colors.blue),
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 )
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //       .toList(),
+                // ).paddingSymmetric(horizontal: 15.w),
+                /*ListTile(
+                  title: Text('Financial Results', style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: data.financialResults.isNotEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: data.financialResults
                               .map((action) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0),
+                                    padding: const EdgeInsets.symmetric(vertical: 4.0),
                                     child: Container(
                                       height: 85,
                                       padding: EdgeInsets.all(10),
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey[300]!),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white),
+                                          border: Border.all(color: Colors.grey[300]!), borderRadius: BorderRadius.circular(5), color: Colors.white),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   Text("From: "),
                                                   Text(
                                                     action.fromDate,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                                    style: TextStyle(fontWeight: FontWeight.normal),
                                                   ),
                                                 ],
                                               ),
@@ -621,25 +498,21 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                                                   Text("To: "),
                                                   Text(
                                                     action.toDate,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   Text("Income: "),
                                                   Text(
                                                     action.income,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                                    style: TextStyle(fontWeight: FontWeight.normal),
                                                   ),
                                                 ],
                                               ),
@@ -648,38 +521,33 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                                                   Text("Expenditure: "),
                                                   Text(
                                                     action.expenditure,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   Text("audited: "),
                                                   Text(
                                                     action.audited,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
                                               InkWell(
                                                   onTap: () {
                                                     launch(
-                                                      action.naAttachment
-                                                          .toString(),
+                                                      action.naAttachment.toString(),
                                                     );
                                                   },
                                                   child: Text(
                                                     "Download PDF",
-                                                    style: TextStyle(
-                                                        color: Colors.blue),
+                                                    style: TextStyle(color: Colors.blue),
                                                   )),
                                             ],
                                           )
@@ -690,16 +558,17 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                               .toList(),
                         )
                       : Text('No data'),
-                ),
-                ListTile(
+                ),*/
+
+                /// Board Meeting
+                /*ListTile(
                   title: Text('Board Meetings'),
                   subtitle: data.boardMeetings.isNotEmpty
                       ? Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children:
-                                data.boardMeetings.asMap().entries.map((entry) {
+                            children: data.boardMeetings.asMap().entries.map((entry) {
                               int index = entry.key;
                               var action = entry.value;
 
@@ -709,19 +578,14 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                                   width: double.infinity,
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Colors.grey[300]!),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white),
+                                      border: Border.all(color: Colors.grey[300]!), borderRadius: BorderRadius.circular(5), color: Colors.white),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            _isExpanded[index] =
-                                                !(_isExpanded[index] ?? false);
+                                            _isExpanded[index] = !(_isExpanded[index] ?? false);
                                           });
                                         },
                                         child: Text(
@@ -735,8 +599,7 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                                       Visibility(
                                         visible: _isExpanded[index] ?? false,
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4.0),
+                                          padding: const EdgeInsets.symmetric(vertical: 4.0),
                                           child: Text(action.purpose),
                                         ),
                                       ),
@@ -748,7 +611,7 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
                           ),
                         )
                       : Text('No data'),
-                ),
+                ),*/
               ],
             );
           } else {
@@ -758,4 +621,55 @@ class _IRCTCPageState extends State<CorporateInfoPage> {
       ),
     );
   }
+
+  Widget buildShareholdingPatternChart({double promoter = 0, double public = 0, double shareByEmployee = 0}) {
+    List<_ChartData> data = [
+      _ChartData('Promoter', promoter, const Color(0xFF7086FD)),
+      _ChartData('Public', public, const Color(0xFF6FD195)),
+      _ChartData('Shares held by Employee', shareByEmployee, const Color(0xFFFFAE4C)),
+    ];
+    return SfCircularChart(
+      backgroundColor: Colors.transparent,
+      margin: EdgeInsets.all(0),
+      legend: Legend(
+        textStyle: const TextStyle(color: Colors.black),
+        iconHeight: 7,
+        iconWidth: 7,
+        isVisible: true,
+        overflowMode: LegendItemOverflowMode.wrap,
+        position: LegendPosition.auto,
+      ),
+      series: <CircularSeries>[
+        DoughnutSeries<_ChartData, String>(
+          legendIconType: LegendIconType.circle,
+          dataSource: data,
+          dataLabelMapper: (_ChartData data, _) => data.category,
+          xValueMapper: (_ChartData data, _) => data.category,
+          yValueMapper: (_ChartData data, _) => data.value,
+          pointColorMapper: (_ChartData data, _) => data.color,
+          dataLabelSettings: const DataLabelSettings(
+            alignment: ChartAlignment.far,
+            labelIntersectAction: LabelIntersectAction.shift,
+            isVisible: false,
+            labelPosition: ChartDataLabelPosition.outside,
+            labelAlignment: ChartDataLabelAlignment.outer,
+            textStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+          ),
+          enableTooltip: true,
+          animationDuration: 1500,
+          explode: true,
+          explodeIndex: 0,
+          innerRadius: '45%', // This makes it a doughnut chart
+        ),
+      ],
+    );
+  }
+}
+
+class _ChartData {
+  final String category;
+  final double value;
+  final Color color;
+
+  _ChartData(this.category, this.value, this.color);
 }

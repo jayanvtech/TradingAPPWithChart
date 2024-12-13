@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
+abstract interface class AppColors {
 //Main Button COlor
   static Color primaryColor = Color.fromARGB(255, 65, 59, 146);
   static Color primaryColor1 = Color.fromARGB(255, 76, 70, 155);
@@ -32,11 +32,15 @@ class AppColors {
   static Color primaryColorDark2 = Color.fromARGB(255, 153, 153, 153);
   static Color primaryColorDark3 = Color.fromARGB(255, 214, 214, 214);
 
+//Unselected COlor
+  static Color primaryColorUnselected = Color(0xFFE9E9EF);
+  static Color primaryColorFontUnselected = Color(0xFFA1A2A6);
+
   //Background COlor
-  static Color primaryBackgroundColor =
-      Color.fromARGB(255, 255, 255, 255); //Pure WHite COlor
+  static Color primaryBackgroundColor = Color.fromARGB(255, 255, 255, 255); //Pure WHite COlor
 
   static Color secondaryColor = Color(0xFF3B92);
+
   // static Color tertiaryColor = Color(0x3A3A3A);
   // static Color appTextErrorColor = Color(0xFF000000);
 
@@ -47,4 +51,11 @@ class AppColors {
 
   static Color GreenColor = Color(0xFF6DD194);
   static Color RedColor = Color.fromARGB(255, 252, 93, 101);
+  static Color greyColor300 = Colors.grey.shade300;
+  static Color greyColor200 = Colors.grey.shade200;
+  static Color greyColor800 = Colors.grey.shade800;
+  static Color greyColor = Colors.grey;
+  static Color deepPurpleColor = Colors.deepPurple;
+  static Color deepPurpleAccentColor = Colors.deepPurpleAccent;
+  static Color blackColor = Color(0xFF000000);
 }

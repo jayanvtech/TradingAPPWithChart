@@ -1,10 +1,9 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TrendlyneWidgetScreen extends StatefulWidget {
@@ -32,7 +31,6 @@ class _TrendlyneWidgetScreenState extends State<TrendlyneWidgetScreen> {
         body: Stack(
       children: [
         WebView(
-       
           onProgress: (int progress) {
             setState(() {
               _isLoading = progress < 100;
@@ -69,24 +67,19 @@ class _TrendlyneWidgetScreenState extends State<TrendlyneWidgetScreen> {
     </html>
     ''';
 
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(htmlContent, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
-
 
 class TechnicalAnalysisWidgetScreen extends StatefulWidget {
   TechnicalAnalysisWidgetScreen(this.SymbolName);
   final String SymbolName;
 
   @override
-  _TechnicalAnalysisWidgetScreenState createState() =>
-      _TechnicalAnalysisWidgetScreenState();
+  _TechnicalAnalysisWidgetScreenState createState() => _TechnicalAnalysisWidgetScreenState();
 }
 
-class _TechnicalAnalysisWidgetScreenState
-    extends State<TechnicalAnalysisWidgetScreen> {
+class _TechnicalAnalysisWidgetScreenState extends State<TechnicalAnalysisWidgetScreen> {
   late WebViewController _controller;
   bool _isLoading = false;
 
@@ -110,7 +103,6 @@ class _TechnicalAnalysisWidgetScreenState
     ''';
     // _controller.loadHtmlString(htmlContent);
     // Initialize WebView controller
-   
   }
 
   @override
@@ -118,7 +110,6 @@ class _TechnicalAnalysisWidgetScreenState
     return Scaffold(
       body: Stack(
         children: [
-
           WebView(
             initialUrl: '',
             javascriptMode: JavascriptMode.unrestricted,
@@ -137,7 +128,6 @@ class _TechnicalAnalysisWidgetScreenState
               });
             },
           ),
-        
           if (_isLoading)
             Center(
               child: CircularProgressIndicator(),
@@ -164,21 +154,18 @@ class _TechnicalAnalysisWidgetScreenState
     ''';
 
     // Loading the HTML content using the controller.
-   _controller.loadHtmlString(htmlContent);
+    _controller.loadHtmlString(htmlContent);
   }
-  
 }
 
 class CheckBeforeBuyWidgetScreen extends StatefulWidget {
   CheckBeforeBuyWidgetScreen(this.SymbolName);
   final String SymbolName;
   @override
-  _CheckBeforeBuyWidgetScreenState createState() =>
-      _CheckBeforeBuyWidgetScreenState();
+  _CheckBeforeBuyWidgetScreenState createState() => _CheckBeforeBuyWidgetScreenState();
 }
 
-class _CheckBeforeBuyWidgetScreenState
-    extends State<CheckBeforeBuyWidgetScreen> {
+class _CheckBeforeBuyWidgetScreenState extends State<CheckBeforeBuyWidgetScreen> {
   late WebViewController _controller;
 
   @override
@@ -231,9 +218,7 @@ class _CheckBeforeBuyWidgetScreenState
     </body>
     </html>
     ''';
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(htmlContent, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
 
@@ -241,8 +226,7 @@ class TradingViewWidgetScreen extends StatefulWidget {
   TradingViewWidgetScreen(this.SymbolName);
   final String SymbolName;
   @override
-  _TradingViewWidgetScreenState createState() =>
-      _TradingViewWidgetScreenState();
+  _TradingViewWidgetScreenState createState() => _TradingViewWidgetScreenState();
 }
 
 class _TradingViewWidgetScreenState extends State<TradingViewWidgetScreen> {
@@ -319,9 +303,7 @@ class _TradingViewWidgetScreenState extends State<TradingViewWidgetScreen> {
         </body>
       </html>
     ''';
-    _controller.loadUrl(Uri.dataFromString(tradingViewHtml,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(tradingViewHtml, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
 
@@ -329,12 +311,10 @@ class CompanyProfileWidgetScreen extends StatefulWidget {
   CompanyProfileWidgetScreen(this.SymbolName);
   final String SymbolName;
   @override
-  _CompanyProfileWidgetScreenState createState() =>
-      _CompanyProfileWidgetScreenState();
+  _CompanyProfileWidgetScreenState createState() => _CompanyProfileWidgetScreenState();
 }
 
-class _CompanyProfileWidgetScreenState
-    extends State<CompanyProfileWidgetScreen> {
+class _CompanyProfileWidgetScreenState extends State<CompanyProfileWidgetScreen> {
   late WebViewController _controller;
 
   @override
@@ -414,16 +394,13 @@ new TradingView.widget({
 </body>
 </html>
     ''';
-    _controller.loadUrl(Uri.dataFromString(tradingViewHtml,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(tradingViewHtml, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
 
 class GLobleIndicesWidgetScreen extends StatefulWidget {
   @override
-  _GLobleIndicesWidgetScreenState createState() =>
-      _GLobleIndicesWidgetScreenState();
+  _GLobleIndicesWidgetScreenState createState() => _GLobleIndicesWidgetScreenState();
 }
 
 class _GLobleIndicesWidgetScreenState extends State<GLobleIndicesWidgetScreen> {
@@ -444,13 +421,14 @@ class _GLobleIndicesWidgetScreenState extends State<GLobleIndicesWidgetScreen> {
     var height = MediaQuery.of(context).size.height;
     print("==========================${height}");
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.primaryBackgroundColor,
         body: Stack(
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: height,
               child: WebView(
+                backgroundColor: AppColors.primaryBackgroundColor,
                 onProgress: (int progress) {
                   setState(() {
                     _isLoading = progress < 100;
@@ -670,9 +648,7 @@ class _GLobleIndicesWidgetScreenState extends State<GLobleIndicesWidgetScreen> {
     </html>
     ''';
 
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(htmlContent, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
 
@@ -761,16 +737,13 @@ class _GlobalTopNewsAllScreenState extends State<GlobalTopNewsAllScreen> {
     </html>
     ''';
 
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(htmlContent, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }
 
 class EconomicalCalandarScreen extends StatefulWidget {
   @override
-  _EconomicalCalandarScreenState createState() =>
-      _EconomicalCalandarScreenState();
+  _EconomicalCalandarScreenState createState() => _EconomicalCalandarScreenState();
 }
 
 class _EconomicalCalandarScreenState extends State<EconomicalCalandarScreen> {
@@ -852,8 +825,6 @@ class _EconomicalCalandarScreenState extends State<EconomicalCalandarScreen> {
     </html>
     ''';
 
-    _controller.loadUrl(Uri.dataFromString(htmlContent,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller.loadUrl(Uri.dataFromString(htmlContent, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 }

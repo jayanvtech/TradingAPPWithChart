@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/apply_ipo_screen.dart';
+import 'package:tradingapp/Utils/common_text.dart';
+import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
+import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
 import 'package:tradingapp/Utils/utils.dart';
 
 class IPODetailsScreen extends StatefulWidget {
@@ -50,408 +53,267 @@ class _IPODetailsScreenState extends State<IPODetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          title: Utils.text(
-              text: "IPO Details",
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold),
-          backgroundColor: Colors.white),
+      backgroundColor: AppColors.primaryBackgroundColor,
+      appBar: buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Utils.text(
-                            text: data?.name ?? "",
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            textAlign: TextAlign.start,
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: buildBoxDecoration(),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonText(
+                          text: data?.name ?? "",
+                          color: AppColors.blackColor,
+                          fontSize: 16,
+                          maxLines: 2,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: AppColors.deepPurpleAccentColor.withOpacity(0.1),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.5),
+                          child: CommonText(
+                            text: data?.ipoType ?? "",
+                            color: Colors.deepPurple,
+                            fontSize: 09,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      children: [
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: AppColors.deepPurpleAccentColor.withOpacity(0.1),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
+                          child: CommonText(
+                            text: data?.bse == 'Y' ? 'BSE' : 'NSE',
+                            color: Colors.deepPurple,
+                            fontSize: 09,
+                          ),
+                        ),
+                      ).paddingSymmetric(horizontal: 10),
+                      if (data?.bse == 'Y' && data?.nse == 'Y')
                         Container(
-                          height: 15,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(05),
-                              color: Colors.deepPurpleAccent.shade700
-                                  .withOpacity(0.1)),
+                            borderRadius: BorderRadius.circular(2),
+                            color: AppColors.deepPurpleAccentColor.withOpacity(0.1),
+                          ),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Utils.text(
-                              text: data?.ipoType ?? "",
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
+                            child: CommonText(
+                              text: 'NSE',
                               color: Colors.deepPurple,
                               fontSize: 09,
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 7,
                         )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(05),
-                          border: Border.all(
-                              color: Colors.grey.shade800.withOpacity(0.2))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Bid Start Date",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "Bid End Date",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "${data?.biddingStartDate}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                Utils.text(
-                                  text: "${data?.biddingEndDate}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Cutoff Price",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "Symbol",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                    text: "₹${data?.cutoffPrice}",
-                                    color: Colors.black87,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600),
-                                Utils.text(
-                                  text: "${data?.symbol}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Bid Price",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "Lot Size",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "₹${data?.minPrice}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                Utils.text(
-                                  text: "${data?.lotSize} Shares",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Retail Discount",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "Issue Size",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "₹${data?.polDiscountPrice}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                Utils.text(
-                                  text:
-                                      "₹ ${formatIndianCurrency(totalIssueSize)}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "IPO Type",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "ISIN",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "${data?.ipoType}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                Utils.text(
-                                  text: "${data?.isin}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Min Bid Quantity",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                                Utils.text(
-                                  text: "Min Price",
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "₹${data?.minBidQuantity}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                Utils.text(
-                                  text: "₹${data?.minPrice}",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Divider(
-                                color: Colors.grey.shade800.withOpacity(0.15),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Minimum Investment",
-                                  color: Colors.grey.shade800,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                Utils.text(
-                                  text: "₹$minimumInvestment / 1 Lot",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Utils.text(
-                                  text: "Maximum Investment",
-                                  color: Colors.grey.shade800,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                Utils.text(
-                                  text:
-                                      "₹$maximumInvestment / ${data?.lotSize} Lots",
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Visibility(
-                      visible: name == "open IPO",
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(
-                            const Applyiposcreen(),
-                            arguments: ({
-                              "name": data?.name,
-                              "bidPrice": data?.cutoffPrice,
-                              "maxValue": double.parse(data?.cutoffPrice ?? ""),
-                              "minValue": double.parse(data?.minPrice ?? ""),
-                              "lotSize": double.parse(data?.lotSize ?? ""),
-                              "categories": data?.categories,
-                              "symbol": data?.symbol
-                            }),
-                          );
-                        },
-                        child: Container(
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blue
+                    ],
+                  ),
+                  Divider(height: 15, color: AppColors.greyColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: 'Bid Range',
+                            color: AppColors.greyColor,
                           ),
-                          child: Center(
-                            child: Utils.text(
-                                text: "Apply Now",
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16),
+                          CommonText(
+                            text: '₹ ${data?.minPrice} - ₹ ${data?.cutoffPrice}',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CommonText(
+                            text: 'Issue Size',
+                            color: AppColors.greyColor,
+                          ),
+                          CommonText(
+                            text: "₹ ${formatIndianCurrency(totalIssueSize)}",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: 'Min Investment',
+                            color: AppColors.greyColor,
+                          ),
+                          CommonText(
+                            text: '₹ ${minimumInvestment}',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CommonText(
+                            text: 'Max Investment',
+                            color: AppColors.greyColor,
+                          ),
+                          CommonText(
+                            text: "₹ ${formatIndianCurrency(totalIssueSize)}",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
+            CommonText(
+              text: 'IPO Issue Details',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: buildBoxDecoration(),
+              child: Column(
+                children: [
+                  buildIPOIssueDetails(title: 'Bid Open Date', value: '${data?.biddingStartDate}, 10:00 AM'),
+                  buildDivider().paddingSymmetric(horizontal: 5),
+                  buildIPOIssueDetails(title: 'Bid Clos Date', value: '${data?.biddingEndDate}, 05:00 PM'),
+                  buildDivider().paddingSymmetric(horizontal: 5),
+                  buildIPOIssueDetails(title: 'IPO Issue Size', value: '₹ ${formatIndianCurrency(totalIssueSize)}'),
+                  buildDivider().paddingSymmetric(horizontal: 5),
+                  buildIPOIssueDetails(title: 'Bid Price Range', value: '₹ ${data?.minPrice} - ₹ ${data?.cutoffPrice}'),
+                  buildDivider().paddingSymmetric(horizontal: 5),
+                  buildIPOIssueDetails(title: 'Min Lot Size', value: '${data?.minBidQuantity} Shares'),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            CustomButton(
+              isLoading: false,
+              text: 'Apply',
+              onPressed: () {
+                Get.to(
+                  const Applyiposcreen(),
+                  arguments: ({
+                    "name": data?.name,
+                    "bidPrice": data?.cutoffPrice,
+                    "maxValue": double.parse(data?.cutoffPrice ?? ""),
+                    "minValue": double.parse(data?.minPrice ?? ""),
+                    "lotSize": double.parse(data?.lotSize ?? ""),
+                    "categories": data?.categories,
+                    "symbol": data?.symbol
+                  }),
+                );
+              },
             )
           ],
-        ),
+        ).paddingSymmetric(horizontal: 15),
       ),
+    );
+  }
+
+  Divider buildDivider() {
+    return Divider(
+      height: 20,
+      color: AppColors.greyColor.withOpacity(0.5),
+    );
+  }
+
+  Widget buildIPOIssueDetails({String title = '', String value = ''}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CommonText(
+          text: title,
+          // color: AppColors.greyColor,
+        ),
+        CommonText(
+          text: value,
+          fontWeight: FontWeight.w600,
+        ),
+      ],
+    );
+  }
+
+  BoxDecoration buildBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(color: AppColors.greyColor.withOpacity(0.1)),
+      borderRadius: BorderRadius.circular(10),
+      color: AppColors.primaryBackgroundColor,
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.greyColor.withOpacity(0.57),
+          spreadRadius: 0,
+          blurRadius: 1,
+          offset: Offset(0, 1), // changes position of shadow
+        ),
+      ],
+      gradient: LinearGradient(
+        colors: [
+          AppColors.primaryBackgroundColor,
+          AppColors.tertiaryGrediantColor3,
+          AppColors.tertiaryGrediantColor1.withOpacity(1),
+          AppColors.primaryBackgroundColor,
+          AppColors.tertiaryGrediantColor3,
+        ],
+        stops: [0.1, 0.9, 0.9, 0.4, 0.51],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      elevation: 2,
+      scrolledUnderElevation: 2,
+      shadowColor: AppColors.blackColor,
+      title: CommonText(
+        text: "IPO Details",
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+      backgroundColor: AppColors.primaryBackgroundColor,
     );
   }
 

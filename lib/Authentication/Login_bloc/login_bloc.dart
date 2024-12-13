@@ -8,6 +8,7 @@ import 'package:tradingapp/Authentication/Login_bloc/login_state.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
 import 'package:tradingapp/Authentication/biomatric_screen.dart';
 import 'package:tradingapp/Utils/Bottom_nav_bar_screen.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
@@ -35,22 +36,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFailure(error: event.error));
     });
   } //a0031
-  String jsonString =
-      r'{"secretKey": "Seqj466$KN", "appKey": "f9abb9466f50ae84119284", "source": "WebAPI"}';
+  String jsonString = r'{"secretKey": "Seqj466$KN", "appKey": "f9abb9466f50ae84119284", "source": "WebAPI"}';
 
   Future<Map<String, dynamic>> loginUser(String userID, String password) async {
     try {
-      var url =
-          Uri.parse('https://mtrade.arhamshare.com/apimarketdata/auth/login');
+      var url = Uri.parse('${AppConfig.baseUrl}apimarketdata/auth/login');
       var response = await http.post(
         url,
         body: jsonEncode({
-          "secretKey": r'Seqj466$KN',
-          "appKey": "f9abb9466f50ae84119284", "source": "WebAPI",
-          //a0886
-          // "secretKey": r'Jaha604$Y#',
-          // "appKey": "a383102c9c88584ab61447",
-          // "source": "WebAPI",
+          /// A0031
+          // "secretKey": r'Seqj466$KN',
+          // "appKey": "f9abb9466f50ae84119284", "source": "WebAPI",
+
+          // a0886
+          "secretKey": r'Jaha604$Y#',
+          "appKey": "a383102c9c88584ab61447",
+          "source": "WebAPI",
           // "userID": userID,
           // "password": password,
         }),
@@ -63,8 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (response.statusCode == 200) {
         if (jsonResponse['type'] == 'success') {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          if (jsonResponse['result'] != null &&
-              jsonResponse['result']['token'] != null) {
+          if (jsonResponse['result'] != null && jsonResponse['result']['token'] != null) {
             // Assuming 'clientCodes' is an array and you're interested in the first element
             // String clientCode = jsonResponse['result']['clientCodes'] != null &&
             //         jsonResponse['result']['clientCodes'].isNotEmpty
@@ -78,16 +78,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             // Navigate to MainScreen
             Get.offAll(() => PinAuthenticationScreen());
 
-            return {
-              'status': true,
-              'message': 'Login successful',
-              'data': jsonResponse['result']
-            };
+            return {'status': true, 'message': 'Login successful', 'data': jsonResponse['result']};
           } else {
-            return {
-              'status': false,
-              'message': 'Token not found in the response'
-            };
+            return {'status': false, 'message': 'Token not found in the response'};
           }
         } else {
           return {'status': false, 'message': jsonResponse['description']};
@@ -101,22 +94,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 }
 
-Future<Map<String, dynamic>> loginUserSession(
-    String userID, String password) async {
+Future<Map<String, dynamic>> loginUserSession(String userID, String password) async {
   try {
-    var url =
-        Uri.parse('https://mtrade.arhamshare.com/interactive/user/session');
+    var url = Uri.parse('${AppConfig.baseUrl}interactive/user/session');
     var response = await http.post(
       url,
       body: jsonEncode({
-        // "secretKey": r"Sjdn870$9y",
-        // "appKey": "5647cac2f14e34ef1a3619",
-        // "source": "WebAPI"
+        /// a0886
+        "secretKey": r"Sjdn870$9y",
+        "appKey": "5647cac2f14e34ef1a3619",
+        "source": "WebAPI"
 
         // Yash Mehta - A0031
-        "secretKey": "Neae763#@w",
-        "appKey": "0ba099c48f4fc0e2519862",
-        "source": "WEBAPI"
+        // "secretKey": "Neae763#@w",
+        // "appKey": "0ba099c48f4fc0e2519862",
+        // "source": "WEBAPI"
 
         // "userID": userID,
         // "password": password,
@@ -130,8 +122,7 @@ Future<Map<String, dynamic>> loginUserSession(
     if (response.statusCode == 200) {
       if (jsonResponse['type'] == 'success') {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        if (jsonResponse['result'] != null &&
-            jsonResponse['result']['token'] != null) {
+        if (jsonResponse['result'] != null && jsonResponse['result']['token'] != null) {
           //  Assuming 'clientCodes' is an array and you're interested in the first element
           // String clientCode = jsonResponse['result']['clientCodes'] != null &&
           //         jsonResponse['result']['clientCodes'].isNotEmpty
@@ -150,16 +141,9 @@ Future<Map<String, dynamic>> loginUserSession(
           print("Main  token printedd: $apiToken");
           // Get.offAll(() => MainScreen());
 
-          return {
-            'status': true,
-            'message': 'Login successful',
-            'data': jsonResponse['result']
-          };
+          return {'status': true, 'message': 'Login successful', 'data': jsonResponse['result']};
         } else {
-          return {
-            'status': false,
-            'message': 'Token not found in the response'
-          };
+          return {'status': false, 'message': 'Token not found in the response'};
         }
       } else {
         return {'status': false, 'message': jsonResponse['description']};

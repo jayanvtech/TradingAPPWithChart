@@ -6,6 +6,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/bid_request_model.dart';
 import 'package:tradingapp/ApiServices/apiservices.dart';
 import 'package:tradingapp/Authentication/auth_services.dart';
+import 'package:tradingapp/Utils/const.dart/app_config.dart';
 
 // Make sure this import is correct
 class MarketData {
@@ -43,17 +44,14 @@ class MarketData {
 
     return MarketData(
       price: json['Touchline']['LastTradedPrice'].toStringAsFixed(2) ?? '0',
-      percentChange:
-          json['Touchline']['PercentChange'].toStringAsFixed(2) ?? '0',
+      percentChange: json['Touchline']['PercentChange'].toStringAsFixed(2) ?? '0',
       close: json['Touchline']['Close'].toString() ?? '0',
       totalBuyQuantity: json['Touchline']['TotalBuyQuantity'].toString() ?? '0',
-      totalSellQuantity:
-          json['Touchline']['TotalSellQuantity'].toString() ?? '0',
+      totalSellQuantity: json['Touchline']['TotalSellQuantity'].toString() ?? '0',
       Open: json['Touchline']['Open'].toString() ?? '0',
       High: json['Touchline']['High'].toString() ?? '0',
       Low: json['Touchline']['Low'].toString() ?? '0',
-      AverageTradedPrice:
-          json['Touchline']['AverageTradedPrice'].toString() ?? '0',
+      AverageTradedPrice: json['Touchline']['AverageTradedPrice'].toString() ?? '0',
       bids: bidsList,
       asks: AsksList,
     );
@@ -111,10 +109,7 @@ class InstrumentMarketData {
   final String percentChange;
   String timestamp;
 
-  InstrumentMarketData(
-      {required this.price,
-      required this.timestamp,
-      required this.percentChange});
+  InstrumentMarketData({required this.price, required this.timestamp, required this.percentChange});
 
   factory InstrumentMarketData.fromJson(Map<String, dynamic> json) {
     return InstrumentMarketData(
@@ -127,11 +122,9 @@ class InstrumentMarketData {
 
 class MarketFeedSocket extends ChangeNotifier {
   IO.Socket? _socket;
-  final marketSubscribedDataStreamController =
-      StreamController<MarketData>.broadcast();
+  final marketSubscribedDataStreamController = StreamController<MarketData>.broadcast();
 
-  Stream<MarketData> get marketDataStream =>
-      marketSubscribedDataStreamController.stream;
+  Stream<MarketData> get marketDataStream => marketSubscribedDataStreamController.stream;
 
   Map<int, MarketData> bankmarketData = {};
 
@@ -151,8 +144,7 @@ class MarketFeedSocket extends ChangeNotifier {
     print("Connecting to MarketData...");
     String? token = await getToken();
 
-    String url =
-        'https://mtrade.arhamshare.com/?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
+    String url = '${AppConfig.baseUrl}?token=$token&userID=A0031&publishFormat=JSON&broadcastMode=Full&apiType=APIMARKETDATA';
 
     _socket = IO.io(
       url,
@@ -213,8 +205,7 @@ class MarketFeedSocket extends ChangeNotifier {
     void handle501Data(data) {
       final jsonData = jsonDecode(data);
       // print(jsonData);
-      final id =
-          jsonData['ExchangeInstrumentID'] as int; // Assumed to be present
+      final id = jsonData['ExchangeInstrumentID'] as int; // Assumed to be present
       final newData = MarketData.fromJson(jsonData);
       bankmarketData[id] = newData;
       marketDataMap[id] = newData;
@@ -234,8 +225,7 @@ class MarketFeedSocket extends ChangeNotifier {
     void handleData(data) {
       final jsonData = jsonDecode(data);
       //print(jsonData);
-      final id =
-          jsonData['ExchangeInstrumentID'] as int; // Assumed to be present
+      final id = jsonData['ExchangeInstrumentID'] as int; // Assumed to be present
       final newData = MarketData.fromJson(jsonData);
       bankmarketData[id] = newData;
       marketDataMap[id] = newData;
