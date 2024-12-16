@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tradingapp/DashBoard/Screens/IPOsScreen/model/ipo_model.dart';
@@ -6,7 +5,6 @@ import 'package:tradingapp/DashBoard/Screens/IPOsScreen/apply_ipo_screen.dart';
 import 'package:tradingapp/Utils/common_text.dart';
 import 'package:tradingapp/Utils/const.dart/app_colors_const.dart';
 import 'package:tradingapp/Utils/const.dart/custom_textformfield.dart';
-import 'package:tradingapp/Utils/utils.dart';
 
 class IPODetailsScreen extends StatefulWidget {
   const IPODetailsScreen({super.key});
@@ -128,7 +126,7 @@ class _IPODetailsScreenState extends State<IPODetailsScreen> {
                         )
                     ],
                   ),
-                  Divider(height: 15, color: AppColors.greyColor),
+                  Divider(height: 15, color: AppColors.greyColor300),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -254,7 +252,7 @@ class _IPODetailsScreenState extends State<IPODetailsScreen> {
   Divider buildDivider() {
     return Divider(
       height: 20,
-      color: AppColors.greyColor.withOpacity(0.5),
+      color: AppColors.greyColor300,
     );
   }
 
